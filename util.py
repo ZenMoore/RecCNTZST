@@ -11,7 +11,7 @@
 # # ----for future----
 import config
 
-
+# todo 为防止optimizer在读取值的时候误更新，可以加一层保护机制，比如，新加只读或者读写的控制参数
 # 元树
 class Tree:
 
@@ -20,7 +20,7 @@ class Tree:
         self.father = father
         self.obj = root_obj
         self.left_child = None
-        self.right_child = None
+        self.right_child = None # todo 感觉这里设置成 Tree(root_obj=None, father=self)更好，对子树是否为空的判断通过判断root_obj
 
     '''树构建函数群'''
     # todo 在调用该函数前先检测左子节点是否为空，若不为空判断右子节点
@@ -68,6 +68,10 @@ class Tree:
         else:
             return count
 
+    # todo 返回所有的sink叶子节点, 这个在optimizer中尤其有用
+    def get_sinks(self):
+        pass
+
     '''树复制函数群'''
     def generate_recTree(self):
         return RecTree(self)
@@ -98,9 +102,14 @@ class RecTree(Tree):
             self.left_child = None
             self.right_child = None
 
+    # 计算其在meta_tree中的对应树
+    def find_in_meta(self):
+        return None
+
 
 # 影树
 class ShadowTree(Tree):
+
 
     # obj = (cnt_type, buffer_type)
     def __init__(self, tree, father=None):
@@ -121,4 +130,8 @@ class ShadowTree(Tree):
         # 然后 hash(i) = combination_i, next_combination = hash(i+1)
         # combination 直接操作 self 树，更新所有节点值 obj
         pass
+
+    # 计算其在meta_tree中的对应树
+    def find_in_meta(self):
+        return None
 
