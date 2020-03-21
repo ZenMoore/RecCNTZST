@@ -19,4 +19,5 @@ usable = False # 这些默认的树结构是否可以使用
 
 # net config
 learning_rate = 0.01
+num_steps = 1000  # 最大迭代轮数
 # lambda_op =
