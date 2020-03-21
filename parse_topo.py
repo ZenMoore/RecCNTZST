@@ -1,14 +1,18 @@
 import read_source as reader
 import util.Tree as Tree
+import config
 
-source_dir = "./source.txt" # todo sink RC 的数据文件，换位置
 
-def generate(sink_set):
+# 返回是否生成成功
+def generate():
+    sink_set = config.sink_set
     # 递归地生成拓扑
-    return Tree(root_Obj= None, father= None, num_leaf= len(sink_set))
+    config.meta_tree = Tree(root_Obj= None, father= None)
+    return True
 
-
+# 返回是否解析成功
 def parse():
-    sink_set = reader.read(source_dir)
-    topo = generate(sink_set)
-    return topo
+    if reader.read():
+        return generate()
+    else:
+        raise Exception("reading failed: ", config.source_dir)

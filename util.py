@@ -1,34 +1,39 @@
-# 在 parse_topo 中构造一棵二叉树
-#    二叉树的边表示merge对与merge segment关系
-#    二叉树的节点表示一个sink或者merge segment(R, C)
-# 在 recursive 中读取这颗二叉树
-#    二叉树的边将来作为神经网络连接(w, b)
-#    二叉树的节点将来作为状态(wirelen, dop, process)
-# ----for future----
-# 在 optimizer 中复制一个影子参数
-#    二叉树的边表示merge对与merge segment关系
-#    二叉树的节点除了R, C外，新加cnt type和buffer type
-# ----for future----
+# 在 parse_topo 中构造一棵二叉树 元树Tree
+# #    二叉树的边表示merge对与merge segment关系
+# #    二叉树的节点表示一个sink或者merge segment(r, c, x, y)
+# # 在 recursive 中复制该树的 练树 RecTree
+# #    二叉树的边将来作为神经网络连接(w, b)
+# #    二叉树的节点将来作为状态(wirelen, dop, process)
+# # ----for future----
+# # 在 optimizer 中复制该树的 影树 ShadowTree
+# #    二叉树的边表示merge对与merge segment关系
+# #    二叉树的节点表示cnt type和buffer type
+# # ----for future----
+import config
+
+
+# 元树
 class Tree:
 
-    # root_obj 表示 tuple(R,C)
-    def __init__(self, root_obj, father, num_leaf):
+    # obj = tuple(r, c, x, y)
+    def __init__(self, root_obj=config.meta_ini, father=None):
         self.father = father
-        self.key = root_obj
+        self.obj = root_obj
         self.left_child = None
         self.right_child = None
-        self.num_leaf = num_leaf # read_source读取的sink set的大小
 
-    # todo 在插入前先检测左子节点是否为空，若不为空判断右子节点
-    def insert_left(self, new_node):
-        assert(self.left_child == None)
-        self.left_child = Tree(new_node, self)
+    '''树构建函数群'''
+    # todo 在调用该函数前先检测左子节点是否为空，若不为空判断右子节点
+    def insert_left(self, new_obj):
+        assert(self.left_child is None)
+        self.left_child = Tree(new_obj, father= self)
 
-    # todo 在插入前先检测右子节点是否为空，若不为空则必须以两个子节点为根递归地构造子拓扑
-    def insert_right(self, new_node):
-        assert (self.right_child == None)
-        self.right_child = Tree(new_node)
+    # todo 在调用该函数前先检测右子节点是否为空，若不为空则必须以两个子节点为根递归地构造子拓扑
+    def insert_right(self, new_obj):
+        assert (self.right_child is None)
+        self.right_child = Tree(new_obj, father= self)
 
+    '''树读取函数群'''
     def get_right(self):
         return self.right_child
 
@@ -38,21 +43,82 @@ class Tree:
     def get_father(self):
         return self.father
 
-    def get_num_leaf(self):
-        return self.num_leaf
+    def get_bro(self):
+        if self.father == None:
+            return None
+        else:
+            if self == self.father.left_child:
+                return self.father.right_child
+            elif self == self.father.right_child:
+                return self.father.left_child
+            else:
+                raise Exception("Dual-non paradox: ", self)
 
     # todo 返回sink+merge segment的总数量
     def size(self):
-        num = len(self.get_num_leaf())
-        temp = int(num / 2)
-        while(temp != 0):
-            num += temp
-            temp = int(temp/2)
-        return num
+        count = 1 # count root
+        if self.right_child is not None:
+            assert(self.left_child is not None)
+            count = count + self.left_child.size() + self.right_child.size()
+            return count
+        elif self.left_child is not None:
+            # assert(self.right_child == None)
+            count = count + self.left_child.size()
+            return count
+        else:
+            return count
 
-    # 在 optimizer 中控制 cnts, buffers 两个序列，并且定义搜索轨迹，每次试验时生成影子树并在影子树上训练
-    # def shadow(self, cnts, buffers):
+    '''树复制函数群'''
+    def generate_recTree(self):
+        return RecTree(self)
+
+    def generate_shadowTree(self):
+        return ShadowTree(self)
+
+    '''树扩展功能函数群'''
+    def print(self):  # todo realize
+        print("文字打印树")
+
+    def paint(self):  # todo realize
+        print("图像打印树")
+
+# 练树
+class RecTree(Tree):
+
+    # obj = tuple(wirelen, dop, process)
+    def __init__(self, tree, father=None):
+        self.father = father
+        self.obj = config.rec_ini  # initialize the obj values
+        if tree.right_child is not None:
+            self.left_child = RecTree(tree.left_child, father= self)
+            self.right_child = RecTree(tree.right_child, father= self)
+        elif tree.left_child is not None:
+            self.left_child = RecTree(tree.left_child)
+        else:
+            self.left_child = None
+            self.right_child = None
 
 
+# 影树
+class ShadowTree(Tree):
 
+    # obj = (cnt_type, buffer_type)
+    def __init__(self, tree, father=None):
+        self.father = father
+        self.obj = config.shadow_ini  # initialize the obj values
+        if tree.right_child is not None:
+            self.left_child = RecTree(tree.left_child, father= self)
+            self.right_child = RecTree(tree.right_child, father= self)
+        elif tree.left_child is not None:
+            self.left_child = RecTree(tree.left_child)
+        else:
+            self.left_child = None
+            self.right_child = None
+
+    # todo 返回 cnt_types 和 buffer_types 的新的组合，即定义搜索轨迹
+    def next_combination(self):
+        # 初步的想法是一个散列函数，函数值尽量表现某组合的预期收益特征值(即预期收益不同，特征值也不同)
+        # 然后 hash(i) = combination_i, next_combination = hash(i+1)
+        # combination 直接操作 self 树，更新所有节点值 obj
+        pass
 
