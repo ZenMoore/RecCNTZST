@@ -1,9 +1,9 @@
 # 在 parse_topo 中构造一棵二叉树 元树Tree
 # #    二叉树的边表示merge对与merge segment关系
-# #    二叉树的节点表示一个sink或者merge segment(r, c, x, y)
+# #    二叉树的节点表示一个sink或者merge segment{'r', 'c', 'x', 'y'}
 # # 在 recursive 中复制该树的 练树 RecTree
 # #    二叉树的边将来作为神经网络连接(w, b)
-# #    二叉树的节点将来作为状态(wirelen, dop, process)
+# #    二叉树的节点将来作为状态{'wirelen', 'dop', 'diameter'}
 # # ----for future----
 # # 在 optimizer 中复制该树的 影树 ShadowTree
 # #    二叉树的边表示merge对与merge segment关系
@@ -21,15 +21,19 @@ class Tree:
         self.obj = root_obj
         self.left_child = None
         self.right_child = None # todo 感觉这里设置成 Tree(root_obj=None, father=self)更好，对子树是否为空的判断通过判断root_obj
+        # self.id = 0
+        self.isleaf = True
 
     '''树构建函数群'''
     # todo 在调用该函数前先检测左子节点是否为空，若不为空判断右子节点
     def insert_left(self, new_obj):
+        self.isleaf = False
         assert(self.left_child is None)
         self.left_child = Tree(new_obj, father= self)
 
     # todo 在调用该函数前先检测右子节点是否为空，若不为空则必须以两个子节点为根递归地构造子拓扑
     def insert_right(self, new_obj):
+        self.isleaf = False
         assert (self.right_child is None)
         self.right_child = Tree(new_obj, father= self)
 
@@ -86,10 +90,11 @@ class Tree:
     def paint(self):  # todo realize
         print("图像打印树")
 
+
 # 练树
 class RecTree(Tree):
 
-    # obj = tuple(wirelen, dop, process)
+    # obj = tuple(wirelen, dop, diameter)
     def __init__(self, tree, father=None):
         self.father = father
         self.obj = config.rec_ini  # initialize the obj values
@@ -104,7 +109,22 @@ class RecTree(Tree):
 
     # 计算其在meta_tree中的对应树
     def find_in_meta(self):
-        return None
+        path = []
+        temp = self.father
+        while(temp is not None):
+            if(self is temp.left_child):
+                path.append(0)
+            if (self is temp.right_child):
+                path.append(1)
+            temp = temp.father
+        result = None
+        path = path.reverse()
+        for i in path:
+            if(i == 0):
+                result = config.meta_tree.left_child
+            else:
+                result = config.meta_tree.right_child
+        return result
 
 
 # 影树

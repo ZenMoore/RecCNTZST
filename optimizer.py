@@ -3,33 +3,74 @@ import numpy as np
 import tensorflow as tf
 import parse_topo as topoparser
 import recursive as loader
+import os
+import parse_out as outparser
 
 '''相当于后向传播算法'''
 meta_tree = None
 rec_tree = None
 shadow_tree = None
 
+sink_delay = []
+
 # 计算总延时
+# todo 暂时没有加入组合优化的两个因素：碳纳米管类型和 buffer 类型
 def calc_delay():
-    return None
+    # todo 等待 Aida 回信以及学习ThreeD_DME的延时计算方法
+    # 自上而下的递归计算，
+    # 1. 根据 diameter 和 dop 计算得出电阻率
+    # 2. 根据每个节点的 wirlen 得出线延迟
+    # 3. 考虑拐点的 contact 以及 sink 的固有 r/c
+    # 4. 将计算的结果以列表的形式保存下来，每个元素为一个sink的延时
+    # 5. 返回最大延时
+    assert (len(sink_delay) == len(config.sink_set))
+    return max(sink_delay)
 
 # 计算引入拉格朗日乘子后的等式约束
 def calc_lagrange():
-    return None
+    # todo 关于这个拉格朗日乘子，为什么引入这个之后能够保证等式约束，这个拉格朗日乘子又是怎么计算得出的
+    return tf.multiply(config.lagrangian, (max(sink_delay) - min(sink_delay)))
 
-# todo 优化算法也就是反向传播算法
+
+# 优化算法也就是反向传播算法
 def optimize():
     global rec_tree # todo 这些global到底共享地址吗？能不能去掉直接用变量名rec_tree等(不加config.xx, 也不用提前global之后用config.xx赋值)
 
-    for i in range(config.num_steps):
-        loader.load()
-        rec_tree = config.rec_tree
-        # delay = calc_delay()
-        # tf.add_to_collection('losses', delay)
-        # lagrange = calc_lagrange()
-        # tf.add_to_collection('losses', lagrange)
-        # goal = tf.add_n(tf.get_collection('losses'))
-        
+    # 加载前向传播的树结构
+    loader.load()
+    rec_tree = config.rec_tree
+
+    # 计算损失=总延时+等式约束
+    delay = calc_delay()
+    tf.add_to_collection('losses', delay)
+    lagrange = calc_lagrange()
+    tf.add_to_collection('losses', lagrange)
+    goal = tf.add_n(tf.get_collection('losses'))
+
+    # 定义训练算法
+    global_step = tf.Variable(0, trainable=False)
+    learning_rate = tf.train.exponential_dacay(config.learning_rate_base, global_step, 1, config.learning_rate_decay)  # todo
+    train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(goal, global_step=global_step)  # todo
+    # 暂时不使用滑动平均
+    # variable_average = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
+    # # variable_average_op = variable_average.apply(tf.trainable_variables())
+    # with tf.control_dependencies([train_step, variable_average_op]): # 暂时不加入滑动平均
+    #     train_op = tf.no_op()
+    saver = tf.train.Saver()
+    with tf.Session() as sess:
+        tf.global_variables_initializer().run()
+
+        for i in range(config.num_steps):
+            _, goal_value, step = sess.run([train_step, goal, global_step])
+
+            if i%100 == 0:
+                print("After %d steps of training, goal value is %g ." %(step, goal_value))
+                print("And the total delay of the whole tree is: ", end=None)
+                print(sess.run(delay))
+                print("And the lagrange-value of equality constraints: ", end=None)
+                print(sess.run(lagrange))
+
+                saver.save(sess, os.path.join(config.model_path, config.model_name), global_step=global_step)
 
     return None
 
@@ -37,6 +78,7 @@ def main(argv = None):
     optimize()
 
 
+## 总流程控制
 if __name__ == '__main__':
     global meta_tree
     global rec_tree
@@ -52,3 +94,4 @@ if __name__ == '__main__':
     rec_tree = config.rec_tree
     shadow_tree = config.rec_tree
     tf.app.run()
+    outparser.print()

@@ -5,7 +5,7 @@ Carbon nanotube zero skew clock tree construction
  
 #### Structure
 - config: configuration for the network/etc.
-- optimizer: backward propagation.
+- optimizer: backward propagation.**The launcher of the program.**
 - parse_out: parse the final output from the output of network. 
 - parse_topo: parse the tree-topo from the source.
 - read_source: read the source from the file.
@@ -27,12 +27,12 @@ techniques for jumping out of local minumum).
 #### Basis
 - Carbon Nanotube
 ```
-state params: wire length, doping proportion, generation process(defect)
+state params: wire length, doping proportion, diameter
 hyper params: buffer sequence, cnt type sequence
 ```
 
 - Clock Tree Synthesis
 ```
 minimizing constraint: total delay
-equality constraint: skew between every two sinks = 0
+equality constraint: max delay - min delay = 0
 ```
