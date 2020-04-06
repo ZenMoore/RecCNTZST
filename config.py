@@ -23,7 +23,6 @@ usable = False # 这些默认的树结构是否可以使用
 learning_rate_base = 0.01
 learning_rate_decay = 0.8
 num_steps = 1000  # 最大迭代轮数
-lagrangian = 3 # 设置拉格朗日乘子
 
 # technique limitation
 dop_min = 0

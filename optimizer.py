@@ -29,7 +29,8 @@ def calc_delay():
 # 计算引入拉格朗日乘子后的等式约束
 def calc_lagrange():
     # todo 关于这个拉格朗日乘子，为什么引入这个之后能够保证等式约束，这个拉格朗日乘子又是怎么计算得出的
-    return tf.multiply(config.lagrangian, (max(sink_delay) - min(sink_delay)))
+    lagrangian = tf.get_variable("lagrangian", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=True)
+    return tf.multiply(lagrangian, (max(sink_delay) - min(sink_delay)))
 
 
 # 优化算法也就是反向传播算法
