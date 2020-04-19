@@ -43,9 +43,9 @@ def read():
     return True
 
 
-def draw_sink_nodes(FILENAME):
-    FILENAME = config.source_dir
-    headers, sinks = read(FILENAME)
+def draw_sink_nodes():
+    headers = config.headers
+    sinks = config.sink_set
 
     xlow, xhi = -36667, 12821
     ylow, yhi = 70742, 112456
@@ -86,3 +86,7 @@ def draw_sink_nodes(FILENAME):
             # ax.add_patch(rect)
 
     plt.show()
+
+if __name__ == '__main__':
+    read()
+    draw_sink_nodes()

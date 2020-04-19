@@ -16,11 +16,11 @@ sink_delay = []
 # 计算总延时
 # todo 暂时没有加入组合优化的两个因素：碳纳米管类型和 buffer 类型
 def calc_delay():
-    # todo 等待 Aida 回信以及学习ThreeD_DME的延时计算方法
+    # todo 等待 Aida 回信，核实 delay 计算方法, 使用标准的 \sigma(diameter, dop) 的函数关系
     # 自上而下的递归计算，
     # 1. 根据 diameter 和 dop 计算得出电阻率
     # 2. 根据每个节点的 wirlen 得出线延迟
-    # 3. 考虑拐点的 contact 以及 sink 的固有 r/c
+    # 3. 考虑拐点的 contact 以及 sink&merge point 的固有 r/c
     # 4. 将计算的结果以列表的形式保存下来，每个元素为一个sink的延时
     # 5. 返回最大延时
     assert (len(sink_delay) == len(config.sink_set))
@@ -28,7 +28,8 @@ def calc_delay():
 
 # 计算引入拉格朗日乘子后的等式约束
 def calc_lagrange():
-    # todo 关于这个拉格朗日乘子，为什么引入这个之后能够保证等式约束，这个拉格朗日乘子又是怎么计算得出的
+    # 将拉格朗日乘子作为训练参数，梯度下降时候，向对拉格朗日乘子偏导等于零的方向下降
+    # todo 如何保证偏导下降到等于零，这是一种 trade-off 吗？trade-off 比例参数在哪里设置？
     lagrangian = tf.get_variable("lagrangian", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=True)
     return tf.multiply(lagrangian, (max(sink_delay) - min(sink_delay)))
 
@@ -83,6 +84,7 @@ def main(argv = None):
 if __name__ == '__main__':
     global meta_tree
     global rec_tree
+    global shadow_tree
 
     if not config.usable:
         if topoparser.parse():
@@ -93,6 +95,8 @@ if __name__ == '__main__':
             raise Exception("meta_tree parsing failed.")
     meta_tree = config.meta_tree
     rec_tree = config.rec_tree
-    shadow_tree = config.rec_tree
+    shadow_tree = config.shadow_tree
     tf.app.run()
+    config.rec_tree = rec_tree
+    config.shadow_tree = shadow_tree
     outparser.print()

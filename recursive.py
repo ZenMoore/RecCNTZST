@@ -6,12 +6,12 @@ import config
 
 '''相当于前向传播算法'''
 # todo 将所有的数值尽量转换为 tensor 的形式，以便生成计算图
-meta_tree = None
 rec_tree = None
 
 scope_id = 0
 
 
+# 欧几里得距离
 # todo 如何计算 sink 之间的距离，以及如何计算 merge segment 之间的距离
 def calc_dist(left, right):
     temL = left.find_in_meta()
@@ -20,7 +20,7 @@ def calc_dist(left, right):
     if (temL.isleaf is True) and (temR.isleaf is True):  # point-point distance
         xl = temL.obj[2], yl = temL.obj[3]
         xr = temR.obj[2], yr = temR.obj[3]
-        dis = tf.add(tf.abs(xl - xr), tf.abs(yl, yr))
+        dis = tf.sqrt(tf.add(tf.square(tf.abs(xl - xr)), tf.square(tf.abs(yl, yr))))
     elif (temL.isleaf is False) and (temR.isleaf is True):  # point-ms distance
         # todo 如果是个圆的话，这个是不需要计算TRR的，所以搁置
         # 改变tree中 x,y的值
@@ -57,23 +57,23 @@ def merge(left, right, father):
         left = merge(left.left_child, left.right_child, left)
         right = merge(right.left_child, right.right_child, right)
         assert((left.father is right.father) and (right.father is father)) # todo 是==还是is
-        right.obj[0] = dist - left.obj[0] # 这里去除了right.childs应有的影响，全部右节点由左兄弟的子节点影响
-        father.obj[0] = tf.add((tf.matmul(left.obj[0], weight()) + bia()), (tf.matmul(right.obj[0], weight()) + bia()))
-        father.obj[1] =  tf.add((tf.matmul(left.obj[1], weight()) + bia()), (tf.matmul(right.obj[1], weight()) + bia()))
-        father.obj[1] = tf.clip_by_value(father.obj[1], config.dop_min, config.dop_max)
-        father.obj[2] = tf.add((tf.matmul(left.obj[2], weight()) + bia()), (tf.matmul(right.obj[2], weight()) + bia()))
-        father.obj[2] = tf.clip_by_value(father.obj[2], config.dia_min, config.dia_max)
+        right.obj['wirelen'] = dist - left.obj['wirelen'] # 这里去除了right.childs应有的影响，全部右节点由左兄弟的子节点影响
+        father.obj['wirelen'] = tf.add((tf.matmul(left.obj['wirelen'], weight()) + bia()), (tf.matmul(right.obj['wirelen'], weight()) + bia()))
+        father.obj['dop'] =  tf.add((tf.matmul(left.obj['dop'], weight()) + bia()), (tf.matmul(right.obj['dop'], weight()) + bia()))
+        father.obj['dop'] = tf.clip_by_value(father.obj['dop'], config.dop_min, config.dop_max)
+        father.obj['diameter'] = tf.add((tf.matmul(left.obj['diameter'], weight()) + bia()), (tf.matmul(right.obj['diameter'], weight()) + bia()))
+        father.obj['diameter'] = tf.clip_by_value(father.obj['diameter'], config.dia_min, config.dia_max)
         return father
     elif left is not None:
         assert(left.father == father)
         left = merge(left.left_child, left.right_child, left)
-        father.obj[0] = tf.matmul(left.obj[0], weight()) + bia()
+        father.obj['wirelen'] = tf.matmul(left.obj['wirelen'], weight()) + bia()
 
-        father.obj[1] = tf.matmul(left.obj[1], weight()) + bia()
-        father.obj[1] = tf.clip_by_value(father.obj[1], config.dop_min, config.dop_max)
+        father.obj['dop'] = tf.matmul(left.obj['dop'], weight()) + bia()
+        father.obj['dop'] = tf.clip_by_value(father.obj['dop'], config.dop_min, config.dop_max)
 
-        father.obj[2] = tf.matmul(left.obj[2], weight()) + bia()
-        father.obj[2] = tf.clip_by_value(father.obj[2], config.dia_min, config.dia_max)
+        father.obj['diameter'] = tf.matmul(left.obj['diameter'], weight()) + bia()
+        father.obj['diameter'] = tf.clip_by_value(father.obj['diameter'], config.dia_min, config.dia_max)
 
         return father
     else:
@@ -94,8 +94,6 @@ def merge(left, right, father):
 def load():
     global rec_tree
     assert (config.usable is True)
-    meta_tree = config.meta_tree
-    # rec_tree = config.rec_tree
     rec_tree = merge(rec_tree.left_child, rec_tree.right_child, rec_tree)
     config.rec_tree = rec_tree
 

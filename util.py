@@ -12,10 +12,10 @@
 import config
 
 # todo 为防止optimizer在读取值的时候误更新，可以加一层保护机制，比如，新加只读或者读写的控制参数
-# 元树
+# # 元树
 class Tree:
 
-    # obj = tuple(r, c, x, y)
+    # obj = {'r', 'c', 'x', 'y'}
     def __init__(self, root_obj=config.meta_ini, father=None):
         self.father = father
         self.obj = root_obj
@@ -25,17 +25,37 @@ class Tree:
         self.isleaf = True
 
     '''树构建函数群'''
-    # todo 在调用该函数前先检测左子节点是否为空，若不为空判断右子节点
+
+    # 自顶向下构建(配合merge函数，用于局部的自顶向下构建)
+
+    # 在调用该函数前先检测左子节点是否为空，若不为空判断右子节点
     def insert_left(self, new_obj):
         self.isleaf = False
         assert(self.left_child is None)
         self.left_child = Tree(new_obj, father= self)
 
-    # todo 在调用该函数前先检测右子节点是否为空，若不为空则必须以两个子节点为根递归地构造子拓扑
+    # 在调用该函数前先检测右子节点是否为空，若不为空则必须以两个子节点为根递归地构造子拓扑
     def insert_right(self, new_obj):
         self.isleaf = False
+        assert (self.left_child is not None)
         assert (self.right_child is None)
         self.right_child = Tree(new_obj, father= self)
+
+    # 自底向上构建
+    @staticmethod
+    def merge(left, right, father):
+        father = Tree(father)
+        if left is not None:
+            father.insert_left(left)
+        else:
+            raise Exception('error in NS-algo: null point')
+        if right is not None:
+            father.insert_right(right)
+        else:
+            raise Exception('error in NS-algo: null point')
+
+        return father
+
 
     '''树读取函数群'''
     def get_right(self):
@@ -58,7 +78,28 @@ class Tree:
             else:
                 raise Exception("Dual-non paradox: ", self)
 
-    # todo 返回sink+merge segment的总数量
+    # 返回根的值为 obj 的子树的根
+    def find(self, obj):
+        this = (self.obj['x'], self.obj['y'])
+        that = (obj['x'], obj['y'])
+        if this == that:
+            return self
+        elif self.right_child is not None:
+            resultL = self.left_child.find(obj)
+            resultR = self.left_child.find(obj)
+            if resultL is not None:
+                assert (resultR is None)
+                return resultL
+            elif resultR is not None:
+                return resultR
+            else:
+                return None
+        elif self.left_child is not None:
+            return self.left_child.find(obj)
+        else:
+            return None
+
+    # 返回 sink+merge point 的总数量
     def size(self):
         count = 1 # count root
         if self.right_child is not None:
@@ -72,12 +113,17 @@ class Tree:
         else:
             return count
 
-    # todo 返回所有的sink叶子节点, 这个在optimizer中尤其有用
+    # 返回所有的sink叶子节点
     def get_sinks(self):
-        pass
+        leaf_set = []
+        for sink in config.sink_set:
+            leaf_set.append(self.find(sink))
+        assert len(leaf_set) == len(config.sink_set)
+        return leaf_set
 
     '''树复制函数群'''
     def generate_recTree(self):
+
         return RecTree(self)
 
     def generate_shadowTree(self):
@@ -90,11 +136,14 @@ class Tree:
     def paint(self):  # todo realize
         print("图像打印树")
 
+    # # 这里仅仅比较元树节点的相等与否
+    # def equals(self, corres):
+    #     return self.obj['x'] == corres.obj['x'] and self.obj['y'] == corres.obj['y']
 
 # 练树
 class RecTree(Tree):
 
-    # obj = tuple(wirelen, dop, diameter)
+    # obj = {'wirelen', 'dop', 'diameter'}
     def __init__(self, tree, father=None):
         self.father = father
         self.obj = config.rec_ini  # initialize the obj values
@@ -154,4 +203,3 @@ class ShadowTree(Tree):
     # 计算其在meta_tree中的对应树
     def find_in_meta(self):
         return None
-
