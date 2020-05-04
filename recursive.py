@@ -93,8 +93,9 @@ def merge(left, right, father):
 # 在optimizer中调用用来计算损失以及反向传播
 def load():
     global rec_tree
+    rec_tree = config.rec_tree
     assert (config.usable is True)
     rec_tree = merge(rec_tree.left_child, rec_tree.right_child, rec_tree)
-    config.rec_tree = rec_tree
+    # config.rec_tree = rec_tree
 
 

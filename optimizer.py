@@ -77,14 +77,15 @@ def optimize():
     return None
 
 def main(argv = None):
+    print('optimizing...')
     optimize()
 
 
 ## 总流程控制
 if __name__ == '__main__':
-    global meta_tree
-    global rec_tree
-    global shadow_tree
+    # global meta_tree
+    # global rec_tree
+    # global shadow_tree
 
     if not config.usable:
         if topoparser.parse():

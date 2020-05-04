@@ -38,7 +38,15 @@ def read():
             pattern = re.compile(regex_capacitive_load)
             matcher = pattern.match(line)
             sinks[-1]['cap'] = matcher.group(1)
-    config.sink_set = sinks
+
+
+    for e in sinks:
+        temp = {'r': None,
+                'c': e['cap'],
+                'x': e['x'],
+                'y': e['y']}
+        config.sink_set.append(temp)
+
     config.headers = headers
     return True
 
@@ -69,19 +77,19 @@ def draw_sink_nodes():
     for i in range(len(x)):
         plt.annotate(sinks[i]['id'], xy=(x[i], y[i]))
 
-    for i in range(N_index):
-        for j in range(N_index):
-            x1, y1 = xlow + bucket_width * i, ylow + bucket_height * j
-            x1, y1 = (y1 + x1) / 2, (y1 - x1) / 2
-            x2, y2 = xlow + bucket_width * (i + 1), ylow + bucket_height * j
-            x2, y2 = (y2 + x2) / 2, (y2 - x2) / 2
-            x3, y3 = xlow + bucket_width * (i + 1), ylow + bucket_height * (j + 1)
-            x3, y3 = (y3 + x3) / 2, (y3 - x3) / 2
-            x4, y4 = xlow + bucket_width * i, ylow + bucket_height * (j + 1)
-            x4, y4 = (y4 + x4) / 2, (y4 - x4) / 2
-            x5, y5 = x1, y1
-
-            ax.plot([x1, x2, x3, x4, x5], [y1, y2, y3, y4, y5])
+    # for i in range(N_index):
+    #     for j in range(N_index):
+    #         x1, y1 = xlow + bucket_width * i, ylow + bucket_height * j
+    #         x1, y1 = (y1 + x1) / 2, (y1 - x1) / 2
+    #         x2, y2 = xlow + bucket_width * (i + 1), ylow + bucket_height * j
+    #         x2, y2 = (y2 + x2) / 2, (y2 - x2) / 2
+    #         x3, y3 = xlow + bucket_width * (i + 1), ylow + bucket_height * (j + 1)
+    #         x3, y3 = (y3 + x3) / 2, (y3 - x3) / 2
+    #         x4, y4 = xlow + bucket_width * i, ylow + bucket_height * (j + 1)
+    #         x4, y4 = (y4 + x4) / 2, (y4 - x4) / 2
+    #         x5, y5 = x1, y1
+    #
+    #         ax.plot([x1, x2, x3, x4, x5], [y1, y2, y3, y4, y5])
             # rect = plt.Rectangle((x_start, y_start), bucket_width/2, bucket_height/2, fill=False)
             # ax.add_patch(rect)
 

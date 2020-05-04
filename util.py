@@ -82,11 +82,15 @@ class Tree:
     def find(self, obj):
         this = (self.obj['x'], self.obj['y'])
         that = (obj['x'], obj['y'])
+        print('this that')
+        print(this)
+        print(that)
+        print()
         if this == that:
             return self
         elif self.right_child is not None:
             resultL = self.left_child.find(obj)
-            resultR = self.left_child.find(obj)
+            resultR = self.right_child.find(obj)
             if resultL is not None:
                 assert (resultR is None)
                 return resultL
