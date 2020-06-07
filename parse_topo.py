@@ -3,26 +3,24 @@ import util
 import numpy as np
 import config
 
-Tree = util.Tree
 
-# 计算点到点的距离: 欧几里得距离
-# todo 在未确定是否为曼哈顿路径之前，暂不写使用 merge segment 的代码
-def calc_dist_p_p(left, right):
+# 计算点到点的距离: 曼哈顿距离
+def calc_dist(left, right):
     xl = left['x']
     yl = left['y']
     xr = right['x']
     yr = right['y']
-    return np.sqrt(np.add(np.square(np.abs(xl - xr)), np.square(np.abs(yl - yr))))
+    return np.add(np.abs(xl-xr), np.abs(yl, yr))
 
 
 def get_nearest(recur_set):
     result = (recur_set[0], recur_set[1])
-    minlen = calc_dist_p_p(result[0], result[1])
+    minlen = calc_dist(result[0], result[1])
     for left in recur_set:
         for right in recur_set:
             if left == right:
                 continue
-            temp_len = calc_dist_p_p(left, right)
+            temp_len = calc_dist(left, right)
             if temp_len < minlen:
                 minlen = temp_len
                 result = (left, right)
@@ -30,7 +28,6 @@ def get_nearest(recur_set):
 
 
 # 计算中点，根据重点进行计算，改进方法见 generate 函数注释
-# todo merge point 的 r, c 怎么计算
 def merge_point(left, right):
     point = {'r': None,
              'c': None,
@@ -45,7 +42,7 @@ def construct(construct_path):
     # 确定根部
 
     temp = construct_path[-1]
-    root = Tree.merge(temp[0], temp[1], temp[2])
+    root = util.Tree.merge(temp[0], temp[1], temp[2])
     construct_path.remove(temp) # todo test
 
     # corres = root.find(construct_path[-1][2])
@@ -73,8 +70,7 @@ def print_path(construct_path):
 
 # 返回是否生成成功
 # using nearest neighbor selection
-# todo 在未确定是否为曼哈顿路径之前，暂不写使用 merge segment 的代码
-# todo 改进，如果真的不是曼哈顿路径，则先按照 MMM-Mode 构建初始拓扑，跑完前向收敛后按照相应参数重新构建拓扑，循环往复几遍，认为可达到最优拓扑
+# todo 改进，先按照 MMM-Mode 构建初始拓扑，跑完前向收敛后按照相应参数重新构建拓扑，循环往复几遍，认为可达到最优拓扑
 def generate():
     sink_set = config.sink_set
     recur_set = []
@@ -117,7 +113,7 @@ def generate():
     root = construct(construct_path)
 
     # 递归地生成拓扑
-    config.meta_tree = root
+    config.tree = root
     return True  # always
 
 
@@ -131,7 +127,7 @@ def parse():
 
 if __name__ == '__main__':
     if parse():
-        root = config.meta_tree
-    # print(type(root))
-    print(len(config.sink_set))
-    print(root.size())
+        root = config.tree
+
+    print("The element number in the sink set is "+str(len(config.sink_set)))
+    print("The size of built tree is "+root.size())

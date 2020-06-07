@@ -7,9 +7,6 @@ import os
 import parse_out as outparser
 
 '''相当于后向传播算法'''
-meta_tree = None
-rec_tree = None
-shadow_tree = None
 
 sink_delay = []
 
@@ -36,11 +33,9 @@ def calc_lagrange():
 
 # 优化算法也就是反向传播算法
 def optimize():
-    global rec_tree # todo 这些global到底共享地址吗？能不能去掉直接用变量名rec_tree等(不加config.xx, 也不用提前global之后用config.xx赋值)
 
     # 加载前向传播的树结构
     loader.load()
-    rec_tree = config.rec_tree
 
     # 计算损失=总延时+等式约束
     delay = calc_delay()
@@ -83,21 +78,9 @@ def main(argv = None):
 
 ## 总流程控制
 if __name__ == '__main__':
-    # global meta_tree
-    # global rec_tree
-    # global shadow_tree
 
-    if not config.usable:
-        if topoparser.parse():
-            config.rec_tree = config.meta_tree.generate_recTree()
-            config.shadow_tree = config.meta_tree.generate_shadowTree()
-            config.usable = True
-        else:
-            raise Exception("meta_tree parsing failed.")
-    meta_tree = config.meta_tree
-    rec_tree = config.rec_tree
-    shadow_tree = config.shadow_tree
+    if not topoparser.parse():
+        raise Exception("tree parsing failed.")
+
     tf.app.run()
-    config.rec_tree = rec_tree
-    config.shadow_tree = shadow_tree
     outparser.print()
