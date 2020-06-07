@@ -10,25 +10,52 @@ import parse_out as outparser
 
 sink_delay = []
 
+def get_tensors_max_min(tensors):
+    recur_set = []
+
+    max_result = None
+    for e in tensors:
+        recur_set.append(e)
+    while len(recur_set) > 1:
+        a = recur_set.pop()
+        b = recur_set.pop()
+        max_result = tf.maximum(a, b)
+        recur_set.append(max_result)
+
+    min_result = None
+    for e in tensors:
+        recur_set.append(e)
+    while len(recur_set) > 1:
+        a = recur_set.pop()
+        b = recur_set.pop()
+        min_result = tf.minimum(a, b)
+        recur_set.append(min_result)
+
+    assert (max_result is not None)
+    assert (min_result is not None)
+    return max_result, min_result
+
+
 # 计算总延时
-# todo 暂时没有加入组合优化的两个因素：碳纳米管类型和 buffer 类型
+# todo 暂时没有加入组合优化：buffer 类型
 def calc_delay():
-    # todo 等待 Aida 回信，核实 delay 计算方法, 使用标准的 \sigma(diameter, dop) 的函数关系
-    # 自上而下的递归计算，
-    # 1. 根据 diameter 和 dop 计算得出电阻率
-    # 2. 根据每个节点的 wirlen 得出线延迟
-    # 3. 考虑拐点的 contact 以及 sink&merge point 的固有 r/c
-    # 4. 将计算的结果以列表的形式保存下来，每个元素为一个sink的延时
-    # 5. 返回最大延时
+    sink_node_set = config.tree.get_sinks()
+    for sink in sink_node_set:
+        # todo 计算 delay
+        delay = sink.rec_obj['wirelen']
+        sink_delay.append(delay)
+
     assert (len(sink_delay) == len(config.sink_set))
-    return max(sink_delay)
+    result, _ = get_tensors_max_min(sink_delay)
+    return result  # 必须是tensor数组里面的最大值
 
 # 计算引入拉格朗日乘子后的等式约束
 def calc_lagrange():
     # 将拉格朗日乘子作为训练参数，梯度下降时候，向对拉格朗日乘子偏导等于零的方向下降
     # todo 如何保证偏导下降到等于零，这是一种 trade-off 吗？trade-off 比例参数在哪里设置？
     lagrangian = tf.get_variable("lagrangian", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=True)
-    return tf.multiply(lagrangian, (max(sink_delay) - min(sink_delay)))
+    max_delay, min_delay = get_tensors_max_min(sink_delay)
+    return tf.multiply(lagrangian, (max_delay - min_delay))
 
 
 # 优化算法也就是反向传播算法

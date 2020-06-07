@@ -10,7 +10,7 @@ def calc_dist(left, right):
     yl = left['y']
     xr = right['x']
     yr = right['y']
-    return np.add(np.abs(xl-xr), np.abs(yl, yr))
+    return np.add(np.abs(xl-xr), np.abs(yl-yr))
 
 
 def get_nearest(recur_set):
