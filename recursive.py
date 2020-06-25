@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 import util
+import util.Tree as Tree
 
 import config
 
@@ -19,6 +20,7 @@ def calc_dist(left, right):
     return tf.add(tf.abs(xl-xr), tf.abs(yl-yr))
 
 # 根据子节点的位置坐标和 wire length 计算父节点的 x, y
+# 同时存储从每个节点引出的 wire 的折线段数
 def calc_coordinate(left, right):
     x = None
     y = None
@@ -32,7 +34,7 @@ def calc_coordinate(left, right):
     dist = calc_dist(left, right)
 
     # 计算左边和右边的节点node
-    state = 0 # 表明两个点的位置关系，但是把水平共线的情况单独设置一个bool变量
+    state = 0 # 表明两个点的位置关系，但是把水平共线的情况单独设置一个bool变量 hor
     hor = tf.equal(left.obj['y'], right.obj['y'])
     if tf.less(left.obj['x'], right.obj['x']):
         state = 1
@@ -60,6 +62,10 @@ def calc_coordinate(left, right):
     if tf.less(left.rec_obj['wirelen'], dist) and tf.less(right.rec_obj['wirelen'], dist): # if left.rec_obj['wirelen'] < dist and right.rec_obj['wirelen'] < dist:
         print("case 1: non detour and non zero wire length")
         if tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen']):
+
+            left.num_bend = 1
+            right.num_bend = 2
+
             if state == 1:
                 x = left.obj['x'] + left.rec_obj['wirelen']
                 y = left.obj['y']
@@ -74,6 +80,10 @@ def calc_coordinate(left, right):
                 y = left.obj['y'] - left.rec_obj['wirelen']
 
         elif tf.equal(left.rec_obj['wirelen'], right.rec_obj['wirelen']):
+
+            left.num_bend = 1
+            right.num_bend = 1
+
             if state == 1:
                 x = right.obj['x'] - right.rec_obj['wirelen']
                 y = left.obj['y']
@@ -88,6 +98,10 @@ def calc_coordinate(left, right):
                 y = right.obj['y'] + right.rec_obj['wirelen']
 
         else:
+
+            left.num_bend = 2
+            right.num_bend = 1
+
             if state == 1:
                 x = left.obj['x'] + left.rec_obj['wirelen']
                 y = left.obj['y']
@@ -102,16 +116,35 @@ def calc_coordinate(left, right):
                 y = left.obj['y'] - left.rec_obj['wirelen']
 
     elif tf.equal(left.rec_obj['wirelen'], dist): # elif left.rec_obj['wirelen'] == dist:
+
+        right.num_bend = 0
+        if(left.obj['x'] == right.obj['x'] or left.obj['y'] == right.obj['y']):
+            left.num_bend = 1
+        else:
+            left.num_bend = 2
+
+
         print("case 2-1: no detour but left-child has a zero wire length")
         x = right.obj['x']
         y = right.obj['y']
 
     elif tf.equal(right.rec_obj['wirelen'], dist): # right.rec_obj['wirelen'] == dist:
+
+        left.num_bend = 0
+        if (left.obj['x'] == right.obj['x'] or left.obj['y'] == right.obj['y']):
+            right.num_bend = 1
+        else:
+            right.num_bend = 2
+
         print("case 2-2: no detour but right-child has a zero wire length")
         x = left.obj['x']
         y = left.obj['y']
 
     elif tf.greater(left.rec_obj['wirelen'], dist): # elif left.rec_obj['wirelen'] > dist:
+
+        left.num_bend = 2
+        right.num_bend = 1
+
         print('case 3-1: detour and the wirelen of left node is larger')
         if state == 1:
             if hor:
@@ -135,6 +168,10 @@ def calc_coordinate(left, right):
             y = right.obj['y']
 
     elif tf.greater(right.rec_obj['wirelen'] > dist): # elif right.rec_obj['wirelen'] > dist:
+
+        right.num_bend = 2
+        left.num_bend = 1
+
         print('case 3-2, detour and the wirelen of right node is larger')
         if state == 1:
             if hor:
@@ -167,7 +204,8 @@ def weight(trainable=True):
     global scope_id
     scope_id = scope_id + 1
     with tf.name_scope(str(scope_id)):
-        weights = tf.get_variable("weights", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=trainable)
+        weights = tf.get_variable("weight"+str(scope_id), shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=trainable)
+
     return weights
 
 
@@ -178,13 +216,29 @@ def weight(trainable=True):
 #         bias = tf.get_variable("bias", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=trainable)
 #     return bias
 
+def merge(left, right, father):
+
+    left = merge_op(left.left_child, left.right_child, left)
+    right = merge_op(right.left_child, right.right_child, right)
+
+    if(father.obj['x'] == config.source_point['x'] or father.obj['y'] == config.source_point['y']):
+        father.num_bend = 1
+    else:
+        father.num_bend = 2
+    father.rec_obj['wirelen'] = calc_dist(father, Tree(config.source_point))
+
+    father.rec_obj['cdia'] = weight()
+    father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
+    father.rec_obj['bdia'] = weight()
+    father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
+
 
 # 注意 trainable_variables 的分配
-def merge(left, right, father):
+def merge_op(left, right, father):
     if right is not None:
 
-        left = merge(left.left_child, left.right_child, left)
-        right = merge(right.left_child, right.right_child, right)
+        left = merge_op(left.left_child, left.right_child, left)
+        right = merge_op(right.left_child, right.right_child, right)
         dist = calc_dist(left, right)
         right.rec_obj['wirelen'] = dist - left.rec_obj['wirelen']
         assert((left.father is right.father) and (right.father is father))
@@ -208,7 +262,7 @@ def merge(left, right, father):
     elif left is not None:
         assert(left.father.right_child is None)
         assert(left.father is father)
-        left = merge(left.left_child, left.right_child, left)
+        left = merge_op(left.left_child, left.right_child, left)
 
         if not father is father.father.right_child:
             father.rec_obj['wirelen'] = weight()

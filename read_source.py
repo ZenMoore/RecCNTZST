@@ -47,6 +47,8 @@ def read():
                 'y': e['y']}
         config.sink_set.append(temp)
 
+    config.source_point = config.sink_set[0]
+    config.sink_set.remove(config.sink_set[0])
     config.headers = headers
     return True
 

@@ -1,5 +1,6 @@
 
 # input config
+source_point = None
 sink_set = []
 headers = []
 source_dir = "./benchmark/source.txt"  # todo sink RC 的数据文件
@@ -30,6 +31,9 @@ cdia_max = 4
 cdia_min = 1
 ddia_max = 60
 ddia_min = 20
+
+# constants
+unit_capacitance = 0.16
 
 # output config
 node_set = None # element = (x, y) # 另外这个变量有时候可能只是子树的 node set

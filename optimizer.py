@@ -40,14 +40,19 @@ def get_tensors_max_min(tensors):
 # todo 暂时没有加入组合优化：buffer 类型
 def calc_delay():
     sink_node_set = config.tree.get_sinks()
-    for sink in sink_node_set:
-        # todo 计算 delay
-        delay = sink.rec_obj['wirelen']
+    for node in sink_node_set:
+        while node is not None:
+            delay = tf.add(delay, calc_node_delay(node))
+            node = node.father
         sink_delay.append(delay)
 
     assert (len(sink_delay) == len(config.sink_set))
     result, _ = get_tensors_max_min(sink_delay)
     return result  # 必须是tensor数组里面的最大值
+
+def calc_node_delay(node):
+    # todo
+    return 0
 
 # 计算引入拉格朗日乘子后的等式约束
 def calc_lagrange():

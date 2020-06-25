@@ -28,6 +28,7 @@ class Tree:
         self.right_child = None  # todo 感觉这里设置成 Tree(root_obj=None, father=self)更好，对子树是否为空的判断通过判断root_obj
         # self.id = 0
         self.isleaf = True
+        self.num_bend = 0 # 从该点引出的 wire 的折线段数
         self.overlapped = False  # 在wire length=0的时候，该父节点与其中一个子节点重合
 
     '''树构建函数群'''
