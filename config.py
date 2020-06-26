@@ -27,17 +27,24 @@ num_steps = 1000  # 最大迭代轮数
 
 # technique limitation
 # unit=nm
-cdia_max = 4
+cdia_max = 10
 cdia_min = 1
-ddia_max = 60
-ddia_min = 20
+bdia_max = 60
+bdia_min = 20
 
 # constants
-unit_capacitance = 0.16
+unit_capacitance = 0.16e-3
+R_Q = 6453.2
+C_lambda = 888.9
+R_cnom = 20000
+delta = 0.32
+pi = 3.1415926
+mfp = 1
 
 # output config
 node_set = None # element = (x, y) # 另外这个变量有时候可能只是子树的 node set
 model_path = './models'
 model_name = "model.ckpt"
+result_path = './models/results'
 
 # temporary variables
