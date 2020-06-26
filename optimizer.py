@@ -10,6 +10,7 @@ import parse_out as outparser
 
 sink_delay = []
 
+
 def get_tensors_max_min(tensors):
     recur_set = []
 
@@ -35,8 +36,10 @@ def get_tensors_max_min(tensors):
     assert (min_result is not None)
     return max_result, min_result
 
+
 def N_cnt(bdia, cdia):
     return tf.round(tf.div(tf.multiply(2*config.pi, tf.square(tf.multiply(bdia, 1/2))), tf.multiply(tf.sqrt(3), tf.square(tf.add(cdia, config.delta)))))
+
 
 def R_c(cdia):
     if tf.less(cdia, 2) and (tf.greater(cdia, 1) or tf.equal(cdia, 1)):
@@ -44,29 +47,85 @@ def R_c(cdia):
     else:
         return tf.convert_to_tensor(config.R_cnom)
 
+
 def r_s(cdia, wirelen):
     if tf.greater(wirelen, config.mfp):
         return tf.div(config.R_Q, tf.multiply(config.C_lambda, cdia))
     else:
         return tf.convert_to_tensor(0.0)
 
+
 # 计算总延时
 # todo 暂时没有加入组合优化：buffer 类型
 def calc_delay():
     sink_node_set = config.tree.get_sinks()
     for node in sink_node_set:
-        while node is not None:
+        while node.father is not None:
             delay = tf.add(delay, calc_node_delay(node))
             node = node.father
+        delay = tf.add(delay, calc_root_delay(node))
         sink_delay.append(delay)
 
     assert (len(sink_delay) == len(config.sink_set))
     result, _ = get_tensors_max_min(sink_delay)
     return result  # 必须是tensor数组里面的最大值
 
-def calc_node_delay(node):
 
-    delay = None
+def calc_root_delay(node):
+    if node.num_bend == 0:
+        return tf.convert_to_tensor(0)
+
+    elif node.num_bend == 1:
+        return tf.add(0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(
+            tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+            2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
+                      tf.add(
+                          0.38e-6 * tf.div(
+                              tf.multiply(node.rec_obj['wirelen'], r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
+                              N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance,
+                                                                                               node.rec_obj['wirelen']),
+                          0.69 * config.source_point['c'] * tf.add(tf.div(1e-6 * tf.multiply(node.rec_obj['wirelen'],
+                                                                                  r_s(node.rec_obj['cdia'],
+                                                                                      node.rec_obj['wirelen'])),
+                                                               N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
+                                                        tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+                                                               N_cnt(node.rec_obj['bdia'],
+                                                                     node.rec_obj['cdia'])))
+                      )
+                      )
+    else:
+        horizontal_bia = tf.abs(config.source_point['x'] - node.obj['x'])
+        vertical_bia = tf.abs(config.source_point['y'] - node.obj['y'])
+
+        t_horizontal = tf.add(
+            0.69 * config.unit_capacitance * horizontal_bia * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+                                                                     2 * N_cnt(node.rec_obj['bdia'],
+                                                                               node.father.rec_obj['cdia'])),
+            tf.add(
+                0.38e-6 * tf.div(tf.multiply(horizontal_bia, r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
+                                 N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(
+                    config.unit_capacitance, horizontal_bia),
+                0.69 * config.source_point['c'] * tf.add(
+                    tf.div(1e-6 * tf.multiply(horizontal_bia, r_s(node.rec_obj['cdia'], horizontal_bia)),
+                           N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
+                    tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+                           N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])))
+            )
+            )
+
+        t_vertical = tf.add(
+            2 * 0.69 * config.unit_capacitance * vertical_bia * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+                                                                       2 * N_cnt(node.rec_obj['bdia'],
+                                                                                 node.rec_obj['cdia'])),
+            0.38e-6 * tf.div(tf.multiply(vertical_bia, r_s(node.rec_obj['cdia'], vertical_bia)),
+                             N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance,
+                                                                                              vertical_bia),
+            )
+
+        return tf.add(t_horizontal, t_vertical)
+
+
+def calc_node_delay(node):
 
     if node.isleaf:
         if node.num_bend == 0:
@@ -76,37 +135,63 @@ def calc_node_delay(node):
                 tf.add(
                     0.38e-6 * tf.div(tf.multiply(node.rec_obj['wirelen'], r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance, node.rec_obj['wirelen']),
                     0.69 * node.obj['c'] * tf.add(tf.div(1e-6 * tf.multiply(node.rec_obj['wirelen'], r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])), tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-                                                  N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])))
+                                                  N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])))
                 )
             )
         else:
             horizontal_bia = tf.abs(node.father.obj['x'] - node.obj['x'])
             vertical_bia = tf.abs(node.father.obj['y'] - node.obj['y'])
 
-
-            # todo
-            t_horizontal = tf.add(0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])), 2* N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])),
+            t_horizontal = tf.add(0.69 * config.unit_capacitance * horizontal_bia * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])), 2 * N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])),
                 tf.add(
-                    0.38e-6 * tf.div(tf.multiply(node.rec_obj['wirelen'], r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance, node.rec_obj['wirelen']),
-                    0.69 * node.obj['c'] * tf.add(tf.div(1e-6 * tf.multiply(node.rec_obj['wirelen'], r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])), tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-                                                  N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])))
+                    0.38e-6 * tf.div(tf.multiply(horizontal_bia, r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance, horizontal_bia),
+                    0.69 * node.obj['c'] * tf.add(tf.div(1e-6 * tf.multiply(horizontal_bia, r_s(node.rec_obj['cdia'], horizontal_bia)), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])), tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+                                                  N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])))
                 )
             )
 
-            t_vertical = tf.add(0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])), 2* N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])),
-                tf.add(
-                    0.38e-6 * tf.div(tf.multiply(node.rec_obj['wirelen'], r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance, node.rec_obj['wirelen']),
-                    0.69 * node.obj['c'] * tf.add(tf.div(1e-6 * tf.multiply(node.rec_obj['wirelen'], r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])), tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-                                                  N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])))
-                )
+            t_vertical = tf.add(2 * 0.69 * config.unit_capacitance * vertical_bia * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])), 2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
+                    0.38e-6 * tf.div(tf.multiply(vertical_bia, r_s(node.rec_obj['cdia'], vertical_bia)), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance, vertical_bia),
             )
 
             return tf.add(t_horizontal, t_vertical)
-            pass
-
     else:
-        pass
-    return 0
+        if node.num_bend == 0:
+            return tf.convert_to_tensor(0)
+        elif node.num_bend == 1:
+            return  tf.add(2 * 0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])), 2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
+                    0.38e-6 * tf.div(tf.multiply(node.rec_obj['wirelen'], r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance, node.rec_obj['wirelen']),
+            )
+        else:
+            horizontal_bia = tf.abs(node.father.obj['x'] - node.obj['x'])
+            vertical_bia = tf.abs(node.father.obj['y'] - node.obj['y'])
+
+            t_horizontal = tf.add(
+                0.69 * config.unit_capacitance * horizontal_bia * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+                                                                         2 * N_cnt(node.rec_obj['bdia'],
+                                                                                   node.rec_obj['cdia'])),
+                tf.add(
+                    0.38e-6 * tf.div(tf.multiply(horizontal_bia, r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
+                                     N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(
+                        config.unit_capacitance, horizontal_bia),
+                    0.69 * node.obj['c'] * tf.add(
+                        tf.div(1e-6 * tf.multiply(horizontal_bia, r_s(node.rec_obj['cdia'], horizontal_bia)),
+                               N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
+                        tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+                               N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])))
+                )
+                )
+
+            t_vertical = tf.add(2 * 0.69 * config.unit_capacitance * vertical_bia * tf.div(
+                tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+                2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
+                                0.38e-6 * tf.div(tf.multiply(vertical_bia, r_s(node.rec_obj['cdia'], vertical_bia)),
+                                                 N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(
+                                    config.unit_capacitance, vertical_bia),
+                                )
+
+            return tf.add(t_horizontal, t_vertical)
+
 
 # 计算引入拉格朗日乘子后的等式约束
 def calc_lagrange():
@@ -150,14 +235,16 @@ def optimize(sess):
             if i%100 == 0:
                 print("After %d steps of training, goal value is %g ." %(step, goal_value))
                 print("And the total delay of the whole tree is: ", end=None)
-                print(sess.run(delay))
+                final_delay = sess.run(delay)
+                print(final_delay)
                 print("And the lagrange-value of equality constraints: ", end=None)
-                print(sess.run(lagrange))
+                lag_multiplier = sess.run(lagrange)
+                print(lag_multiplier)
 
                 saver.save(sess, os.path.join(config.model_path, config.model_name), global_step=global_step)
 
                 outparser.point_list(sess)
-                outparser.draw()
+                outparser.draw(final_delay, lag_multiplier)
 
     return None
 
@@ -173,4 +260,3 @@ if __name__ == '__main__':
         raise Exception("tree parsing failed.")
 
     tf.app.run()
-    outparser.print()
