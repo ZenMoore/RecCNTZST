@@ -77,7 +77,7 @@ def draw_sink_nodes():
     y = [sink['y'] for sink in sinks]
     ax.scatter(x, y)
     for i in range(len(x)):
-        plt.annotate(sinks[i]['id'], xy=(x[i], y[i]))
+        plt.annotate(sinks[i]['x'], xy=(x[i], y[i]))
 
     # for i in range(N_index):
     #     for j in range(N_index):

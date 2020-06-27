@@ -2,6 +2,7 @@ import read_source as reader
 import util
 import numpy as np
 import config
+import parse_out as outparser
 
 
 # 计算点到点的距离: 曼哈顿距离
@@ -114,6 +115,11 @@ def generate():
 
     # 递归地生成拓扑
     config.tree = root
+
+    # 画出拓扑
+    outparser.point_list_without_sess(0)
+    outparser.draw(-1, -1, 0)
+
     return True  # always
 
 
@@ -127,7 +133,4 @@ def parse():
 
 if __name__ == '__main__':
     if parse():
-        root = config.tree
-
-    print("The element number in the sink set is "+str(len(config.sink_set)))
-    print("The size of built tree is "+root.size())
+        print('tree-topo generation completed.')

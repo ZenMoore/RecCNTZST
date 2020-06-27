@@ -203,7 +203,7 @@ def calc_lagrange():
 
 
 # 优化算法也就是反向传播算法
-def optimize(sess):
+def optimize():
 
     # 加载前向传播的树结构
     loader.load()
@@ -243,8 +243,9 @@ def optimize(sess):
 
                 saver.save(sess, os.path.join(config.model_path, config.model_name), global_step=global_step)
 
-                outparser.point_list(sess)
-                outparser.draw(final_delay, lag_multiplier)
+                # todo 移动到 update_topo.py中
+                outparser.point_list(sess, i+1)
+                outparser.draw(final_delay, lag_multiplier, i+1)
 
     return None
 

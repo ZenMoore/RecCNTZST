@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 import util
-import util.Tree as Tree
+import util
 
 import config
 
