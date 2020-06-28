@@ -1,7 +1,6 @@
 import numpy as np
 import tensorflow as tf
 import util
-import util
 
 import config
 
@@ -19,9 +18,10 @@ def calc_dist(left, right):
     yr = right.obj['y']
     return tf.add(tf.abs(xl-xr), tf.abs(yl-yr))
 
+
 # 根据子节点的位置坐标和 wire length 计算父节点的 x, y
 # 同时存储从每个节点引出的 wire 的折线段数
-def calc_coordinate(left, right):
+def calc_coordinate(sess, left, right):
     x = None
     y = None
     if left.isleaf and type(left.obj['x']) is float:
@@ -35,22 +35,23 @@ def calc_coordinate(left, right):
 
     # 计算左边和右边的节点node
     state = 0 # 表明两个点的位置关系，但是把水平共线的情况单独设置一个bool变量 hor
-    hor = tf.equal(left.obj['y'], right.obj['y'])
-    if tf.less(left.obj['x'], right.obj['x']):
+    hor = sess.run(tf.equal(left.obj['y'], right.obj['y']))
+
+    if sess.run(tf.less(left.obj['x'], right.obj['x'])):
         state = 1
         # left_p = left
         # right_p = right
-    elif tf.less(right.obj['x'], left.obj['x']):
+    elif sess.run(tf.less(right.obj['x'], left.obj['x'])):
         state = 2
         # left_p = right
         # right_p = left
     else:
         # 下面需要竖直绕线
-        if tf.less(left.obj['y'], right.obj['y']):
+        if sess.run(tf.less(left.obj['y'], right.obj['y'])):
             state = 3
             # left_p = left
             # right_p = right
-        elif tf.less(right.obj['y'], left.obj['y']):
+        elif sess.run(tf.less(right.obj['y'], left.obj['y'])):
             state = 4
             # left_p = right
             # right_p = left
@@ -59,9 +60,9 @@ def calc_coordinate(left, right):
 
     assert(state != 0)
 
-    if tf.less(left.rec_obj['wirelen'], dist) and tf.less(right.rec_obj['wirelen'], dist): # if left.rec_obj['wirelen'] < dist and right.rec_obj['wirelen'] < dist:
+    if sess.run(tf.less(left.rec_obj['wirelen'], dist)) and sess.run(tf.less(right.rec_obj['wirelen'], dist)): # if left.rec_obj['wirelen'] < dist and right.rec_obj['wirelen'] < dist:
         print("case 1: non detour and non zero wire length")
-        if tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen']):
+        if sess.run(tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen'])):
 
             left.num_bend = 1
             right.num_bend = 2
@@ -79,7 +80,7 @@ def calc_coordinate(left, right):
                 x = left.obj['x']
                 y = left.obj['y'] - left.rec_obj['wirelen']
 
-        elif tf.equal(left.rec_obj['wirelen'], right.rec_obj['wirelen']):
+        elif sess.run(tf.equal(left.rec_obj['wirelen'], right.rec_obj['wirelen'])):
 
             left.num_bend = 1
             right.num_bend = 1
@@ -115,10 +116,10 @@ def calc_coordinate(left, right):
                 x = left.obj['x']
                 y = left.obj['y'] - left.rec_obj['wirelen']
 
-    elif tf.equal(left.rec_obj['wirelen'], dist): # elif left.rec_obj['wirelen'] == dist:
+    elif sess.run(tf.equal(left.rec_obj['wirelen'], dist)): # elif left.rec_obj['wirelen'] == dist:
 
         right.num_bend = 0
-        if(left.obj['x'] == right.obj['x'] or left.obj['y'] == right.obj['y']):
+        if sess.run(tf.equal(left.obj['x'], right.obj['x'])) or sess.run(tf.equal(left.obj['y'], right.obj['y'])):
             left.num_bend = 1
         else:
             left.num_bend = 2
@@ -128,10 +129,10 @@ def calc_coordinate(left, right):
         x = right.obj['x']
         y = right.obj['y']
 
-    elif tf.equal(right.rec_obj['wirelen'], dist): # right.rec_obj['wirelen'] == dist:
+    elif sess.run(tf.equal(right.rec_obj['wirelen'], dist)): # right.rec_obj['wirelen'] == dist:
 
         left.num_bend = 0
-        if (left.obj['x'] == right.obj['x'] or left.obj['y'] == right.obj['y']):
+        if sess.run(tf.equal(left.obj['x'], right.obj['x'])) or sess.run(tf.equal(left.obj['y'], right.obj['y'])):
             right.num_bend = 1
         else:
             right.num_bend = 2
@@ -140,7 +141,7 @@ def calc_coordinate(left, right):
         x = left.obj['x']
         y = left.obj['y']
 
-    elif tf.greater(left.rec_obj['wirelen'], dist): # elif left.rec_obj['wirelen'] > dist:
+    elif sess.run(tf.greater(left.rec_obj['wirelen'], dist)): # elif left.rec_obj['wirelen'] > dist:
 
         left.num_bend = 2
         right.num_bend = 1
@@ -167,7 +168,7 @@ def calc_coordinate(left, right):
             x = right.obj['x'] - right.rec_obj['wirelen']
             y = right.obj['y']
 
-    elif tf.greater(right.rec_obj['wirelen'] > dist): # elif right.rec_obj['wirelen'] > dist:
+    elif sess.run(tf.greater(right.rec_obj['wirelen'] > dist)): # elif right.rec_obj['wirelen'] > dist:
 
         right.num_bend = 2
         left.num_bend = 1
@@ -200,11 +201,12 @@ def calc_coordinate(left, right):
     return None, None
 
 
-def weight(trainable=True):
+def weight(sess, trainable=True):
     global scope_id
     scope_id = scope_id + 1
     with tf.name_scope(str(scope_id)):
         weights = tf.get_variable("weight"+str(scope_id), shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=trainable)
+        sess.run(weights.initializer)
 
     return weights
 
@@ -216,37 +218,45 @@ def weight(trainable=True):
 #         bias = tf.get_variable("bias", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=trainable)
 #     return bias
 
-def merge(left, right, father):
+def merge(sess, left, right, father):
 
-    left = merge_op(left.left_child, left.right_child, left)
-    right = merge_op(right.left_child, right.right_child, right)
+    left = merge_op(sess, left.left_child, left.right_child, left)
+    right = merge_op(sess, right.left_child, right.right_child, right)
+    father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
 
-    if(father.obj['x'] == config.source_point['x'] or father.obj['y'] == config.source_point['y']):
+    if type(config.source_point['x']) is float:
+        config.source_point['x'] = tf.convert_to_tensor(config.source_point['x'])
+    if type(config.source_point['y']) is float:
+        config.source_point['y'] = tf.convert_to_tensor(config.source_point['y'])
+
+    if sess.run(tf.equal(father.obj['x'], config.source_point['x'])) or sess.run(tf.equal(father.obj['y'], config.source_point['y'])) :
         father.num_bend = 1
     else:
         father.num_bend = 2
-    father.rec_obj['wirelen'] = calc_dist(father, Tree(config.source_point))
+    father.rec_obj['wirelen'] = calc_dist(father, util.Tree(config.source_point))
 
-    father.rec_obj['cdia'] = weight()
+    father.rec_obj['cdia'] = weight(sess)
     father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-    father.rec_obj['bdia'] = weight()
+    father.rec_obj['bdia'] = weight(sess)
     father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
+
+    return father
 
 
 # 注意 trainable_variables 的分配
-def merge_op(left, right, father):
+def merge_op(sess, left, right, father):
     if right is not None:
 
-        left = merge_op(left.left_child, left.right_child, left)
-        right = merge_op(right.left_child, right.right_child, right)
+        left = merge_op(sess, left.left_child, left.right_child, left)
+        right = merge_op(sess, right.left_child, right.right_child, right)
         dist = calc_dist(left, right)
         right.rec_obj['wirelen'] = dist - left.rec_obj['wirelen']
         assert((left.father is right.father) and (right.father is father))
         if not father is father.father.right_child:
-            father.rec_obj['wirelen'] = weight()
-        father.rec_obj['cdia'] = weight()
+            father.rec_obj['wirelen'] = weight(sess)
+        father.rec_obj['cdia'] = weight(sess)
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight()
+        father.rec_obj['bdia'] = weight(sess)
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
         # 使用参数w的传播计算法
@@ -257,36 +267,42 @@ def merge_op(left, right, father):
         # father.rec_obj['diameter'] = tf.add((tf.matmul(left.rec_obj['diameter'], weight()) + bia()), (tf.matmul(right.rec_obj['diameter'], weight()) + bia()))
         # father.rec_obj['diameter'] = tf.clip_by_value(father.rec_obj['diameter'], config.dia_min, config.dia_max)
 
+        father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
+
         # 直接将优化参量作为优化参数：直接计算法
 
     elif left is not None:
         assert(left.father.right_child is None)
         assert(left.father is father)
-        left = merge_op(left.left_child, left.right_child, left)
+        left = merge_op(sess, left.left_child, left.right_child, left)
 
         if not father is father.father.right_child:
-            father.rec_obj['wirelen'] = weight()
-        father.rec_obj['cdia'] = weight()
+            father.rec_obj['wirelen'] = weight(sess)
+        father.rec_obj['cdia'] = weight(sess)
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight()
+        father.rec_obj['bdia'] = weight(sess)
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
-        # father.rec_obj['wirelen'] = weight()
+        # father.rec_obj['wirelen'] = weight(sess)
 
         # father.rec_obj['dop'] = tf.matmul(left.rec_obj['dop'], weight()) + bia()
         # father.rec_obj['dop'] = tf.clip_by_value(father.rec_obj['dop'], config.dop_min, config.dop_max)
         #
         # father.rec_obj['diameter'] = tf.matmul(left.rec_obj['diameter'], weight()) + bia()
         # father.rec_obj['diameter'] = tf.clip_by_value(father.rec_obj['diameter'], config.dia_min, config.dia_max)
+        father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
 
     else:
-        if not father is father.father.right_child:
+
+        assert(father.isleaf is True)
+
+        if father is not father.father.right_child:
             # 这时left和right的father是个sink
             # 将father.obj设置为trainable
-            father.rec_obj['wirelen'] = weight()
-        father.rec_obj['cdia'] = weight()
+            father.rec_obj['wirelen'] = weight(sess)
+        father.rec_obj['cdia'] = weight(sess)
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight()
+        father.rec_obj['bdia'] = weight(sess)
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
         # father.rec_obj[0] = tf.add((tf.matmul(fic_left[0], weight()) + bia()), (tf.matmul(fic_right[0], weight()) + bia()))
         # father.rec_obj[1] = tf.add((tf.matmul(fic_left[1], weight()) + bia()), (tf.matmul(fic_right[1], weight()) + bia()))
@@ -295,12 +311,15 @@ def merge_op(left, right, father):
         # father.rec_obj[2] = tf.clip_by_value(father.rec_obj[2], config.dia_min, config.dia_max)
         # return father
 
-    father.obj['x'], father.obj['y'] = calc_coordinate(left, right)
+
+
     return father
+
 
 # 给整个递归神经网络加载参数
 # 在optimizer中调用用来计算损失以及反向传播
-def load():
-        config.tree = merge(config.tree.left_child, config.tree.right_child, config.tree)
+def load(sess):
+
+    config.tree = merge(sess, config.tree.left_child, config.tree.right_child, config.tree)
 
 
