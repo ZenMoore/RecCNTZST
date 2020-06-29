@@ -36,10 +36,10 @@ bdia_min = 20
 unit_capacitance = 0.16e-3
 R_Q = 6453.2
 C_lambda = 888.9
-R_cnom = 20000
+R_cnom = 20000.0
 delta = 0.32
 pi = 3.1415926
-mfp = 1
+mfp = 1.0
 
 # output config
 node_set = None # element = (x, y) # 另外这个变量有时候可能只是子树的 node set

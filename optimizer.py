@@ -38,18 +38,19 @@ def get_tensors_max_min(tensors):
 
 
 def N_cnt(bdia, cdia):
-    return tf.round(tf.div(tf.multiply(2*config.pi, tf.square(tf.multiply(bdia, 1/2))), tf.multiply(tf.sqrt(3), tf.square(tf.add(cdia, config.delta)))))
+    return tf.round(tf.div(tf.multiply(2.0 * config.pi, tf.square(tf.multiply(bdia, 1.0/2.0))), tf.multiply(tf.sqrt(3.0), tf.square(tf.add(cdia, config.delta)))))
 
 
 def R_c(sess, cdia):
-    if sess.run(tf.less(cdia, 2)) and sess.run((tf.greater(cdia, 1)) or sess.run(tf.equal(cdia, 1))):
+
+    if sess.run(tf.less(cdia, tf.convert_to_tensor(2.0)))[0] and sess.run(tf.greater(cdia, tf.convert_to_tensor(1.0)))[0] or sess.run(tf.equal(cdia, tf.convert_to_tensor(1.0)))[0]:
         return tf.multiply(config.R_cnom, tf.div(tf.add(tf.square(cdia), tf.multiply(-2.811, cdia) + 2.538), tf.add(tf.multiply(0.5376, tf.square(cdia)), tf.multiply(-0.8106, cdia) + 0.3934)))
     else:
         return tf.convert_to_tensor(config.R_cnom)
 
 
 def r_s(sess, cdia, wirelen):
-    if sess.run(tf.greater(wirelen, config.mfp)):
+    if sess.run(tf.greater(wirelen, tf.convert_to_tensor(config.mfp)))[0]:
         return tf.div(config.R_Q, tf.multiply(config.C_lambda, cdia))
     else:
         return tf.convert_to_tensor(0.0)
@@ -59,7 +60,10 @@ def r_s(sess, cdia, wirelen):
 # todo 暂时没有加入组合优化：buffer 类型
 def calc_delay(sess):
     sink_node_set = config.tree.get_sinks()
+
+
     for node in sink_node_set:
+        delay = tf.Variable(0, dtype=tf.float32)
         while node.father is not None:
             delay = tf.add(delay, calc_node_delay(sess, node))
             node = node.father
@@ -73,7 +77,7 @@ def calc_delay(sess):
 
 def calc_root_delay(sess, node):
     if node.num_bend == 0:
-        return tf.convert_to_tensor(0)
+        return tf.convert_to_tensor(0.0)
 
     elif node.num_bend == 1:
         return tf.add(0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(
@@ -244,8 +248,8 @@ def optimize():
                 saver.save(sess, os.path.join(config.model_path, config.model_name), global_step=global_step)
 
                 # todo 移动到 update_topo.py中
-                outparser.point_list(sess, i+1)
-                outparser.draw(final_delay, lag_multiplier, i+1)
+                outparser.point_list(sess, i)
+                outparser.draw(final_delay, lag_multiplier, i)
 
     return None
 

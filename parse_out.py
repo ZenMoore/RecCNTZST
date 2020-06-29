@@ -80,8 +80,8 @@ def point_list(sess, step):
             file.write(str(data[3]))
             file.write('\n')
 
-def point_list_without_sess(step):
-    with open(config.result_path + '/result-' + str(step) + '.ptlst', 'w') as file:
+def point_list_without_sess():
+    with open(config.result_path + '/result-' + 'topo' + '.ptlst', 'w') as file:
         generate_without_sess()
         while len(ptlst) != 0:
             data = ptlst.pop()
@@ -114,9 +114,14 @@ def draw(final_delay, lagrangian, step):
         print([mid[0], mid[1]])
         print([right[0], right[1]])
 
-        plt.plot([left[0], mid[0]], [left[1], mid[1]], color='r')
-        plt.plot([right[0], mid[0]], [right[1], mid[1]], color='r')
-        plt.pause(0.001)  # todo 引入随 training_step 动态更新图像的机制
+        # plt.plot([left[0], mid[0]], [left[1], mid[1]], color='r')
+        plt.plot([left[0], mid[0]], [left[1], left[1]], color='r')
+        plt.plot([mid[0], mid[0]], [left[1], mid[1]], color='r')
+
+        plt.plot([right[0], mid[0]], [right[1], right[1]], color='r')
+        plt.plot([mid[0], mid[0]], [right[1], mid[1]], color='r')
+
+        # plt.pause(0.001)  # todo 引入随 training_step 动态更新图像的机制
 
     plt.pause(5)  # todo 这个时间应该是每一轮训练的时间
     #     plt.scatter(left[0], left[1])

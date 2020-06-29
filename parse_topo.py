@@ -117,8 +117,8 @@ def generate():
     config.tree = root
 
     # 画出拓扑
-    outparser.point_list_without_sess(0)
-    outparser.draw(-1, -1, 0)
+    outparser.point_list_without_sess()
+    outparser.draw(-1, -1, 'topo')  # 仅画出拓扑结构，不是绕线结果
 
     return True  # always
 

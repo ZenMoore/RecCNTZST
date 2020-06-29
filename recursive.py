@@ -25,7 +25,7 @@ def calc_coordinate(sess, left, right):
     x = None
     y = None
     if left.isleaf and type(left.obj['x']) is float:
-        left.obj['x'] = tf.convert_to_tensor(left.obj['x'])
+        left.obj['x'] = tf.convert_to_tensor(left.obj['x'])  # todo 这里 converted tensor 会不会梯度变化，即这是个 constant 还是 variable
         left.obj['y'] = tf.convert_to_tensor(left.obj['y'])
     if right.isleaf and type(right.obj['x']) is float:
         right.obj['x'] = tf.convert_to_tensor(right.obj['x'])
@@ -34,7 +34,7 @@ def calc_coordinate(sess, left, right):
     dist = calc_dist(left, right)
 
     # 计算左边和右边的节点node
-    state = 0 # 表明两个点的位置关系，但是把水平共线的情况单独设置一个bool变量 hor
+    state = 0  # 表明两个点的位置关系，但是把水平共线的情况单独设置一个bool变量 hor
     hor = sess.run(tf.equal(left.obj['y'], right.obj['y']))
 
     if sess.run(tf.less(left.obj['x'], right.obj['x'])):
@@ -198,14 +198,16 @@ def calc_coordinate(sess, left, right):
     else:
         print('unknown case')
 
-    return None, None
+    return x, y
 
 
 def weight(sess, trainable=True):
+
+    # todo 根据 wirelen/cdia/bdia 类型配置 mean 和 stddev
     global scope_id
     scope_id = scope_id + 1
     with tf.name_scope(str(scope_id)):
-        weights = tf.get_variable("weight"+str(scope_id), shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=trainable)
+        weights = tf.get_variable("weight"+str(scope_id), shape=(1), initializer=tf.truncated_normal_initializer(mean=2.0, stddev=0.1), trainable=trainable, dtype=tf.float32)
         sess.run(weights.initializer)
 
     return weights
@@ -310,8 +312,6 @@ def merge_op(sess, left, right, father):
         # father.rec_obj[2] = tf.add((tf.matmul(fic_left[2], weight()) + bia()), (tf.matmul(fic_right[2], weight()) + bia()))
         # father.rec_obj[2] = tf.clip_by_value(father.rec_obj[2], config.dia_min, config.dia_max)
         # return father
-
-
 
     return father
 
