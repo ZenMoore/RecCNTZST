@@ -50,7 +50,7 @@ def R_c(sess, cdia):
 
 
 def r_s(sess, cdia, wirelen):
-    if sess.run(tf.greater(wirelen, tf.convert_to_tensor(config.mfp)))[0]:
+    if sess.run(tf.greater(wirelen, tf.convert_to_tensor(config.mfp))):
         return tf.div(config.R_Q, tf.multiply(config.C_lambda, cdia))
     else:
         return tf.convert_to_tensor(0.0)
@@ -104,7 +104,7 @@ def calc_root_delay(sess, node):
         t_horizontal = tf.add(
             0.69 * config.unit_capacitance * horizontal_bia * tf.div(tf.add(config.R_Q, R_c(sess, node.rec_obj['cdia'])),
                                                                      2 * N_cnt(node.rec_obj['bdia'],
-                                                                               node.father.rec_obj['cdia'])),
+                                                                               node.rec_obj['cdia'])),
             tf.add(
                 0.38e-6 * tf.div(tf.multiply(horizontal_bia, r_s(sess, node.rec_obj['cdia'], node.rec_obj['wirelen'])),
                                  N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(
@@ -178,7 +178,7 @@ def calc_node_delay(sess, node):
                     0.38e-6 * tf.div(tf.multiply(horizontal_bia, r_s(sess, node.rec_obj['cdia'], node.rec_obj['wirelen'])),
                                      N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(
                         config.unit_capacitance, horizontal_bia),
-                    0.69 * node.obj['c'] * tf.add(
+                    0.69 * config.unit_capacitance * tf.add(
                         tf.div(1e-6 * tf.multiply(horizontal_bia, r_s(sess, node.rec_obj['cdia'], horizontal_bia)),
                                N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
                         tf.div(tf.add(config.R_Q, R_c(sess, node.rec_obj['cdia'])),

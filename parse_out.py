@@ -114,6 +114,7 @@ def draw(final_delay, lagrangian, step):
         print([mid[0], mid[1]])
         print([right[0], right[1]])
 
+        fig = plt.figure(1)
         # plt.plot([left[0], mid[0]], [left[1], mid[1]], color='r')
         plt.plot([left[0], mid[0]], [left[1], left[1]], color='r')
         plt.plot([mid[0], mid[0]], [left[1], mid[1]], color='r')
@@ -124,6 +125,7 @@ def draw(final_delay, lagrangian, step):
         # plt.pause(0.001)  # todo 引入随 training_step 动态更新图像的机制
 
     plt.pause(5)  # todo 这个时间应该是每一轮训练的时间
+    plt.close(fig)
     #     plt.scatter(left[0], left[1])
     #     plt.scatter(mid[0], mid[1])
     #     plt.scatter(right[0], right[1])

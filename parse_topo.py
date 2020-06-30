@@ -28,7 +28,7 @@ def get_nearest(recur_set):
     return minlen, result[0], result[1]
 
 
-# 计算中点，根据重点进行计算，改进方法见 generate 函数注释
+# 计算中点，根据中点进行计算，改进方法见 generate 函数注释
 def merge_point(left, right):
     point = {'r': None,
              'c': None,

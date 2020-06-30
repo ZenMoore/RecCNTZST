@@ -208,7 +208,7 @@ def weight(sess, trainable=True):
     scope_id = scope_id + 1
     with tf.name_scope(str(scope_id)):
         weights = tf.get_variable("weight"+str(scope_id), shape=(1), initializer=tf.truncated_normal_initializer(mean=2.0, stddev=0.1), trainable=trainable, dtype=tf.float32)
-        sess.run(weights.initializer)
+        sess.run(weights.initializer)  # todo 是否需要 if(initialized)
 
     return weights
 

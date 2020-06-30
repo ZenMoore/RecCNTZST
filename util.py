@@ -22,6 +22,8 @@ class Tree:
     def __init__(self, root_obj=config.meta_ini, father=None):
         self.father = father
         self.obj = root_obj
+        if type(self.obj['c']) is str:
+            self.obj['c'] = float(self.obj['c'])
         self.rec_obj = config.rec_ini
         self.shadow_obj = config.shadow_ini
         self.left_child = None
