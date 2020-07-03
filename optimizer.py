@@ -59,10 +59,12 @@ def r_s(sess, cdia, wirelen):
 # 计算总延时
 # todo 暂时没有加入组合优化：buffer 类型
 def calc_delay(sess):
+    print('delay calculating...')
     sink_node_set = config.tree.get_sinks()
 
 
     for node in sink_node_set:
+        print('calculating delay of sink%d, there remain %d.' %(sink_node_set.index(node), len(sink_node_set) - sink_node_set.index(node)))
         delay = tf.Variable(0, dtype=tf.float32)
         while node.father is not None:
             delay = tf.add(delay, calc_node_delay(sess, node))
@@ -72,6 +74,8 @@ def calc_delay(sess):
 
     assert (len(sink_delay) == len(config.sink_set))
     result, _ = get_tensors_max_min(sink_delay)
+
+    print('all delay calculated.')
     return result  # 必须是tensor数组里面的最大值
 
 
@@ -89,7 +93,7 @@ def calc_root_delay(sess, node):
                               N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance,
                                                                                                node.rec_obj['wirelen']),
                           0.69 * config.source_point['c'] * tf.add(tf.div(1e-6 * tf.multiply(node.rec_obj['wirelen'],
-                                                                                  r_s(node.rec_obj['cdia'],
+                                                                                  r_s(sess, node.rec_obj['cdia'],
                                                                                       node.rec_obj['wirelen'])),
                                                                N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
                                                         tf.div(tf.add(config.R_Q, R_c(sess, node.rec_obj['cdia'])),
@@ -148,7 +152,7 @@ def calc_node_delay(sess, node):
 
             t_horizontal = tf.add(0.69 * config.unit_capacitance * horizontal_bia * tf.div(tf.add(config.R_Q, R_c(sess, node.rec_obj['cdia'])), 2 * N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])),
                 tf.add(
-                    0.38e-6 * tf.div(tf.multiply(horizontal_bia, r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance, horizontal_bia),
+                    0.38e-6 * tf.div(tf.multiply(horizontal_bia, r_s(sess, node.rec_obj['cdia'], node.rec_obj['wirelen'])), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * tf.multiply(config.unit_capacitance, horizontal_bia),
                     0.69 * node.obj['c'] * tf.add(tf.div(1e-6 * tf.multiply(horizontal_bia, r_s(sess, node.rec_obj['cdia'], horizontal_bia)), N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])), tf.div(tf.add(config.R_Q, R_c(sess, node.rec_obj['cdia'])),
                                                   N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])))
                 )
@@ -199,25 +203,33 @@ def calc_node_delay(sess, node):
 
 # 计算引入拉格朗日乘子后的等式约束
 def calc_lagrange():
+    print('calculating skew and lagrangian multiplier...')
     # 将拉格朗日乘子作为训练参数，梯度下降时候，向对拉格朗日乘子偏导等于零的方向下降
     # todo 如何保证偏导下降到等于零，这是一种 trade-off 吗？trade-off 比例参数在哪里设置？
     lagrangian = tf.get_variable("lagrangian", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=True)
     max_delay, min_delay = get_tensors_max_min(sink_delay)
-    return tf.multiply(lagrangian, (max_delay - min_delay))
+
+    print('skew and lagrangian multiplier calculated.')
+    return tf.multiply(lagrangian, (max_delay - min_delay)), max_delay - min_delay
 
 
 # 优化算法也就是反向传播算法
 def optimize():
 
-    with tf.Session() as sess:
+    with tf.Session(config=config.train_config) as sess:
         # 加载前向传播的树结构
         loader.load(sess)
 
         # 计算损失=总延时+等式约束
         delay = calc_delay(sess)
         tf.add_to_collection('losses', delay)
-        lagrange = calc_lagrange()
+        tf.summary.scalar('delay', delay)
+
+        lagrange, skew = calc_lagrange()
         tf.add_to_collection('losses', lagrange)
+        tf.summary.scalar('lagrangian multiplier', lagrange)
+        tf.summary.scalar('skew', skew)
+
         goal = tf.add_n(tf.get_collection('losses'))
 
         # 定义训练算法
@@ -233,8 +245,15 @@ def optimize():
 
         tf.global_variables_initializer().run()
 
+        # visualization
+        painter = tf.summary.FileWriter(config.tensorboard_dir)
+        painter.add_graph(sess.graph)
+        all_fig = tf.summary.merge_all()
+
         for i in range(config.num_steps):
+            print('training...')
             _, goal_value, step = sess.run([train_step, goal, global_step])
+            print('trained.')
 
             if i%100 == 0:
                 print("After %d steps of training, goal value is %g ." %(step, goal_value))
@@ -246,6 +265,9 @@ def optimize():
                 print(lag_multiplier)
 
                 saver.save(sess, os.path.join(config.model_path, config.model_name), global_step=global_step)
+
+                # dynamic visualization
+                painter.add_summary(all_fig, i)
 
                 # todo 移动到 update_topo.py中
                 outparser.point_list(sess, i)

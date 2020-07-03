@@ -93,6 +93,7 @@ def point_list_without_sess():
 
 
 def draw(final_delay, lagrangian, step):
+    print('drawing...')
     with open(config.result_path + '/result-' + str(step) + '.ptlst', 'r') as file:
         for line in file:
             ptlst.append((float(line.split(', ')[0]), float(line.split(', ')[1]), float(line.split(', ')[2]),
@@ -124,13 +125,12 @@ def draw(final_delay, lagrangian, step):
 
         # plt.pause(0.001)  # todo 引入随 training_step 动态更新图像的机制
 
-    plt.pause(5)  # todo 这个时间应该是每一轮训练的时间
+    plt.pause(5)
     plt.close(fig)
     #     plt.scatter(left[0], left[1])
     #     plt.scatter(mid[0], mid[1])
     #     plt.scatter(right[0], right[1])
     #
     # plt.show()
-
-    print('drawing...')
+    print('waiting next figure...')
 

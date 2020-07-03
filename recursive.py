@@ -8,6 +8,7 @@ import config
 # todo 将所有的数值尽量转换为 tensor 的形式，以便生成计算图
 
 scope_id = 0
+coordinate_id = 0
 
 
 # 曼哈顿距离
@@ -201,15 +202,16 @@ def calc_coordinate(sess, left, right):
     return x, y
 
 
+# todo 可以加进变量名字,调整名称体系，可视化的时候显得更加直观一点
 def weight(sess, trainable=True):
 
     # todo 根据 wirelen/cdia/bdia 类型配置 mean 和 stddev
     global scope_id
     scope_id = scope_id + 1
-    with tf.name_scope(str(scope_id)):
+    with tf.name_scope('variate' + str(scope_id)):
         weights = tf.get_variable("weight"+str(scope_id), shape=(1), initializer=tf.truncated_normal_initializer(mean=2.0, stddev=0.1), trainable=trainable, dtype=tf.float32)
         sess.run(weights.initializer)  # todo 是否需要 if(initialized)
-
+        tf.summary.histogram('weights', weights)
     return weights
 
 
@@ -247,6 +249,8 @@ def merge(sess, left, right, father):
 
 # 注意 trainable_variables 的分配
 def merge_op(sess, left, right, father):
+    global coordinate_id
+    coordinate_id = coordinate_id + 1
     if right is not None:
 
         left = merge_op(sess, left.left_child, left.right_child, left)
@@ -270,7 +274,9 @@ def merge_op(sess, left, right, father):
         # father.rec_obj['diameter'] = tf.clip_by_value(father.rec_obj['diameter'], config.dia_min, config.dia_max)
 
         father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
-
+        with tf.name_scope('coordinate' + str(coordinate_id)):
+            tf.summary.histogram('x', father.obj['x'])
+            tf.summary.histogram('y', father.obj['y'])
         # 直接将优化参量作为优化参数：直接计算法
 
     elif left is not None:
@@ -293,6 +299,9 @@ def merge_op(sess, left, right, father):
         # father.rec_obj['diameter'] = tf.matmul(left.rec_obj['diameter'], weight()) + bia()
         # father.rec_obj['diameter'] = tf.clip_by_value(father.rec_obj['diameter'], config.dia_min, config.dia_max)
         father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
+        with tf.name_scope('coordinate' + str(coordinate_id)):
+            tf.summary.histogram('x', father.obj['x'])
+            tf.summary.histogram('y', father.obj['y'])
 
     else:
 
@@ -319,7 +328,8 @@ def merge_op(sess, left, right, father):
 # 给整个递归神经网络加载参数
 # 在optimizer中调用用来计算损失以及反向传播
 def load(sess):
-
+    print('network loading...')
     config.tree = merge(sess, config.tree.left_child, config.tree.right_child, config.tree)
+    print('network loaded.')
 
 

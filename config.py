@@ -1,3 +1,4 @@
+import tensorflow as tf
 
 # input config
 source_point = None
@@ -19,6 +20,10 @@ shadow_ini = int(0)  # buffer_type
 
 # topo config
 tree = None
+
+#training configuration
+gpu_options = tf.GPUOptions(allow_growth=True)
+train_config = tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False, allow_soft_placement=True)
 
 # net config
 learning_rate_base = 0.01
@@ -47,5 +52,6 @@ node_set = None # element = (x, y) # 另外这个变量有时候可能只是子�
 model_path = './models'
 model_name = "model.ckpt"
 result_path = './models/results'
+tensorboard_dir = './models/visualization'
 
 # temporary variables

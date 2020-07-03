@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 
 
 def read():
+
+    print('reading benchmark...')
+
     FILENAME = config.source_dir
     with open(FILENAME, 'r') as f:
         lines = f.readlines()
@@ -50,6 +53,9 @@ def read():
     config.source_point = config.sink_set[0]
     config.sink_set.remove(config.sink_set[0])
     config.headers = headers
+
+    print('benchmark read.')
+
     return True
 
 

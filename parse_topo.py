@@ -73,6 +73,8 @@ def print_path(construct_path):
 # using nearest neighbor selection
 # todo 改进，先按照 MMM-Mode 构建初始拓扑，跑完前向收敛后按照相应参数重新构建拓扑，循环往复几遍，认为可达到最优拓扑
 def generate():
+    print('parsing topology...')
+
     sink_set = config.sink_set
     recur_set = []
     for i in sink_set:
@@ -120,6 +122,7 @@ def generate():
     outparser.point_list_without_sess()
     outparser.draw(-1, -1, 'topo')  # 仅画出拓扑结构，不是绕线结果
 
+    print('topology parsed.')
     return True  # always
 
 
