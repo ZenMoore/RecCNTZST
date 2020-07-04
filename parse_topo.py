@@ -44,7 +44,7 @@ def construct(construct_path):
 
     temp = construct_path[-1]
     root = util.Tree.merge(temp[0], temp[1], temp[2])
-    construct_path.remove(temp) # todo test
+    construct_path.remove(temp)
 
     # corres = root.find(construct_path[-1][2])
     # assert (corres is not None) # 一定在前面的树中出现过
@@ -123,6 +123,7 @@ def generate():
     outparser.draw(-1, -1, 'topo')  # 仅画出拓扑结构，不是绕线结果
 
     print('topology parsed.')
+
     return True  # always
 
 
@@ -133,6 +134,9 @@ def parse():
     else:
         raise Exception("reading failed: ", config.source_dir)
 
+def update():
+    config.topo_step = config.topo_step + 1
+    return None
 
 if __name__ == '__main__':
     if parse():

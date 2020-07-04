@@ -7,7 +7,6 @@ headers = []
 source_dir = "./benchmark/source.txt"  # todo sink RC 的数据文件
 
 # node config
-# todo 这些都是用来表征或者初始化Tree.node中数据的类型或者值的，可以尝试的一个改进是：将单值统一初始化更改为序列部署初始化(即根据节点序号赋予不同初始值)
 meta_ini = {'r':0,
             'c':0,
             'x':0,
@@ -47,8 +46,14 @@ delta = 0.32
 pi = 3.1415926
 mfp = 1.0
 
-# output config
+# check config
 node_set = None # element = (x, y) # 另外这个变量有时候可能只是子树的 node set
+
+#topo-update
+topo_step = 0
+max_topo_step = 10
+
+#output config
 model_path = './models'
 model_name = "model.ckpt"
 result_path = './models/results'

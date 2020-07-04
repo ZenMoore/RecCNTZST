@@ -70,7 +70,7 @@ def generate_without_sess_op(node):
 
 
 def point_list(sess, step):
-    with open(config.result_path + '/result-' + str(step) + '.ptlst', 'w') as file:
+    with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'w') as file:
         generate_ptlst(sess)
         while len(ptlst) != 0:
             data = ptlst.pop()
@@ -81,7 +81,7 @@ def point_list(sess, step):
             file.write('\n')
 
 def point_list_without_sess():
-    with open(config.result_path + '/result-' + 'topo' + '.ptlst', 'w') as file:
+    with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + 'topo' + '.ptlst', 'w') as file:
         generate_without_sess()
         while len(ptlst) != 0:
             data = ptlst.pop()
@@ -94,7 +94,7 @@ def point_list_without_sess():
 
 def draw(final_delay, lagrangian, step):
     print('drawing...')
-    with open(config.result_path + '/result-' + str(step) + '.ptlst', 'r') as file:
+    with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'r') as file:
         for line in file:
             ptlst.append((float(line.split(', ')[0]), float(line.split(', ')[1]), float(line.split(', ')[2]),
                           float(line.split(', ')[3]))) # (x, y, cdia, bdia)

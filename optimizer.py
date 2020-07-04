@@ -234,7 +234,7 @@ def optimize():
 
         # 定义训练算法
         global_step = tf.Variable(0, trainable=False)
-        learning_rate = tf.train.exponential_dacay(config.learning_rate_base, global_step, 1, config.learning_rate_decay)  # todo
+        learning_rate = tf.train.exponential_decay(config.learning_rate_base, global_step, 1, config.learning_rate_decay)  # todo
         train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(goal, global_step=global_step)  # todo
         # 暂时不使用滑动平均
         # variable_average = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
@@ -246,7 +246,7 @@ def optimize():
         tf.global_variables_initializer().run()
 
         # visualization
-        painter = tf.summary.FileWriter(config.tensorboard_dir)
+        painter = tf.summary.FileWriter(config.tensorboard_dir + '/topo-' + str(config.topo_step))
         painter.add_graph(sess.graph)
         all_fig = tf.summary.merge_all()
 
@@ -264,7 +264,7 @@ def optimize():
                 lag_multiplier = sess.run(lagrange)
                 print(lag_multiplier)
 
-                saver.save(sess, os.path.join(config.model_path, config.model_name), global_step=global_step)
+                saver.save(sess, os.path.join(config.model_path + '/topo-' + str(config.topo_step), config.model_name), global_step=global_step)
 
                 # dynamic visualization
                 painter.add_summary(all_fig, i)
@@ -277,13 +277,22 @@ def optimize():
 
 def main(argv = None):
     print('optimizing...')
-    optimize()
+    while config.topo_step <= config.max_topo_step:
+        if config.topo_step == 0:
+            if topoparser.parse():
+                optimize()
+                config.topo_step = config.topo_step + 1
+            else:
+                raise Exception("tree parsing failed.")
+        else:
+            if topoparser.update():
+                optimize()
+                config.topo_step = config.topo_step + 1
+            else:
+                raise Exception("tree updating failed.")
 
-
-## 总流程控制
+# 总流程控制
 if __name__ == '__main__':
-
-    if not topoparser.parse():
-        raise Exception("tree parsing failed.")
-
     tf.app.run()
+    #todo 修改命名系统
+    #todo 删去前向传播和损失计算当中的sess.run()，即转换if-else判断形式为矩阵运算等
