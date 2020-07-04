@@ -17,7 +17,7 @@ def calc_dist(left, right):
     xr = right.obj['x']
     yl = left.obj['y']
     yr = right.obj['y']
-    return tf.add(tf.abs(xl-xr), tf.abs(yl-yr))
+    return tf.add(tf.abs(xl - xr), tf.abs(yl - yr))
 
 
 # 根据子节点的位置坐标和 wire length 计算父节点的 x, y
@@ -26,7 +26,8 @@ def calc_coordinate(sess, left, right):
     x = None
     y = None
     if left.isleaf and type(left.obj['x']) is float:
-        left.obj['x'] = tf.convert_to_tensor(left.obj['x'])  # todo 这里 converted tensor 会不会梯度变化，即这是个 constant 还是 variable
+        left.obj['x'] = tf.convert_to_tensor(
+            left.obj['x'])  # todo 这里 converted tensor 会不会梯度变化，即这是个 constant 还是 variable
         left.obj['y'] = tf.convert_to_tensor(left.obj['y'])
     if right.isleaf and type(right.obj['x']) is float:
         right.obj['x'] = tf.convert_to_tensor(right.obj['x'])
@@ -35,33 +36,81 @@ def calc_coordinate(sess, left, right):
     dist = calc_dist(left, right)
 
     # 计算左边和右边的节点node
-    state = 0  # 表明两个点的位置关系，但是把水平共线的情况单独设置一个bool变量 hor
-    hor = sess.run(tf.equal(left.obj['y'], right.obj['y']))
+    # state = 0  # 表明两个点的位置关系，但是把水平共线的情况单独设置一个bool变量 hor
+    # hor = sess.run(tf.equal(left.obj['y'], right.obj['y']))
 
-    if sess.run(tf.less(left.obj['x'], right.obj['x'])):
-        state = 1
-        # left_p = left
-        # right_p = right
-    elif sess.run(tf.less(right.obj['x'], left.obj['x'])):
-        state = 2
-        # left_p = right
-        # right_p = left
-    else:
-        # 下面需要竖直绕线
-        if sess.run(tf.less(left.obj['y'], right.obj['y'])):
-            state = 3
-            # left_p = left
-            # right_p = right
-        elif sess.run(tf.less(right.obj['y'], left.obj['y'])):
-            state = 4
-            # left_p = right
-            # right_p = left
-        else:
-            raise Exception('Node overlapped.') # 是brother重合了
+    hor = tf.equal(left.obj['y'], right.obj['y'])
 
-    assert(state != 0)
+    # if sess.run(tf.less(left.obj['x'], right.obj['x'])):
+    #     state = 1
+    #     # left_p = left
+    #     # right_p = right
+    # elif sess.run(tf.less(right.obj['x'], left.obj['x'])):
+    #     state = 2
+    #     # left_p = right
+    #     # right_p = left
+    # else:
+    #     # 下面需要竖直绕线
+    #     if sess.run(tf.less(left.obj['y'], right.obj['y'])):
+    #         state = 3
+    #         # left_p = left
+    #         # right_p = right
+    #     elif sess.run(tf.less(right.obj['y'], left.obj['y'])):
+    #         state = 4
+    #         # left_p = right
+    #         # right_p = left
+    #     else:
+    #         raise Exception('Node overlapped.') # 是brother重合了
 
-    if sess.run(tf.less(left.rec_obj['wirelen'], dist)) and sess.run(tf.less(right.rec_obj['wirelen'], dist)): # if left.rec_obj['wirelen'] < dist and right.rec_obj['wirelen'] < dist:
+    # assert(state != 0)
+
+    # state1 = tf.less(left.obj['x'], right.obj['x'])
+    # state2 = tf.less(right.obj['x'], left.obj['x'])
+    # state3 = tf.less(left.obj['y'], right.obj['y'])
+    # state4 = tf.less(right.obj['y'], left.obj['y'])
+    # state0: raise Exception
+
+    def case_exception():
+        raise Exception('unknown case.')
+
+    def case_1():
+
+        def branch_1():
+
+            return None
+        def branch_2():
+            return None
+        def branch_3():
+            return None
+        return tf.case({
+            tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen']) :
+        }, default = branch_3, exclusive=True)
+
+    def case_21():
+        return None
+
+    def case_22():
+        return None
+
+    def case_31():
+        return None
+
+    def case_32():
+        return None
+
+    xy = tf.case({
+        tf.less(left.rec_obj['wirelen'], dist) & tf.less(right.rec_obj['wirelen'], dist): case_1,  # case 1: non detour and non zero wire length
+        tf.equal(left.rec_obj['wirelen'], dist): case_21,  # case 2-1: no detour but left-child has a zero wire length
+        tf.equal(right.rec_obj['wirelen'], dist): case_22,  # case 2-2: no detour but right-child has a zero wire length
+        tf.greater(left.rec_obj['wirelen'], dist): case_31,  # case 3-1: detour and the wirelen of left node is larger
+        tf.greater(right.rec_obj['wirelen'], dist): case_32  # case 3-2, detour and the wirelen of right node is larger
+    }, default=case_exception, exclusive=True)  # unknown case: raise Exception
+    # x, y = xy.split
+
+    # todo num_bend 的赋值能包含在xy计算的lambda函数当中吗？在tf_case_assignment中进行测试
+
+    if sess.run(tf.less(left.rec_obj['wirelen'], dist)) and sess.run(tf.less(right.rec_obj['wirelen'],
+                                                                             dist)):  # if left.rec_obj['wirelen'] < dist and right.rec_obj['wirelen'] < dist:
         print("case 1: non detour and non zero wire length")
         if sess.run(tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen'])):
 
@@ -117,7 +166,7 @@ def calc_coordinate(sess, left, right):
                 x = left.obj['x']
                 y = left.obj['y'] - left.rec_obj['wirelen']
 
-    elif sess.run(tf.equal(left.rec_obj['wirelen'], dist)): # elif left.rec_obj['wirelen'] == dist:
+    elif sess.run(tf.equal(left.rec_obj['wirelen'], dist)):  # elif left.rec_obj['wirelen'] == dist:
 
         right.num_bend = 0
         if sess.run(tf.equal(left.obj['x'], right.obj['x'])) or sess.run(tf.equal(left.obj['y'], right.obj['y'])):
@@ -125,12 +174,11 @@ def calc_coordinate(sess, left, right):
         else:
             left.num_bend = 2
 
-
         print("case 2-1: no detour but left-child has a zero wire length")
         x = right.obj['x']
         y = right.obj['y']
 
-    elif sess.run(tf.equal(right.rec_obj['wirelen'], dist)): # right.rec_obj['wirelen'] == dist:
+    elif sess.run(tf.equal(right.rec_obj['wirelen'], dist)):  # right.rec_obj['wirelen'] == dist:
 
         left.num_bend = 0
         if sess.run(tf.equal(left.obj['x'], right.obj['x'])) or sess.run(tf.equal(left.obj['y'], right.obj['y'])):
@@ -142,7 +190,7 @@ def calc_coordinate(sess, left, right):
         x = left.obj['x']
         y = left.obj['y']
 
-    elif sess.run(tf.greater(left.rec_obj['wirelen'], dist)): # elif left.rec_obj['wirelen'] > dist:
+    elif sess.run(tf.greater(left.rec_obj['wirelen'], dist)):  # elif left.rec_obj['wirelen'] > dist:
 
         left.num_bend = 2
         right.num_bend = 1
@@ -169,7 +217,7 @@ def calc_coordinate(sess, left, right):
             x = right.obj['x'] - right.rec_obj['wirelen']
             y = right.obj['y']
 
-    elif sess.run(tf.greater(right.rec_obj['wirelen'] > dist)): # elif right.rec_obj['wirelen'] > dist:
+    elif sess.run(tf.greater(right.rec_obj['wirelen'] > dist)):  # elif right.rec_obj['wirelen'] > dist:
 
         right.num_bend = 2
         left.num_bend = 1
@@ -203,14 +251,15 @@ def calc_coordinate(sess, left, right):
 
 
 # todo 可以加进变量名字,调整名称体系，可视化的时候显得更加直观一点
-def weight(sess, trainable=True):
-
+def weight(trainable=True):
     # todo 根据 wirelen/cdia/bdia 类型配置 mean 和 stddev
     global scope_id
     scope_id = scope_id + 1
     with tf.name_scope('variate' + str(scope_id)):
-        weights = tf.get_variable("weight"+str(scope_id), shape=(1), initializer=tf.truncated_normal_initializer(mean=2.0, stddev=0.1), trainable=trainable, dtype=tf.float32)
-        sess.run(weights.initializer)  # todo 是否需要 if(initialized)
+        weights = tf.get_variable("weight" + str(scope_id), shape=(1),
+                                  initializer=tf.truncated_normal_initializer(mean=2.0, stddev=0.1),
+                                  trainable=trainable, dtype=tf.float32)
+        # sess.run(weights.initializer)  # todo 是否需要 if(initialized)
         tf.summary.histogram('weights', weights)
     return weights
 
@@ -223,7 +272,6 @@ def weight(sess, trainable=True):
 #     return bias
 
 def merge(sess, left, right, father):
-
     left = merge_op(sess, left.left_child, left.right_child, left)
     right = merge_op(sess, right.left_child, right.right_child, right)
     father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
@@ -233,7 +281,8 @@ def merge(sess, left, right, father):
     if type(config.source_point['y']) is float:
         config.source_point['y'] = tf.convert_to_tensor(config.source_point['y'])
 
-    if sess.run(tf.equal(father.obj['x'], config.source_point['x'])) or sess.run(tf.equal(father.obj['y'], config.source_point['y'])) :
+    if sess.run(tf.equal(father.obj['x'], config.source_point['x'])) or sess.run(
+            tf.equal(father.obj['y'], config.source_point['y'])):
         father.num_bend = 1
     else:
         father.num_bend = 2
@@ -257,7 +306,7 @@ def merge_op(sess, left, right, father):
         right = merge_op(sess, right.left_child, right.right_child, right)
         dist = calc_dist(left, right)
         right.rec_obj['wirelen'] = dist - left.rec_obj['wirelen']
-        assert((left.father is right.father) and (right.father is father))
+        assert ((left.father is right.father) and (right.father is father))
         if not father is father.father.right_child:
             father.rec_obj['wirelen'] = weight(sess)
         father.rec_obj['cdia'] = weight(sess)
@@ -280,8 +329,8 @@ def merge_op(sess, left, right, father):
         # 直接将优化参量作为优化参数：直接计算法
 
     elif left is not None:
-        assert(left.father.right_child is None)
-        assert(left.father is father)
+        assert (left.father.right_child is None)
+        assert (left.father is father)
         left = merge_op(sess, left.left_child, left.right_child, left)
 
         if not father is father.father.right_child:
@@ -305,7 +354,7 @@ def merge_op(sess, left, right, father):
 
     else:
 
-        assert(father.isleaf is True)
+        assert (father.isleaf is True)
 
         if father is not father.father.right_child:
             # 这时left和right的father是个sink
@@ -331,5 +380,3 @@ def load(sess):
     print('network loading...')
     config.tree = merge(sess, config.tree.left_child, config.tree.right_child, config.tree)
     print('network loaded.')
-
-
