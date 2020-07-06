@@ -357,19 +357,24 @@ def calc_coordinate(sess, left, right):
     return x, y
 
 
-# todo 可以加进变量名字,调整名称体系，可视化的时候显得更加直观一点
-def weight(trainable=True):
-    # todo 根据 wirelen/cdia/bdia 类型配置 mean 和 stddev
-    global scope_id
-    scope_id = scope_id + 1
-    with tf.name_scope('variate' + str(scope_id)):
-        weights = tf.get_variable("weight" + str(scope_id), shape=(1),
-                                  initializer=tf.truncated_normal_initializer(mean=2.0, stddev=0.1),
+def weight(node, variate, trainable=True):
+    name = node.get_id() + '-' + variate
+    if variate == 'wirelen':
+        mean = 20.0
+        stddev = 10.0
+    elif variate == 'cdia':
+        mean = 2.0
+        stddev = 0.5
+    else: # 'bdia'
+        mean = 40.0
+        stddev = 10.0
+    with tf.name_scope(name):
+        weights = tf.get_variable(name, shape=(1),
+                                  initializer=tf.truncated_normal_initializer(mean=mean, stddev=stddev),
                                   trainable=trainable, dtype=tf.float32)
         # sess.run(weights.initializer)  # todo 是否需要 if(initialized)
         tf.summary.histogram('weights', weights)
     return weights
-
 
 # def bia(trainable=True):
 #     global scope_id
@@ -395,9 +400,9 @@ def merge(sess, left, right, father):
         father.num_bend = 2
     father.rec_obj['wirelen'] = calc_dist(father, util.Tree(config.source_point))
 
-    father.rec_obj['cdia'] = weight(sess)
+    father.rec_obj['cdia'] = weight(father, 'cdia')
     father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-    father.rec_obj['bdia'] = weight(sess)
+    father.rec_obj['bdia'] = weight(father, 'bdia')
     father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
     return father
@@ -415,10 +420,10 @@ def merge_op(sess, left, right, father):
         right.rec_obj['wirelen'] = dist - left.rec_obj['wirelen']
         assert ((left.father is right.father) and (right.father is father))
         if not father is father.father.right_child:
-            father.rec_obj['wirelen'] = weight(sess)
-        father.rec_obj['cdia'] = weight(sess)
+            father.rec_obj['wirelen'] = weight(father, 'wirelen')
+        father.rec_obj['cdia'] = weight(father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(sess)
+        father.rec_obj['bdia'] = weight(father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
         # 使用参数w的传播计算法
@@ -441,10 +446,10 @@ def merge_op(sess, left, right, father):
         left = merge_op(sess, left.left_child, left.right_child, left)
 
         if not father is father.father.right_child:
-            father.rec_obj['wirelen'] = weight(sess)
-        father.rec_obj['cdia'] = weight(sess)
+            father.rec_obj['wirelen'] = weight(father, 'wirelen')
+        father.rec_obj['cdia'] = weight(father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(sess)
+        father.rec_obj['bdia'] = weight(father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
         # father.rec_obj['wirelen'] = weight(sess)
@@ -466,10 +471,10 @@ def merge_op(sess, left, right, father):
         if father is not father.father.right_child:
             # 这时left和right的father是个sink
             # 将father.obj设置为trainable
-            father.rec_obj['wirelen'] = weight(sess)
-        father.rec_obj['cdia'] = weight(sess)
+            father.rec_obj['wirelen'] = weight(father, 'wirelen')
+        father.rec_obj['cdia'] = weight(father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(sess)
+        father.rec_obj['bdia'] = weight(father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
         # father.rec_obj[0] = tf.add((tf.matmul(fic_left[0], weight()) + bia()), (tf.matmul(fic_right[0], weight()) + bia()))
         # father.rec_obj[1] = tf.add((tf.matmul(fic_left[1], weight()) + bia()), (tf.matmul(fic_right[1], weight()) + bia()))

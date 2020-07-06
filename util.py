@@ -75,7 +75,13 @@ class Tree:
             else:
                 path.append('right')
             temp = temp.father
+        path.append('root')
 
+        id = ''
+        while len(path) != 0:
+            id = id + '_' + path.pop()
+        id = id[1:]
+        return id
 
     def get_right(self):
         return self.right_child
@@ -198,11 +204,9 @@ class Tree:
         self.left_child.check_invalid_overlapped_node_op()
         self.right_child.check_invalid_overlapped_node_op()
 
-    def print(self):  # todo realize
-        print("文字打印树")
+    # def paint(self):
+        # 移动到了 parse_out.py 当中了
 
-    def paint(self):  # todo realize
-        print("图像打印树")
 
     # # 这里仅仅比较元树节点的相等与否
     # def equals(self, corres):

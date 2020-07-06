@@ -507,5 +507,5 @@ def main(argv=None):
 # 总流程控制
 if __name__ == '__main__':
     tf.app.run()
-    # todo 修改命名系统
     # todo topoparser.update()
+    # todo drawer with cdia&bdia

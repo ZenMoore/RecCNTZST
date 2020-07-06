@@ -1,6 +1,7 @@
 import config
 import util
 import matplotlib.pyplot as plt
+import os.path
 
 ptlst = []  # point list
 
@@ -70,6 +71,8 @@ def generate_without_sess_op(node):
 
 
 def point_list(sess, step):
+    if not os.path.exists(config.result_path + '/topo-' + str(config.topo_step)):
+        os.makedirs(config.result_path + '/topo-' + str(config.topo_step))
     with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'w') as file:
         generate_ptlst(sess)
         while len(ptlst) != 0:
@@ -81,6 +84,8 @@ def point_list(sess, step):
             file.write('\n')
 
 def point_list_without_sess():
+    if not os.path.exists(config.result_path + '/topo-' + str(config.topo_step)):
+        os.makedirs(config.result_path + '/topo-' + str(config.topo_step))
     with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + 'topo' + '.ptlst', 'w') as file:
         generate_without_sess()
         while len(ptlst) != 0:
