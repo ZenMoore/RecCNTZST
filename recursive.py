@@ -5,7 +5,6 @@ import util
 import config
 
 '''相当于前向传播算法'''
-# todo 将所有的数值尽量转换为 tensor 的形式，以便生成计算图
 
 scope_id = 0
 coordinate_id = 0
@@ -70,183 +69,291 @@ def calc_coordinate(sess, left, right):
     # state4 = tf.less(right.obj['y'], left.obj['y'])
     # state0: raise Exception
 
-    def case_exception():
-        raise Exception('unknown case.')
-
     def case_1():
 
         def branch_1():
 
-            return None
+            def state_1():
+                return left.obj['x'] + left.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)
+
+            def state_2():
+
+                return left.obj['x'] - left.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)
+
+            def state_3():
+
+                return left.obj['x'], left.obj['y'] + left.rec_obj['wirelen'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)
+
+            def state_4():
+                return left.obj['x'], left.obj['y'] - left.rec_obj['wirelen'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)
+
+            return tf.case({
+                tf.less(left.obj['x'], right.obj['x']) : state_1,
+                tf.less(right.obj['x'], left.obj['x']) : state_2,
+                tf.less(left.obj['y'], right.obj['y']) : state_3,
+                tf.less(right.obj['y'], left.obj['y']) : state_4
+            }, default=state_1, exclusive=True)
+
         def branch_2():
-            return None
+
+            def state_1():
+                return right.obj['x'] - right.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(1), tf.convert_to_tensor(1)
+
+            def state_2():
+
+                return right.obj['x'] + right.rec_obj['wirelen'], right.obj['y'], tf.convert_to_tensor(1), tf.convert_to_tensor(1)
+
+            def state_3():
+
+                return right.obj['x'], right.obj['y'] - right.rec_obj['wirelen'], tf.convert_to_tensor(1), tf.convert_to_tensor(1)
+
+            def state_4():
+                return right.obj['x'], right.obj['y'] + right.rec_obj['wirelen'], tf.convert_to_tensor(1), tf.convert_to_tensor(1)
+
+            return tf.case({
+                tf.less(left.obj['x'], right.obj['x']) : state_1,
+                tf.less(right.obj['x'], left.obj['x']) : state_2,
+                tf.less(left.obj['y'], right.obj['y']) : state_3,
+                tf.less(right.obj['y'], left.obj['y']) : state_4
+            }, default=state_1, exclusive=True)
+
         def branch_3():
-            return None
+
+            def state_1():
+                return left.obj['x'] + left.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(2), tf.convert_to_tensor(2)
+
+            def state_2():
+
+                return left.obj['x'] - left.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(2), tf.convert_to_tensor(2)
+
+            def state_3():
+
+                return left.obj['x'], left.obj['y'] + left.rec_obj['wirelen'], tf.convert_to_tensor(2), tf.convert_to_tensor(2)
+
+            def state_4():
+                return left.obj['x'], left.obj['y'] - left.rec_obj['wirelen'], tf.convert_to_tensor(2), tf.convert_to_tensor(2)
+
+            return tf.case({
+                tf.less(left.obj['x'], right.obj['x']): state_1,
+                tf.less(right.obj['x'], left.obj['x']): state_2,
+                tf.less(left.obj['y'], right.obj['y']): state_3,
+                tf.less(right.obj['y'], left.obj['y']): state_4
+            }, default=state_1, exclusive=True)
+
         return tf.case({
-            tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen']) :
-        }, default = branch_3, exclusive=True)
+            tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen']) : branch_1,
+            tf.equal(left.rec_obj['wirelen'], right.rec_obj['wirelen']) : branch_2
+        }, default=branch_3, exclusive=True)
 
     def case_21():
-        return None
+        return right.obj['x'], right.obj['y'], tf.cond(tf.equal(left.obj['x'], right.obj['x']) | tf.equal(left.obj['y'], right.obj['y']),
+                                                       lambda: tf.convert_to_tensor(1),
+                                                       lambda: tf.convert_to_tensor(2)), tf.convert_to_tensor(0)
 
     def case_22():
-        return None
+        return left.obj['x'], left.obj['y'], tf.convert_to_tensor(0), \
+               tf.cond(tf.equal(left.obj['x'], right.obj['x']) | tf.equal(left.obj['y'], right.obj['y']),
+                                                       lambda: tf.convert_to_tensor(1),
+                                                       lambda: tf.convert_to_tensor(2))
 
     def case_31():
-        return None
+
+        def state_1():
+            return tf.cond(hor, lambda: (right.obj['x'], right.obj['y'] + right.rec_obj['wirelen'],
+                                   tf.convert_to_tensor(2), tf.convert_to_tensor(1)),
+                    lambda: (right.obj['x'] + right.rec_obj['wirelen'], right.obj['y'], tf.convert_to_tensor(2), tf.convert_to_tensor(1)))
+
+        def state_2():
+            return tf.cond(hor, lambda: (right.obj['x'], right.obj['y'] - right.rec_obj['wirelen'],
+                                   tf.convert_to_tensor(2), tf.convert_to_tensor(1)),
+                    lambda: (right.obj['x'] - right.rec_obj['wirelen'], right.obj['y'], tf.convert_to_tensor(2), tf.convert_to_tensor(1)))
+
+        def state_3():
+            return right.obj['x'] + right.rec_obj['wirelen'], right.obj['y'], tf.convert_to_tensor(2), tf.convert_to_tensor(1)
+
+        def state_4():
+            return right.obj['x'] - right.rec_obj['wirelen'], right.obj['y'], tf.convert_to_tensor(2), tf.convert_to_tensor(1)
+
+        return tf.case({
+            tf.less(left.obj['x'], right.obj['x']): state_1,
+            tf.less(right.obj['x'], left.obj['x']): state_2,
+            tf.less(left.obj['y'], right.obj['y']): state_3,
+            tf.less(right.obj['y'], left.obj['y']): state_4
+        }, default=state_1, exclusive=True)
 
     def case_32():
-        return None
 
-    xy = tf.case({
+        def state_1():
+            return tf.cond(hor, lambda: (left.obj['x'], left.obj['y'] - left.rec_obj['wirelen'],
+                                   tf.convert_to_tensor(1), tf.convert_to_tensor(2)),
+                    lambda: (left.obj['x'] - left.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)))
+
+        def state_2():
+            return tf.cond(hor, lambda: (left.obj['x'], left.obj['y'] + left.rec_obj['wirelen'],
+                                   tf.convert_to_tensor(1), tf.convert_to_tensor(2)),
+                    lambda: (left.obj['x'] + left.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)))
+
+        def state_3():
+            return left.obj['x'] - left.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)
+
+        def state_4():
+            return left.obj['x'] + left.rec_obj['wirelen'], left.obj['y'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)
+
+        return tf.case({
+            tf.less(left.obj['x'], right.obj['x']): state_1,
+            tf.less(right.obj['x'], left.obj['x']): state_2,
+            tf.less(left.obj['y'], right.obj['y']): state_3,
+            tf.less(right.obj['y'], left.obj['y']): state_4
+        }, default=state_1, exclusive=True)
+
+    x, y, left_num_bend, right_num_bend = tf.case({
         tf.less(left.rec_obj['wirelen'], dist) & tf.less(right.rec_obj['wirelen'], dist): case_1,  # case 1: non detour and non zero wire length
         tf.equal(left.rec_obj['wirelen'], dist): case_21,  # case 2-1: no detour but left-child has a zero wire length
         tf.equal(right.rec_obj['wirelen'], dist): case_22,  # case 2-2: no detour but right-child has a zero wire length
         tf.greater(left.rec_obj['wirelen'], dist): case_31,  # case 3-1: detour and the wirelen of left node is larger
         tf.greater(right.rec_obj['wirelen'], dist): case_32  # case 3-2, detour and the wirelen of right node is larger
-    }, default=case_exception, exclusive=True)  # unknown case: raise Exception
-    # x, y = xy.split
+    }, default=case_1, exclusive=True)  # unknown case: raise Exception
 
-    # todo num_bend 的赋值能包含在xy计算的lambda函数当中吗？在tf_case_assignment中进行测试
+    # if sess.run(tf.less(left.rec_obj['wirelen'], dist)) and sess.run(tf.less(right.rec_obj['wirelen'],
+    #                                                                          dist)):  # if left.rec_obj['wirelen'] < dist and right.rec_obj['wirelen'] < dist:
+    #     print("case 1: non detour and non zero wire length")
+    #     if sess.run(tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen'])):
+    #
+    #         left.num_bend = 1
+    #         right.num_bend = 2
+    #
+    #         if state == 1:
+    #             x = left.obj['x'] + left.rec_obj['wirelen']
+    #             y = left.obj['y']
+    #         elif state == 2:
+    #             x = left.obj['x'] - left.rec_obj['wirelen']
+    #             y = left.obj['y']
+    #         elif state == 3:
+    #             x = left.obj['x']
+    #             y = left.obj['y'] + left.rec_obj['wirelen']
+    #         else:
+    #             x = left.obj['x']
+    #             y = left.obj['y'] - left.rec_obj['wirelen']
+    #
+    #     elif sess.run(tf.equal(left.rec_obj['wirelen'], right.rec_obj['wirelen'])):
+    #
+    #         left.num_bend = 1
+    #         right.num_bend = 1
+    #
+    #         if state == 1:
+    #             x = right.obj['x'] - right.rec_obj['wirelen']
+    #             y = left.obj['y']
+    #         elif state == 2:
+    #             x = right.obj['x'] + right.rec_obj['wirelen']
+    #             y = right.obj['y']
+    #         elif state == 3:
+    #             x = right.obj['x']
+    #             y = right.obj['y'] - right.rec_obj['wirelen']
+    #         else:
+    #             x = right.obj['x']
+    #             y = right.obj['y'] + right.rec_obj['wirelen']
+    #
+    #     else:
+    #
+    #         left.num_bend = 2
+    #         right.num_bend = 1
+    #
+    #         if state == 1:
+    #             x = left.obj['x'] + left.rec_obj['wirelen']
+    #             y = left.obj['y']
+    #         elif state == 2:
+    #             x = left.obj['x'] - left.rec_obj['wirelen']
+    #             y = left.obj['y']
+    #         elif state == 3:
+    #             x = left.obj['x']
+    #             y = left.obj['y'] + left.rec_obj['wirelen']
+    #         else:
+    #             x = left.obj['x']
+    #             y = left.obj['y'] - left.rec_obj['wirelen']
+    #
+    # elif sess.run(tf.equal(left.rec_obj['wirelen'], dist)):  # elif left.rec_obj['wirelen'] == dist:
+    #
+    #     right.num_bend = 0
+    #     if sess.run(tf.equal(left.obj['x'], right.obj['x'])) or sess.run(tf.equal(left.obj['y'], right.obj['y'])):
+    #         left.num_bend = 1
+    #     else:
+    #         left.num_bend = 2
+    #
+    #     print("case 2-1: no detour but left-child has a zero wire length")
+    #     x = right.obj['x']
+    #     y = right.obj['y']
+    #
+    # elif sess.run(tf.equal(right.rec_obj['wirelen'], dist)):  # right.rec_obj['wirelen'] == dist:
+    #
+    #     left.num_bend = 0
+    #     if sess.run(tf.equal(left.obj['x'], right.obj['x'])) or sess.run(tf.equal(left.obj['y'], right.obj['y'])):
+    #         right.num_bend = 1
+    #     else:
+    #         right.num_bend = 2
+    #
+    #     print("case 2-2: no detour but right-child has a zero wire length")
+    #     x = left.obj['x']
+    #     y = left.obj['y']
+    #
+    # elif sess.run(tf.greater(left.rec_obj['wirelen'], dist)):  # elif left.rec_obj['wirelen'] > dist:
+    #
+    #     left.num_bend = 2
+    #     right.num_bend = 1
+    #
+    #     print('case 3-1: detour and the wirelen of left node is larger')
+    #     if state == 1:
+    #         if hor:
+    #             x = right.obj['x']
+    #             y = right.obj['y'] + right.rec_obj['wirelen']
+    #         else:
+    #             x = right.obj['x'] + right.rec_obj['wirelen']
+    #             y = right.obj['y']
+    #     elif state == 2:
+    #         if hor:
+    #             x = right.obj['x']
+    #             y = right.obj['y'] - right.rec_obj['wirelen']
+    #         else:
+    #             x = right.obj['x'] - right.rec_obj['wirelen']
+    #             y = right.obj['y']
+    #     elif state == 3:
+    #         x = right.obj['x'] + right.rec_obj['wirelen']
+    #         y = right.obj['y']
+    #     else:
+    #         x = right.obj['x'] - right.rec_obj['wirelen']
+    #         y = right.obj['y']
+    #
+    # elif sess.run(tf.greater(right.rec_obj['wirelen'] > dist)):  # elif right.rec_obj['wirelen'] > dist:
+    #
+    #     right.num_bend = 2
+    #     left.num_bend = 1
+    #
+    #     print('case 3-2, detour and the wirelen of right node is larger')
+    #     if state == 1:
+    #         if hor:
+    #             x = left.obj['x']
+    #             y = left.obj['y'] - left.rec_obj['wirelen']
+    #         else:
+    #             x = left.obj['x'] - left.rec_obj['wirelen']
+    #             y = left.obj['y']
+    #     elif state == 2:
+    #         if hor:
+    #             x = left.obj['x']
+    #             y = left.obj['y'] + left.rec_obj['wirelen']
+    #         else:
+    #             x = left.obj['x'] + left.rec_obj['wirelen']
+    #             y = left.obj['y']
+    #     elif state == 3:
+    #         x = left.obj['x'] - left.rec_obj['wirelen']
+    #         y = left.obj['y']
+    #     else:
+    #         x = left.obj['x'] + left.rec_obj['wirelen']
+    #         y = left.obj['y']
+    #
+    # else:
+    #     print('unknown case')
 
-    if sess.run(tf.less(left.rec_obj['wirelen'], dist)) and sess.run(tf.less(right.rec_obj['wirelen'],
-                                                                             dist)):  # if left.rec_obj['wirelen'] < dist and right.rec_obj['wirelen'] < dist:
-        print("case 1: non detour and non zero wire length")
-        if sess.run(tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen'])):
-
-            left.num_bend = 1
-            right.num_bend = 2
-
-            if state == 1:
-                x = left.obj['x'] + left.rec_obj['wirelen']
-                y = left.obj['y']
-            elif state == 2:
-                x = left.obj['x'] - left.rec_obj['wirelen']
-                y = left.obj['y']
-            elif state == 3:
-                x = left.obj['x']
-                y = left.obj['y'] + left.rec_obj['wirelen']
-            else:
-                x = left.obj['x']
-                y = left.obj['y'] - left.rec_obj['wirelen']
-
-        elif sess.run(tf.equal(left.rec_obj['wirelen'], right.rec_obj['wirelen'])):
-
-            left.num_bend = 1
-            right.num_bend = 1
-
-            if state == 1:
-                x = right.obj['x'] - right.rec_obj['wirelen']
-                y = left.obj['y']
-            elif state == 2:
-                x = right.obj['x'] + right.rec_obj['wirelen']
-                y = right.obj['y']
-            elif state == 3:
-                x = right.obj['x']
-                y = right.obj['y'] - right.rec_obj['wirelen']
-            else:
-                x = right.obj['x']
-                y = right.obj['y'] + right.rec_obj['wirelen']
-
-        else:
-
-            left.num_bend = 2
-            right.num_bend = 1
-
-            if state == 1:
-                x = left.obj['x'] + left.rec_obj['wirelen']
-                y = left.obj['y']
-            elif state == 2:
-                x = left.obj['x'] - left.rec_obj['wirelen']
-                y = left.obj['y']
-            elif state == 3:
-                x = left.obj['x']
-                y = left.obj['y'] + left.rec_obj['wirelen']
-            else:
-                x = left.obj['x']
-                y = left.obj['y'] - left.rec_obj['wirelen']
-
-    elif sess.run(tf.equal(left.rec_obj['wirelen'], dist)):  # elif left.rec_obj['wirelen'] == dist:
-
-        right.num_bend = 0
-        if sess.run(tf.equal(left.obj['x'], right.obj['x'])) or sess.run(tf.equal(left.obj['y'], right.obj['y'])):
-            left.num_bend = 1
-        else:
-            left.num_bend = 2
-
-        print("case 2-1: no detour but left-child has a zero wire length")
-        x = right.obj['x']
-        y = right.obj['y']
-
-    elif sess.run(tf.equal(right.rec_obj['wirelen'], dist)):  # right.rec_obj['wirelen'] == dist:
-
-        left.num_bend = 0
-        if sess.run(tf.equal(left.obj['x'], right.obj['x'])) or sess.run(tf.equal(left.obj['y'], right.obj['y'])):
-            right.num_bend = 1
-        else:
-            right.num_bend = 2
-
-        print("case 2-2: no detour but right-child has a zero wire length")
-        x = left.obj['x']
-        y = left.obj['y']
-
-    elif sess.run(tf.greater(left.rec_obj['wirelen'], dist)):  # elif left.rec_obj['wirelen'] > dist:
-
-        left.num_bend = 2
-        right.num_bend = 1
-
-        print('case 3-1: detour and the wirelen of left node is larger')
-        if state == 1:
-            if hor:
-                x = right.obj['x']
-                y = right.obj['y'] + right.rec_obj['wirelen']
-            else:
-                x = right.obj['x'] + right.rec_obj['wirelen']
-                y = right.obj['y']
-        elif state == 2:
-            if hor:
-                x = right.obj['x']
-                y = right.obj['y'] - right.rec_obj['wirelen']
-            else:
-                x = right.obj['x'] - right.rec_obj['wirelen']
-                y = right.obj['y']
-        elif state == 3:
-            x = right.obj['x'] + right.rec_obj['wirelen']
-            y = right.obj['y']
-        else:
-            x = right.obj['x'] - right.rec_obj['wirelen']
-            y = right.obj['y']
-
-    elif sess.run(tf.greater(right.rec_obj['wirelen'] > dist)):  # elif right.rec_obj['wirelen'] > dist:
-
-        right.num_bend = 2
-        left.num_bend = 1
-
-        print('case 3-2, detour and the wirelen of right node is larger')
-        if state == 1:
-            if hor:
-                x = left.obj['x']
-                y = left.obj['y'] - left.rec_obj['wirelen']
-            else:
-                x = left.obj['x'] - left.rec_obj['wirelen']
-                y = left.obj['y']
-        elif state == 2:
-            if hor:
-                x = left.obj['x']
-                y = left.obj['y'] + left.rec_obj['wirelen']
-            else:
-                x = left.obj['x'] + left.rec_obj['wirelen']
-                y = left.obj['y']
-        elif state == 3:
-            x = left.obj['x'] - left.rec_obj['wirelen']
-            y = left.obj['y']
-        else:
-            x = left.obj['x'] + left.rec_obj['wirelen']
-            y = left.obj['y']
-
-    else:
-        print('unknown case')
-
+    left.num_bend = left_num_bend
+    right.num_bend = right_num_bend
     return x, y
 
 

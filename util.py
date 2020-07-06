@@ -66,6 +66,16 @@ class Tree:
         return father
 
     '''树读取函数群'''
+    def get_id(self):
+        path = []
+        temp = self
+        while temp.father is not None:
+            if temp is temp.father.left_child:
+                path.append('left')
+            else:
+                path.append('right')
+            temp = temp.father
+
 
     def get_right(self):
         return self.right_child

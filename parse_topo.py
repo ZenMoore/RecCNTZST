@@ -71,7 +71,7 @@ def print_path(construct_path):
 
 # 返回是否生成成功
 # using nearest neighbor selection
-# todo 改进，先按照 MMM-Mode 构建初始拓扑，跑完前向收敛后按照相应参数重新构建拓扑，循环往复几遍，认为可达到最优拓扑
+# 先按照 MMM-Mode 构建初始拓扑，跑完前向收敛后按照相应参数重新构建拓扑，循环往复几遍，认为可达到最优拓扑
 def generate():
     print('parsing topology...')
 
@@ -135,8 +135,9 @@ def parse():
         raise Exception("reading failed: ", config.source_dir)
 
 def update():
-    config.topo_step = config.topo_step + 1
+    # 从 point list 里面读取，然后重新 parse
     return None
+
 
 if __name__ == '__main__':
     if parse():

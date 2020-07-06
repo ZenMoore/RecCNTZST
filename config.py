@@ -4,7 +4,7 @@ import tensorflow as tf
 source_point = None
 sink_set = []
 headers = []
-source_dir = "./benchmark/source.txt"  # todo sink RC 的数据文件
+source_dir = "./benchmark/source.txt"
 
 # node config
 meta_ini = {'r':0,
@@ -51,7 +51,7 @@ node_set = None # element = (x, y) # 另外这个变量有时候可能只是子�
 
 #topo-update
 topo_step = 0
-max_topo_step = 10
+max_topo_step = 0
 
 #output config
 model_path = './models'
