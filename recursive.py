@@ -6,9 +6,8 @@ import config
 
 '''相当于前向传播算法'''
 
-scope_id = 0
-coordinate_id = 0
-
+total_num_node = 0
+current_node = 0
 
 # 曼哈顿距离
 def calc_dist(left, right):
@@ -21,7 +20,7 @@ def calc_dist(left, right):
 
 # 根据子节点的位置坐标和 wire length 计算父节点的 x, y
 # 同时存储从每个节点引出的 wire 的折线段数
-def calc_coordinate(sess, left, right):
+def calc_coordinate(left, right):
     x = None
     y = None
     if left.isleaf and type(left.obj['x']) is float:
@@ -206,6 +205,8 @@ def calc_coordinate(sess, left, right):
             tf.less(right.obj['y'], left.obj['y']): state_4
         }, default=state_1, exclusive=True)
 
+
+
     x, y, left_num_bend, right_num_bend = tf.case({
         tf.less(left.rec_obj['wirelen'], dist) & tf.less(right.rec_obj['wirelen'], dist): case_1,  # case 1: non detour and non zero wire length
         tf.equal(left.rec_obj['wirelen'], dist): case_21,  # case 2-1: no detour but left-child has a zero wire length
@@ -357,8 +358,8 @@ def calc_coordinate(sess, left, right):
     return x, y
 
 
-def weight(node, variate, trainable=True):
-    name = node.get_id() + '-' + variate
+def weight(sess, node, variate, trainable=True):
+    # name = node.get_id() + '-' + variate
     if variate == 'wirelen':
         mean = 20.0
         stddev = 10.0
@@ -368,11 +369,12 @@ def weight(node, variate, trainable=True):
     else: # 'bdia'
         mean = 40.0
         stddev = 10.0
-    with tf.name_scope(name):
-        weights = tf.get_variable(name, shape=(1),
+    with tf.variable_scope(node.get_id(), reuse=tf.AUTO_REUSE):
+        weights = tf.get_variable(variate, shape=[],
                                   initializer=tf.truncated_normal_initializer(mean=mean, stddev=stddev),
                                   trainable=trainable, dtype=tf.float32)
-        # sess.run(weights.initializer)  # todo 是否需要 if(initialized)
+        sess.run(weights.initializer)  # 是否需要 if(initialized)
+        print(str(weights), 'initialized.')
         tf.summary.histogram('weights', weights)
     return weights
 
@@ -384,46 +386,65 @@ def weight(node, variate, trainable=True):
 #     return bias
 
 def merge(sess, left, right, father):
+
+    global total_num_node
+    global current_node
+    total_num_node = father.size()
+
     left = merge_op(sess, left.left_child, left.right_child, left)
     right = merge_op(sess, right.left_child, right.right_child, right)
-    father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
+
+    print('calculate coordinates of root : ' + str(current_node) + '@' + str(total_num_node) + '.')
+
+    father.obj['x'], father.obj['y'] = calc_coordinate(left, right)
 
     if type(config.source_point['x']) is float:
         config.source_point['x'] = tf.convert_to_tensor(config.source_point['x'])
     if type(config.source_point['y']) is float:
         config.source_point['y'] = tf.convert_to_tensor(config.source_point['y'])
 
-    if sess.run(tf.equal(father.obj['x'], config.source_point['x'])) or sess.run(
-            tf.equal(father.obj['y'], config.source_point['y'])):
-        father.num_bend = 1
-    else:
-        father.num_bend = 2
+    print('calculate number of bendings of root : ' + str(current_node) + '@' + str(total_num_node) + '.')
+    father.num_bend = tf.cond(tf.equal(father.obj['x'], config.source_point['x']) | tf.equal(father.obj['y'], config.source_point['y']),
+            lambda : tf.convert_to_tensor(1),
+            lambda : tf.convert_to_tensor(2))
+    # if sess.run(tf.equal(father.obj['x'], config.source_point['x'])) or sess.run(
+    #         tf.equal(father.obj['y'], config.source_point['y'])):
+    #     father.num_bend = 1
+    # else:
+    #     father.num_bend = 2
+
+    print('assign trainable variates for root : ' + str(current_node) + '@' + str(total_num_node) + '.')
     father.rec_obj['wirelen'] = calc_dist(father, util.Tree(config.source_point))
 
-    father.rec_obj['cdia'] = weight(father, 'cdia')
+    father.rec_obj['cdia'] = weight(sess, father, 'cdia')
     father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-    father.rec_obj['bdia'] = weight(father, 'bdia')
+    father.rec_obj['bdia'] = weight(sess, father, 'bdia')
     father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
+    current_node = current_node + 1
+    assert(current_node == total_num_node)
     return father
 
 
 # 注意 trainable_variables 的分配
 def merge_op(sess, left, right, father):
-    global coordinate_id
-    coordinate_id = coordinate_id + 1
+    global total_num_node
+    global current_node
+
     if right is not None:
 
         left = merge_op(sess, left.left_child, left.right_child, left)
         right = merge_op(sess, right.left_child, right.right_child, right)
+
+        print('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         dist = calc_dist(left, right)
         right.rec_obj['wirelen'] = dist - left.rec_obj['wirelen']
         assert ((left.father is right.father) and (right.father is father))
         if not father is father.father.right_child:
-            father.rec_obj['wirelen'] = weight(father, 'wirelen')
-        father.rec_obj['cdia'] = weight(father, 'cdia')
+            father.rec_obj['wirelen'] = weight(sess, father, 'wirelen')
+        father.rec_obj['cdia'] = weight(sess, father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(father, 'bdia')
+        father.rec_obj['bdia'] = weight(sess, father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
         # 使用参数w的传播计算法
@@ -434,8 +455,9 @@ def merge_op(sess, left, right, father):
         # father.rec_obj['diameter'] = tf.add((tf.matmul(left.rec_obj['diameter'], weight()) + bia()), (tf.matmul(right.rec_obj['diameter'], weight()) + bia()))
         # father.rec_obj['diameter'] = tf.clip_by_value(father.rec_obj['diameter'], config.dia_min, config.dia_max)
 
-        father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
-        with tf.name_scope('coordinate' + str(coordinate_id)):
+        print('calculate coordinate of ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
+        father.obj['x'], father.obj['y'] = calc_coordinate(left, right)
+        with tf.name_scope(father.get_id() + '-' + 'coordinate'):
             tf.summary.histogram('x', father.obj['x'])
             tf.summary.histogram('y', father.obj['y'])
         # 直接将优化参量作为优化参数：直接计算法
@@ -445,11 +467,12 @@ def merge_op(sess, left, right, father):
         assert (left.father is father)
         left = merge_op(sess, left.left_child, left.right_child, left)
 
+        print('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         if not father is father.father.right_child:
-            father.rec_obj['wirelen'] = weight(father, 'wirelen')
-        father.rec_obj['cdia'] = weight(father, 'cdia')
+            father.rec_obj['wirelen'] = weight(sess, father, 'wirelen')
+        father.rec_obj['cdia'] = weight(sess, father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(father, 'bdia')
+        father.rec_obj['bdia'] = weight(sess, father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
         # father.rec_obj['wirelen'] = weight(sess)
@@ -459,8 +482,9 @@ def merge_op(sess, left, right, father):
         #
         # father.rec_obj['diameter'] = tf.matmul(left.rec_obj['diameter'], weight()) + bia()
         # father.rec_obj['diameter'] = tf.clip_by_value(father.rec_obj['diameter'], config.dia_min, config.dia_max)
-        father.obj['x'], father.obj['y'] = calc_coordinate(sess, left, right)
-        with tf.name_scope('coordinate' + str(coordinate_id)):
+        print('calculate coordinate of ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
+        father.obj['x'], father.obj['y'] = calc_coordinate(left, right)
+        with tf.name_scope(father.get_id() + '-' + 'coordinate'):
             tf.summary.histogram('x', father.obj['x'])
             tf.summary.histogram('y', father.obj['y'])
 
@@ -468,13 +492,14 @@ def merge_op(sess, left, right, father):
 
         assert (father.isleaf is True)
 
+        print('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         if father is not father.father.right_child:
             # 这时left和right的father是个sink
             # 将father.obj设置为trainable
-            father.rec_obj['wirelen'] = weight(father, 'wirelen')
-        father.rec_obj['cdia'] = weight(father, 'cdia')
+            father.rec_obj['wirelen'] = weight(sess, father, 'wirelen')
+        father.rec_obj['cdia'] = weight(sess, father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(father, 'bdia')
+        father.rec_obj['bdia'] = weight(sess, father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
         # father.rec_obj[0] = tf.add((tf.matmul(fic_left[0], weight()) + bia()), (tf.matmul(fic_right[0], weight()) + bia()))
         # father.rec_obj[1] = tf.add((tf.matmul(fic_left[1], weight()) + bia()), (tf.matmul(fic_right[1], weight()) + bia()))
@@ -483,6 +508,7 @@ def merge_op(sess, left, right, father):
         # father.rec_obj[2] = tf.clip_by_value(father.rec_obj[2], config.dia_min, config.dia_max)
         # return father
 
+    current_node = current_node + 1
     return father
 
 

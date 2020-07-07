@@ -50,11 +50,11 @@ def construct(construct_path):
     # assert (corres is not None) # 一定在前面的树中出现过
     # corres.insert_left()
     while len(construct_path) != 0:
-        print('___')
+        # print('___')
         temp = construct_path[-1]
-        print(temp)
+        # print(temp)
         corres = root.find(temp[2])
-        print(corres)
+        # print(corres)
         assert (corres is not None)  # 一定在前面的树中出现过
         assert (corres.left_child is None)
         corres.insert_left(temp[0])
@@ -112,17 +112,17 @@ def generate():
 
         construct_path.append((left, right, merging_point))
 
-    print_path(construct_path)
+    # print_path(construct_path)
     root = construct(construct_path)
 
     # 递归地生成拓扑
     config.tree = root
 
+    print('topology parsed.')
+
     # 画出拓扑
     outparser.point_list_without_sess()
     outparser.draw(-1, -1, 'topo')  # 仅画出拓扑结构，不是绕线结果
-
-    print('topology parsed.')
 
     return True  # always
 

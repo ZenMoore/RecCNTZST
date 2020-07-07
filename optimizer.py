@@ -66,7 +66,7 @@ def r_s(cdia, wirelen):
 
 # 计算总延时
 def calc_delay():
-    print('delay calculating...')
+
     sink_node_set = config.tree.get_sinks()
 
     for node in sink_node_set:
@@ -82,7 +82,6 @@ def calc_delay():
     assert (len(sink_delay) == len(config.sink_set))
     result, _ = get_tensors_max_min(sink_delay)
 
-    print('all delay calculated.')
     return result  # 必须是tensor数组里面的最大值
 
 
@@ -355,7 +354,7 @@ def calc_node_delay(node):
             return tf.add(t_horizontal, t_vertical)
 
         return tf.case({
-            tf.equal(node.num_bend, tf.convert_to_tensor(0)): lambda :tf.convert_to_tensor(0),
+            tf.equal(node.num_bend, tf.convert_to_tensor(0)): lambda :tf.convert_to_tensor(0.0),
             tf.equal(node.num_bend, tf.convert_to_tensor(1)): lambda : tf.add(2 * 0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(
                 tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
                 2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
@@ -365,7 +364,7 @@ def calc_node_delay(node):
                               config.unit_capacitance, node.rec_obj['wirelen']),
                           ),
             tf.equal(node.num_bend, tf.convert_to_tensor(2)): with_bending_mp
-        }, default=lambda: tf.convert_to_tensor(0), exclusive=True)
+        }, default=lambda: tf.convert_to_tensor(0.0), exclusive=True)
         # if node.num_bend == 0:
         #     return tf.convert_to_tensor(0)
         # elif node.num_bend == 1:
@@ -412,38 +411,49 @@ def calc_node_delay(node):
 
 
 # 计算引入拉格朗日乘子后的等式约束
-def calc_lagrange():
-    print('calculating skew and lagrangian multiplier...')
+def calc_lagrange(sess):
+
     # 将拉格朗日乘子作为训练参数，梯度下降时候，向对拉格朗日乘子偏导等于零的方向下降
     # todo 如何保证偏导下降到等于零，这是一种 trade-off 吗？trade-off 比例参数在哪里设置？
-    lagrangian = tf.get_variable("lagrangian", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1),
+    lagrangian = tf.get_variable("lagrangian_multiplier", shape=(), initializer=tf.truncated_normal_initializer(stddev=0.1),
                                  trainable=True)
+
+    sess.run(lagrangian.initializer)
+    print('lagrangian multiplier initialized.')
     max_delay, min_delay = get_tensors_max_min(sink_delay)
 
-    print('skew and lagrangian multiplier calculated.')
     return tf.multiply(lagrangian, (max_delay - min_delay)), max_delay - min_delay
 
 
 # 优化算法也就是反向传播算法
 def optimize():
     with tf.Session(config=config.train_config) as sess:
+    # with tf.Session() as sess:
         # 加载前向传播的树结构
         loader.load(sess)
 
         # 计算损失=总延时+等式约束
-        delay = calc_delay(sess)
+        print('delay calculating...')
+        delay = calc_delay()
         tf.add_to_collection('losses', delay)
         tf.summary.scalar('delay', delay)
+        print('all delay calculated.')
 
-        lagrange, skew = calc_lagrange()
+        print('calculating skew and lagrangian multiplier...')
+        lagrange, skew = calc_lagrange(sess)
         tf.add_to_collection('losses', lagrange)
         tf.summary.scalar('lagrangian multiplier', lagrange)
         tf.summary.scalar('skew', skew)
+        print('skew and lagrangian multiplier calculated.')
 
+        print('calculating goal...')
         goal = tf.add_n(tf.get_collection('losses'))
+        print('goal calculated.')
 
         # 定义训练算法
-        global_step = tf.Variable(0, trainable=False)
+        global_step = tf.Variable(0, name='global_step')
+        sess.run(global_step.initializer)
+        print('global step initialized.')
         learning_rate = tf.train.exponential_decay(config.learning_rate_base, global_step, 1,
                                                    config.learning_rate_decay)  # todo
         train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(goal, global_step=global_step)  # todo
@@ -454,7 +464,13 @@ def optimize():
         #     train_op = tf.no_op()
         saver = tf.train.Saver()
 
-        tf.global_variables_initializer().run()
+        # for variable in tf.get_collection(tf.GraphKeys.VARIABLES):
+        #     print('initializing ' + str(variable))
+        #     variable.initializer.run()
+
+        # print('initializing global variables...')
+        # # tf.global_variables_initializer().run()
+        # print('global variables initialized.')
 
         # visualization
         painter = tf.summary.FileWriter(config.tensorboard_dir + '/topo-' + str(config.topo_step))

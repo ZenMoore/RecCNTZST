@@ -116,9 +116,9 @@ def draw(final_delay, lagrangian, step):
         mid = ptlst.pop()
         right = ptlst.pop()
 
-        print([left[0], left[1]])
-        print([mid[0], mid[1]])
-        print([right[0], right[1]])
+        # print([left[0], left[1]])
+        # print([mid[0], mid[1]])
+        # print([right[0], right[1]])
 
         fig = plt.figure(1)
         # plt.plot([left[0], mid[0]], [left[1], mid[1]], color='r')
