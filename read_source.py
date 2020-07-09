@@ -1,11 +1,11 @@
 import config
 import re
 import matplotlib.pyplot as plt
-
+import logging
 
 def read():
 
-    print('reading benchmark...')
+    logging.info('reading benchmark...')
 
     FILENAME = config.source_dir
     with open(FILENAME, 'r') as f:
@@ -54,7 +54,7 @@ def read():
     config.sink_set.remove(config.sink_set[0])
     config.headers = headers
 
-    print('benchmark read.')
+    logging.info('benchmark read.')
 
     return True
 

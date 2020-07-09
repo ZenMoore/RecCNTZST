@@ -3,6 +3,7 @@ import util
 import numpy as np
 import config
 import parse_out as outparser
+import logging
 
 
 # 计算点到点的距离: 曼哈顿距离
@@ -50,11 +51,11 @@ def construct(construct_path):
     # assert (corres is not None) # 一定在前面的树中出现过
     # corres.insert_left()
     while len(construct_path) != 0:
-        # print('___')
+        # logging.info('___')
         temp = construct_path[-1]
-        # print(temp)
+        # logging.info(temp)
         corres = root.find(temp[2])
-        # print(corres)
+        # logging.info(corres)
         assert (corres is not None)  # 一定在前面的树中出现过
         assert (corres.left_child is None)
         corres.insert_left(temp[0])
@@ -66,14 +67,14 @@ def construct(construct_path):
 
 def print_path(construct_path):
     for e in construct_path:
-        print(e)
+        logging.info(e)
 
 
 # 返回是否生成成功
 # using nearest neighbor selection
 # 先按照 MMM-Mode 构建初始拓扑，跑完前向收敛后按照相应参数重新构建拓扑，循环往复几遍，认为可达到最优拓扑
 def generate():
-    print('parsing topology...')
+    logging.info('parsing topology...')
 
     sink_set = config.sink_set
     recur_set = []
@@ -89,8 +90,8 @@ def generate():
         # nearest neighbor
         _, left, right = get_nearest(recur_set)
 
-        # print(str(left['x']) +', ' + str(left['y']))
-        # print(str(right['x']) + ', ' + str(right['y']))
+        # logging.info(str(left['x']) +', ' + str(left['y']))
+        # logging.info(str(right['x']) + ', ' + str(right['y']))
         # update recur_set
         recur_set.remove(left)
 
@@ -112,13 +113,13 @@ def generate():
 
         construct_path.append((left, right, merging_point))
 
-    # print_path(construct_path)
+    # logging.info_path(construct_path)
     root = construct(construct_path)
 
     # 递归地生成拓扑
     config.tree = root
 
-    print('topology parsed.')
+    logging.info('topology parsed.')
 
     # 画出拓扑
     outparser.point_list_without_sess()
@@ -141,4 +142,4 @@ def update():
 
 if __name__ == '__main__':
     if parse():
-        print('tree-topo generation completed.')
+        logging.info('tree-topo generation completed.')

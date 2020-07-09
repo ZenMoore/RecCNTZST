@@ -1,4 +1,6 @@
 import tensorflow as tf
+import logging
+import datetime
 
 # input config
 source_point = None
@@ -59,4 +61,8 @@ model_name = "model.ckpt"
 result_path = './models/results'
 tensorboard_dir = './models/visualization'
 
+
+# log config
+LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+logging.basicConfig(filename='./log/console-' + datetime.datetime.now().strftime('%m%d-%H%M%S.log'), level=logging.INFO, format=LOG_FORMAT)
 # temporary variables

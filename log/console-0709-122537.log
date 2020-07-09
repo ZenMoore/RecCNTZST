@@ -1,0 +1,63 @@
+2020-07-09 12:25:37,701 - WARNING - From D:/Python/Workpalce/RecCNTZST/optimizer.py:537: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+2020-07-09 12:25:37,708 - INFO - optimizing...
+2020-07-09 12:25:37,709 - INFO - reading benchmark...
+2020-07-09 12:25:37,714 - INFO - benchmark read.
+2020-07-09 12:25:40,865 - INFO - drawing...
+2020-07-09 12:25:48,368 - INFO - waiting next figure...
+2020-07-09 12:25:48,369 - WARNING - From D:/Python/Workpalce/RecCNTZST/optimizer.py:431: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2020-07-09 12:25:49,755 - INFO - network loading...
+2020-07-09 12:25:49,755 - INFO - assign trainable variates for root_left_left_left : 0@253.
+2020-07-09 12:25:49,756 - WARNING - From D:\Python\Workpalce\RecCNTZST\recursive.py:373: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+2020-07-09 12:25:49,756 - WARNING - From D:\Python\Workpalce\RecCNTZST\recursive.py:373: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+2020-07-09 12:25:49,756 - WARNING - From D:\Python\Workpalce\RecCNTZST\recursive.py:374: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+2020-07-09 12:25:50,356 - INFO - assign trainable variates for root_left_left_right_left_left : 1@253.
+2020-07-09 12:25:50,496 - INFO - assign trainable variates for root_left_left_right_left_right : 2@253.
+2020-07-09 12:25:50,613 - INFO - assign trainable variates for root_left_left_right_left : 3@253.
+2020-07-09 12:25:50,817 - INFO - calculate coordinate of root_left_left_right_left : 3@253.
+2020-07-09 12:25:51,704 - INFO - assign trainable variates for root_left_left_right_right_left : 4@253.
+2020-07-09 12:25:51,902 - INFO - assign trainable variates for root_left_left_right_right_right_left_left : 5@253.
+2020-07-09 12:25:52,122 - INFO - assign trainable variates for root_left_left_right_right_right_left_right_left : 6@253.
+2020-07-09 12:25:52,434 - INFO - assign trainable variates for root_left_left_right_right_right_left_right_right : 7@253.
+2020-07-09 12:25:52,677 - INFO - assign trainable variates for root_left_left_right_right_right_left_right : 8@253.
+2020-07-09 12:25:52,932 - INFO - calculate coordinate of root_left_left_right_right_right_left_right : 8@253.
+2020-07-09 12:25:53,850 - INFO - assign trainable variates for root_left_left_right_right_right_left : 9@253.
+2020-07-09 12:25:54,310 - INFO - calculate coordinate of root_left_left_right_right_right_left : 9@253.
+2020-07-09 12:25:55,215 - INFO - assign trainable variates for root_left_left_right_right_right_right_left : 10@253.
+2020-07-09 12:25:55,865 - INFO - assign trainable variates for root_left_left_right_right_right_right_right_left : 11@253.
+2020-07-09 12:25:56,443 - INFO - assign trainable variates for root_left_left_right_right_right_right_right_right : 12@253.
+2020-07-09 12:25:56,960 - INFO - assign trainable variates for root_left_left_right_right_right_right_right : 13@253.
+2020-07-09 12:25:57,393 - INFO - calculate coordinate of root_left_left_right_right_right_right_right : 13@253.
+2020-07-09 12:25:58,299 - INFO - assign trainable variates for root_left_left_right_right_right_right : 14@253.
+2020-07-09 12:25:58,744 - INFO - calculate coordinate of root_left_left_right_right_right_right : 14@253.
+2020-07-09 12:25:59,576 - INFO - assign trainable variates for root_left_left_right_right_right : 15@253.
+2020-07-09 12:26:00,129 - INFO - calculate coordinate of root_left_left_right_right_right : 15@253.
+2020-07-09 12:26:00,984 - INFO - assign trainable variates for root_left_left_right_right : 16@253.
+2020-07-09 12:26:01,667 - INFO - calculate coordinate of root_left_left_right_right : 16@253.
+2020-07-09 12:26:02,556 - INFO - assign trainable variates for root_left_left_right : 17@253.
+2020-07-09 12:26:03,298 - INFO - calculate coordinate of root_left_left_right : 17@253.
+2020-07-09 12:26:04,158 - INFO - assign trainable variates for root_left_left : 18@253.
+2020-07-09 12:26:05,336 - INFO - calculate coordinate of root_left_left : 18@253.
+2020-07-09 12:26:06,115 - INFO - assign trainable variates for root_left_right_left_left_left_left : 19@253.
+2020-07-09 12:26:07,351 - INFO - assign trainable variates for root_left_right_left_left_left_right : 20@253.
+2020-07-09 12:26:08,218 - INFO - assign trainable variates for root_left_right_left_left_left : 21@253.
+2020-07-09 12:26:09,465 - INFO - calculate coordinate of root_left_right_left_left_left : 21@253.
+2020-07-09 12:26:10,302 - INFO - assign trainable variates for root_left_right_left_left_right_left : 22@253.
+2020-07-09 12:26:11,963 - INFO - assign trainable variates for root_left_right_left_left_right_right : 23@253.
+2020-07-09 12:26:12,935 - INFO - assign trainable variates for root_left_right_left_left_right : 24@253.
+2020-07-09 12:26:14,064 - INFO - calculate coordinate of root_left_right_left_left_right : 24@253.
+2020-07-09 12:26:14,872 - INFO - assign trainable variates for root_left_right_left_left : 25@253.
+2020-07-09 12:26:16,324 - INFO - calculate coordinate of root_left_right_left_left : 25@253.
+2020-07-09 12:26:16,979 - INFO - assign trainable variates for root_left_right_left_right_left : 26@253.
+2020-07-09 12:26:18,549 - INFO - assign trainable variates for root_left_right_left_right_right_left : 27@253.
+2020-07-09 12:26:20,268 - INFO - assign trainable variates for root_left_right_left_right_right_right : 28@253.
+2020-07-09 12:26:21,236 - INFO - assign trainable variates for root_left_right_left_right_right : 29@253.
+2020-07-09 12:26:22,262 - INFO - calculate coordinate of root_left_right_left_right_right : 29@253.
+2020-07-09 12:26:23,055 - INFO - assign trainable variates for root_left_right_left_right : 30@253.
+2020-07-09 12:26:24,328 - INFO - calculate coordinate of root_left_right_left_right : 30@253.
+2020-07-09 12:26:25,033 - INFO - assign trainable variates for root_left_right_left : 31@253.
+2020-07-09 12:26:26,748 - INFO - calculate coordinate of root_left_right_left : 31@253.

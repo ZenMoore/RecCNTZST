@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 import util
+import logging
 
 import config
 
@@ -217,7 +218,7 @@ def calc_coordinate(left, right):
 
     # if sess.run(tf.less(left.rec_obj['wirelen'], dist)) and sess.run(tf.less(right.rec_obj['wirelen'],
     #                                                                          dist)):  # if left.rec_obj['wirelen'] < dist and right.rec_obj['wirelen'] < dist:
-    #     print("case 1: non detour and non zero wire length")
+    #     logging.info()("case 1: non detour and non zero wire length")
     #     if sess.run(tf.less(left.rec_obj['wirelen'], right.rec_obj['wirelen'])):
     #
     #         left.num_bend = 1
@@ -280,7 +281,7 @@ def calc_coordinate(left, right):
     #     else:
     #         left.num_bend = 2
     #
-    #     print("case 2-1: no detour but left-child has a zero wire length")
+    #     logging.info()("case 2-1: no detour but left-child has a zero wire length")
     #     x = right.obj['x']
     #     y = right.obj['y']
     #
@@ -292,7 +293,7 @@ def calc_coordinate(left, right):
     #     else:
     #         right.num_bend = 2
     #
-    #     print("case 2-2: no detour but right-child has a zero wire length")
+    #     logging.info()("case 2-2: no detour but right-child has a zero wire length")
     #     x = left.obj['x']
     #     y = left.obj['y']
     #
@@ -301,7 +302,7 @@ def calc_coordinate(left, right):
     #     left.num_bend = 2
     #     right.num_bend = 1
     #
-    #     print('case 3-1: detour and the wirelen of left node is larger')
+    #     logging.info()('case 3-1: detour and the wirelen of left node is larger')
     #     if state == 1:
     #         if hor:
     #             x = right.obj['x']
@@ -328,7 +329,7 @@ def calc_coordinate(left, right):
     #     right.num_bend = 2
     #     left.num_bend = 1
     #
-    #     print('case 3-2, detour and the wirelen of right node is larger')
+    #     logging.info()('case 3-2, detour and the wirelen of right node is larger')
     #     if state == 1:
     #         if hor:
     #             x = left.obj['x']
@@ -351,7 +352,7 @@ def calc_coordinate(left, right):
     #         y = left.obj['y']
     #
     # else:
-    #     print('unknown case')
+    #     logging.info()('unknown case')
 
     left.num_bend = left_num_bend
     right.num_bend = right_num_bend
@@ -374,8 +375,8 @@ def weight(sess, node, variate, trainable=True):
                                   initializer=tf.truncated_normal_initializer(mean=mean, stddev=stddev),
                                   trainable=trainable, dtype=tf.float32)
         sess.run(weights.initializer)  # 是否需要 if(initialized)
-        print(str(weights), 'initialized.')
-        tf.summary.histogram('weights', weights)
+        logging.info(str(weights) + 'initialized.')
+        # tf.summary.histogram('weights', weights)
     return weights
 
 # def bia(trainable=True):
@@ -394,7 +395,7 @@ def merge(sess, left, right, father):
     left = merge_op(sess, left.left_child, left.right_child, left)
     right = merge_op(sess, right.left_child, right.right_child, right)
 
-    print('calculate coordinates of root : ' + str(current_node) + '@' + str(total_num_node) + '.')
+    logging.info('calculate coordinates of root : ' + str(current_node) + '@' + str(total_num_node) + '.')
 
     father.obj['x'], father.obj['y'] = calc_coordinate(left, right)
 
@@ -403,7 +404,7 @@ def merge(sess, left, right, father):
     if type(config.source_point['y']) is float:
         config.source_point['y'] = tf.convert_to_tensor(config.source_point['y'])
 
-    print('calculate number of bendings of root : ' + str(current_node) + '@' + str(total_num_node) + '.')
+    logging.info('calculate number of bendings of root : ' + str(current_node) + '@' + str(total_num_node) + '.')
     father.num_bend = tf.cond(tf.equal(father.obj['x'], config.source_point['x']) | tf.equal(father.obj['y'], config.source_point['y']),
             lambda : tf.convert_to_tensor(1),
             lambda : tf.convert_to_tensor(2))
@@ -413,7 +414,7 @@ def merge(sess, left, right, father):
     # else:
     #     father.num_bend = 2
 
-    print('assign trainable variates for root : ' + str(current_node) + '@' + str(total_num_node) + '.')
+    logging.info('assign trainable variates for root : ' + str(current_node) + '@' + str(total_num_node) + '.')
     father.rec_obj['wirelen'] = calc_dist(father, util.Tree(config.source_point))
 
     father.rec_obj['cdia'] = weight(sess, father, 'cdia')
@@ -436,7 +437,7 @@ def merge_op(sess, left, right, father):
         left = merge_op(sess, left.left_child, left.right_child, left)
         right = merge_op(sess, right.left_child, right.right_child, right)
 
-        print('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
+        logging.info('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         dist = calc_dist(left, right)
         right.rec_obj['wirelen'] = dist - left.rec_obj['wirelen']
         assert ((left.father is right.father) and (right.father is father))
@@ -455,11 +456,11 @@ def merge_op(sess, left, right, father):
         # father.rec_obj['diameter'] = tf.add((tf.matmul(left.rec_obj['diameter'], weight()) + bia()), (tf.matmul(right.rec_obj['diameter'], weight()) + bia()))
         # father.rec_obj['diameter'] = tf.clip_by_value(father.rec_obj['diameter'], config.dia_min, config.dia_max)
 
-        print('calculate coordinate of ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
+        logging.info('calculate coordinate of ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         father.obj['x'], father.obj['y'] = calc_coordinate(left, right)
-        with tf.name_scope(father.get_id() + '-' + 'coordinate'):
-            tf.summary.histogram('x', father.obj['x'])
-            tf.summary.histogram('y', father.obj['y'])
+        # with tf.name_scope(father.get_id() + '-' + 'coordinate'):
+        #     tf.summary.histogram('x', father.obj['x'])
+        #     tf.summary.histogram('y', father.obj['y'])
         # 直接将优化参量作为优化参数：直接计算法
 
     elif left is not None:
@@ -467,7 +468,7 @@ def merge_op(sess, left, right, father):
         assert (left.father is father)
         left = merge_op(sess, left.left_child, left.right_child, left)
 
-        print('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
+        logging.info('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         if not father is father.father.right_child:
             father.rec_obj['wirelen'] = weight(sess, father, 'wirelen')
         father.rec_obj['cdia'] = weight(sess, father, 'cdia')
@@ -482,17 +483,17 @@ def merge_op(sess, left, right, father):
         #
         # father.rec_obj['diameter'] = tf.matmul(left.rec_obj['diameter'], weight()) + bia()
         # father.rec_obj['diameter'] = tf.clip_by_value(father.rec_obj['diameter'], config.dia_min, config.dia_max)
-        print('calculate coordinate of ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
+        logging.info('calculate coordinate of ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         father.obj['x'], father.obj['y'] = calc_coordinate(left, right)
-        with tf.name_scope(father.get_id() + '-' + 'coordinate'):
-            tf.summary.histogram('x', father.obj['x'])
-            tf.summary.histogram('y', father.obj['y'])
+        # with tf.name_scope(father.get_id() + '-' + 'coordinate'):
+        #     tf.summary.histogram('x', father.obj['x'])
+        #     tf.summary.histogram('y', father.obj['y'])
 
     else:
 
         assert (father.isleaf is True)
 
-        print('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
+        logging.info('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         if father is not father.father.right_child:
             # 这时left和right的father是个sink
             # 将father.obj设置为trainable
@@ -515,6 +516,6 @@ def merge_op(sess, left, right, father):
 # 给整个递归神经网络加载参数
 # 在optimizer中调用用来计算损失以及反向传播
 def load(sess):
-    print('network loading...')
+    logging.info('network loading...')
     config.tree = merge(sess, config.tree.left_child, config.tree.right_child, config.tree)
-    print('network loaded.')
+    logging.info('network loaded.')

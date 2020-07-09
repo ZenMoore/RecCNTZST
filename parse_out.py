@@ -2,6 +2,7 @@ import config
 import util
 import matplotlib.pyplot as plt
 import os.path
+import logging
 
 ptlst = []  # point list
 
@@ -71,6 +72,7 @@ def generate_without_sess_op(node):
 
 
 def point_list(sess, step):
+    logging.info('generating ptlst...')
     if not os.path.exists(config.result_path + '/topo-' + str(config.topo_step)):
         os.makedirs(config.result_path + '/topo-' + str(config.topo_step))
     with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'w') as file:
@@ -82,6 +84,7 @@ def point_list(sess, step):
             file.write(str(data[2])), file.write(', ')
             file.write(str(data[3]))
             file.write('\n')
+    logging.info('ptlst generated.')
 
 def point_list_without_sess():
     if not os.path.exists(config.result_path + '/topo-' + str(config.topo_step)):
@@ -98,7 +101,7 @@ def point_list_without_sess():
 
 
 def draw(final_delay, lagrangian, step):
-    print('drawing...')
+    logging.info('drawing...')
     with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'r') as file:
         for line in file:
             ptlst.append((float(line.split(', ')[0]), float(line.split(', ')[1]), float(line.split(', ')[2]),
@@ -116,9 +119,9 @@ def draw(final_delay, lagrangian, step):
         mid = ptlst.pop()
         right = ptlst.pop()
 
-        # print([left[0], left[1]])
-        # print([mid[0], mid[1]])
-        # print([right[0], right[1]])
+        # logging.info([left[0], left[1]])
+        # logging.info([mid[0], mid[1]])
+        # logging.info([right[0], right[1]])
 
         fig = plt.figure(1)
         # plt.plot([left[0], mid[0]], [left[1], mid[1]], color='r')
@@ -137,5 +140,5 @@ def draw(final_delay, lagrangian, step):
     #     plt.scatter(right[0], right[1])
     #
     # plt.show()
-    print('waiting next figure...')
+    logging.info('waiting next figure...')
 

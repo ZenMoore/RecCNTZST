@@ -1,4 +1,5 @@
 import config
+import logging
 import numpy as np
 import tensorflow as tf
 import parse_topo as topoparser
@@ -70,7 +71,7 @@ def calc_delay():
     sink_node_set = config.tree.get_sinks()
 
     for node in sink_node_set:
-        print('calculating delay of sink%d, there remain %d.' % (
+        logging.info('calculating delay of sink%d, there remain %d.' % (
             sink_node_set.index(node), len(sink_node_set) - sink_node_set.index(node)))
         delay = tf.Variable(0, dtype=tf.float32)
         while node.father is not None:
@@ -419,7 +420,7 @@ def calc_lagrange(sess):
                                  trainable=True)
 
     sess.run(lagrangian.initializer)
-    print('lagrangian multiplier initialized.')
+    logging.info('lagrangian multiplier initialized.')
     max_delay, min_delay = get_tensors_max_min(sink_delay)
 
     return tf.multiply(lagrangian, (max_delay - min_delay)), max_delay - min_delay
@@ -433,66 +434,77 @@ def optimize():
         loader.load(sess)
 
         # 计算损失=总延时+等式约束
-        print('delay calculating...')
+        logging.info('delay calculating...')
         delay = calc_delay()
         tf.add_to_collection('losses', delay)
         tf.summary.scalar('delay', delay)
-        print('all delay calculated.')
+        logging.info('all delay calculated.')
 
-        print('calculating skew and lagrangian multiplier...')
+        logging.info('calculating skew and lagrangian multiplier...')
         lagrange, skew = calc_lagrange(sess)
         tf.add_to_collection('losses', lagrange)
         tf.summary.scalar('lagrangian multiplier', lagrange)
         tf.summary.scalar('skew', skew)
-        print('skew and lagrangian multiplier calculated.')
+        logging.info('skew and lagrangian multiplier calculated.')
 
-        print('calculating goal...')
+        logging.info('calculating goal...')
         goal = tf.add_n(tf.get_collection('losses'))
-        print('goal calculated.')
+        logging.info('goal calculated.')
 
         # 定义训练算法
         global_step = tf.Variable(0, name='global_step')
         sess.run(global_step.initializer)
-        print('global step initialized.')
+        logging.info('global step initialized.')
+
+        logging.info('define learning rate.')
         learning_rate = tf.train.exponential_decay(config.learning_rate_base, global_step, 1,
                                                    config.learning_rate_decay)  # todo
+        logging.info('defining optimizer...')
         train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(goal, global_step=global_step)  # todo
+        logging.info('optimizer defined.')
         # 暂时不使用滑动平均
         # variable_average = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
         # # variable_average_op = variable_average.apply(tf.trainable_variables())
         # with tf.control_dependencies([train_step, variable_average_op]): # 暂时不加入滑动平均
         #     train_op = tf.no_op()
+
+        logging.info('define saver.')
         saver = tf.train.Saver()
 
         # for variable in tf.get_collection(tf.GraphKeys.VARIABLES):
-        #     print('initializing ' + str(variable))
+        #     logging.info('initializing ' + str(variable))
         #     variable.initializer.run()
 
-        # print('initializing global variables...')
+        # logging.info('initializing global variables...')
         # # tf.global_variables_initializer().run()
-        # print('global variables initialized.')
+        # logging.info('global variables initialized.')
 
         # visualization
+        logging.info('merging all figure...')
         painter = tf.summary.FileWriter(config.tensorboard_dir + '/topo-' + str(config.topo_step))
+        logging.info('add operation graph.')
         painter.add_graph(sess.graph)
         all_fig = tf.summary.merge_all()
+        logging.info('all figure merged.')
 
         for i in range(config.num_steps):
-            print('training...')
+            logging.info('step-' + str(i) + 'training...')
             _, goal_value, step = sess.run([train_step, goal, global_step])
-            print('trained.')
+            logging.info('step-' + str(i) + 'trained.')
 
             if i % 100 == 0:
-                print("After %d steps of training, goal value is %g ." % (step, goal_value))
-                print("And the total delay of the whole tree is: ", end=None)
+                logging.info("After %d steps of training, goal value is %g ." % (step, goal_value))
+                logging.info("And the total delay of the whole tree is: ", end=None)
                 final_delay = sess.run(delay)
-                print(final_delay)
-                print("And the lagrange-value of equality constraints: ", end=None)
+                logging.info(str(final_delay))
+                logging.info("And the lagrange-value of equality constraints: ", end=None)
                 lag_multiplier = sess.run(lagrange)
-                print(lag_multiplier)
+                logging.info(str(lag_multiplier))
 
+                logging.info('saving model...')
                 saver.save(sess, os.path.join(config.model_path + '/topo-' + str(config.topo_step), config.model_name),
                            global_step=global_step)
+                logging.info('model saved.')
 
                 # dynamic visualization
                 painter.add_summary(all_fig, i)
@@ -504,7 +516,7 @@ def optimize():
 
 
 def main(argv=None):
-    print('optimizing...')
+    logging.info('optimizing...')
     while config.topo_step <= config.max_topo_step:
         if config.topo_step == 0:
             if topoparser.parse():
