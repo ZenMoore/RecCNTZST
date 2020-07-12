@@ -15,4 +15,4 @@ Log of debugging
 7.9x2 去掉所有 weight 和 coordinate 的 histogram, 引入 log 机制 
 > optimizer  加载有问题，触发 Windows fatal exception: access violation
 
-7.9x3 todo 用tensorflow-gpu 1.14.0
+7.12x1 部署到实验室 79 服务器

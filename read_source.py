@@ -58,6 +58,9 @@ def read():
 
     return True
 
+# todo
+def read_from_ptlst():
+    return None
 
 def draw_sink_nodes():
     headers = config.headers
