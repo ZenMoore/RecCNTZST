@@ -9,8 +9,8 @@ headers = []
 source_dir = "./benchmark/source.txt"
 
 # node config
-meta_ini = {'r':0,
-            'c':0,
+meta_ini = {'r':None,
+            'c':None,
             'x':0,
             'y':0}  # (r, c, x, y)
 rec_ini = {'wirelen':0,
@@ -21,6 +21,7 @@ shadow_ini = int(0)  # buffer_type
 
 # topo config
 tree = None
+scalar_tree = True
 
 #training configuration
 gpu_options = tf.GPUOptions(allow_growth=True)

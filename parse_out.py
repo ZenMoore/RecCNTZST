@@ -8,6 +8,9 @@ ptlst = []  # point list
 
 
 def generate_ptlst(sess):
+    global ptlst
+    ptlst = []
+
     ptlst.append((sess.run(config.tree.left_child.obj['x']),
                   sess.run(config.tree.left_child.obj['y']),
                   sess.run(config.tree.left_child.rec_obj['cdia']),
@@ -25,6 +28,7 @@ def generate_ptlst(sess):
 
 
 def generate_op(sess, node):
+    global ptlst
     if node.left_child is not None:
         generate_op(sess, node.left_child)
     if node.right_child is not None:
@@ -45,6 +49,9 @@ def generate_op(sess, node):
 
 
 def generate_without_sess():
+    global ptlst
+    ptlst = []
+
     ptlst.append((config.tree.left_child.obj['x'], config.tree.left_child.obj['y'],
                   config.tree.left_child.rec_obj['cdia'], config.tree.left_child.rec_obj['bdia']))
     ptlst.append((config.tree.obj['x'], config.tree.obj['y'], config.tree.rec_obj['cdia'], config.tree.rec_obj['bdia']))
@@ -54,6 +61,8 @@ def generate_without_sess():
 
 
 def generate_without_sess_op(node):
+    global ptlst
+
     if node.left_child is not None:
         generate_without_sess_op(node.left_child)
     if node.right_child is not None:
@@ -72,6 +81,7 @@ def generate_without_sess_op(node):
 
 
 def point_list(sess, step):
+    global ptlst
     logging.info('generating ptlst...')
     if not os.path.exists(config.result_path + '/topo-' + str(config.topo_step)):
         os.makedirs(config.result_path + '/topo-' + str(config.topo_step))
@@ -87,6 +97,8 @@ def point_list(sess, step):
     logging.info('ptlst generated.')
 
 def point_list_without_sess():
+    global ptlst
+
     if not os.path.exists(config.result_path + '/topo-' + str(config.topo_step)):
         os.makedirs(config.result_path + '/topo-' + str(config.topo_step))
     with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + 'topo' + '.ptlst', 'w') as file:
@@ -101,6 +113,9 @@ def point_list_without_sess():
 
 
 def draw(final_delay, lagrangian, step):
+    global ptlst
+    ptlst = []
+
     logging.info('drawing...')
     with open(config.result_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'r') as file:
         for line in file:

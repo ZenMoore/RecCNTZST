@@ -429,9 +429,13 @@ def calc_lagrange(sess):
 # 优化算法也就是反向传播算法
 def optimize():
     with tf.Session(config=config.train_config) as sess:
+
+        tf.reset_default_graph()
+
     # with tf.Session() as sess:
         # 加载前向传播的树结构
         loader.load(sess)
+        config.scalar_tree = False
 
         # 计算损失=总延时+等式约束
         logging.info('delay calculating...')

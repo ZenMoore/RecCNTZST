@@ -70,10 +70,22 @@ def print_path(construct_path):
         logging.info(e)
 
 
+def same_father(left, right):
+    if not config.scalar_tree:
+        config.tree.scalarize()
+        config.scalar_tree = True
+    left_node = config.tree.find(left)
+    right_node = config.tree.find(right)
+    if left_node.father is right_node.father:
+        return left_node.father
+    else:
+        return None
+
+
 # 返回是否生成成功
 # using nearest neighbor selection
 # 先按照 MMM-Mode 构建初始拓扑，跑完前向收敛后按照相应参数重新构建拓扑，循环往复几遍，认为可达到最优拓扑
-def generate():
+def generate(initial=True):
     logging.info('parsing topology...')
 
     sink_set = config.sink_set
@@ -96,7 +108,14 @@ def generate():
         recur_set.remove(left)
 
         recur_set.remove(right)
-        merging_point = merge_point(left, right)
+        if initial:
+            merging_point = merge_point(left, right)
+        else:
+            father = same_father(left, right)
+            if father is not None:
+                merging_point = father
+            else:
+                merging_point = merge_point(left, right)
         recur_set.append(merging_point)
 
         # merge tree topo
@@ -123,7 +142,7 @@ def generate():
 
     # 画出拓扑
     outparser.point_list_without_sess()
-    outparser.draw(-1, -1, 'topo')  # 仅画出拓扑结构，不是绕线结果
+    outparser.draw(-1, -1, 'topo-' + str(config.topo_step))  # 仅画出拓扑结构，不是绕线结果
 
     return True  # always
 
@@ -136,8 +155,7 @@ def parse():
         raise Exception("reading failed: ", config.source_dir)
 
 def update():
-    # 从 point list 里面读取，然后重新 parse
-    return None
+    return generate(initial=False)
 
 
 if __name__ == '__main__':

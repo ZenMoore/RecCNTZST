@@ -10,7 +10,7 @@
 # #    二叉树的节点表示cnt type和buffer type
 # # ----for future----
 import config
-
+import tensorflow as tf
 
 # todo 为防止optimizer在读取值的时候误更新，可以加一层保护机制，比如，新加只读或者读写的控制参数
 # todo 新增数据域 name_scope, 方便修正 variable/tensor 的名称体系，从而方便可视化等等
@@ -156,6 +156,26 @@ class Tree:
     #     return ShadowTree(self)
 
     '''树扩展功能函数群'''
+
+    def scalarize(self, sess=None):
+        if sess is None:
+            with tf.Session() as sess:
+                if self.left_child is not None:
+                    self.left_child.scalarize(sess)
+                if self.right_child is not None:
+                    self.right_child.scalarize(sess)
+                self.obj['x'] = sess.run(self.obj['x'])
+                self.obj['y'] = sess.run(self.obj['y'])
+                self.rec_obj = config.rec_ini
+        else:
+            if self.left_child is not None:
+                self.left_child.scalarize(sess)
+            if self.right_child is not None:
+                self.right_child.scalarize(sess)
+            self.obj['x'] = sess.run(self.obj['x'])
+            self.obj['y'] = sess.run(self.obj['y'])
+            self.rec_obj = config.rec_ini
+
 
     def load_node_set(self):
         config.node_set = []
