@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import logging
 import datetime
 
@@ -32,6 +32,9 @@ learning_rate_base = 0.01
 learning_rate_decay = 0.8
 num_steps = 1000  # 最大迭代轮数
 # initialized_weights = []
+
+# forprop variables
+# trainable_variables = []
 
 # technique limitation
 # unit=nm

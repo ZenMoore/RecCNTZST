@@ -1,7 +1,7 @@
 import config
 import logging
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import parse_topo as topoparser
 import recursive as loader
 import os
@@ -412,15 +412,15 @@ def calc_node_delay(node):
 
 
 # 计算引入拉格朗日乘子后的等式约束
-def calc_lagrange(sess):
+def calc_lagrange():
 
     # 将拉格朗日乘子作为训练参数，梯度下降时候，向对拉格朗日乘子偏导等于零的方向下降
     # todo 如何保证偏导下降到等于零，这是一种 trade-off 吗？trade-off 比例参数在哪里设置？
     lagrangian = tf.get_variable("lagrangian_multiplier", shape=(), initializer=tf.truncated_normal_initializer(stddev=0.1),
                                  trainable=True)
 
-    sess.run(lagrangian.initializer)
-    logging.info('lagrangian multiplier initialized.')
+    # sess.run(lagrangian.initializer)
+    # logging.info('lagrangian multiplier initialized.')
     max_delay, min_delay = get_tensors_max_min(sink_delay)
 
     return tf.multiply(lagrangian, (max_delay - min_delay)), max_delay - min_delay
@@ -428,10 +428,12 @@ def calc_lagrange(sess):
 
 # 优化算法也就是反向传播算法
 def optimize():
+
+    tf.reset_default_graph()
+    tf.compat.v1.experimental.output_all_intermediates(True)
+    # config.trainable_variables = []
+
     with tf.Session(config=config.train_config) as sess:
-
-        tf.reset_default_graph()
-
     # with tf.Session() as sess:
         # 加载前向传播的树结构
         loader.load(sess)
@@ -457,8 +459,14 @@ def optimize():
 
         # 定义训练算法
         global_step = tf.Variable(0, name='global_step')
-        sess.run(global_step.initializer)
-        logging.info('global step initialized.')
+        # sess.run(global_step.initializer)
+        # logging.info('global step initialized.')
+
+        # sess.run(config.trainable_variables)
+
+        logging.info('initializing...')
+        sess.run(tf.global_variables_initializer())
+        logging.info('initialized.')
 
         logging.info('define learning rate.')
         learning_rate = tf.train.exponential_decay(config.learning_rate_base, global_step, 1,

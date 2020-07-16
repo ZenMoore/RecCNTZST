@@ -1,5 +1,5 @@
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import util
 import logging
 
@@ -359,7 +359,7 @@ def calc_coordinate(left, right):
     return x, y
 
 
-def weight(sess, node, variate, trainable=True):
+def weight(node, variate, trainable=True):
     # name = node.get_id() + '-' + variate
     if variate == 'wirelen':
         mean = 20.0
@@ -374,8 +374,10 @@ def weight(sess, node, variate, trainable=True):
         weights = tf.get_variable(variate, shape=[],
                                   initializer=tf.truncated_normal_initializer(mean=mean, stddev=stddev),
                                   trainable=trainable, dtype=tf.float32)
-        sess.run(weights.initializer)  # 是否需要 if(initialized)
-        logging.info(str(weights) + 'initialized.')
+        # sess.run(weights.initializer)  # 是否需要 if(initialized)
+        # config.trainable_variables.append(weights.initializer)
+        # logging.info(str(weights) + 'initialized.')
+        logging.info(str(weights) + ' created.')
         # tf.summary.histogram('weights', weights)
     return weights
 
@@ -386,14 +388,14 @@ def weight(sess, node, variate, trainable=True):
 #         bias = tf.get_variable("bias", shape=(1), initializer=tf.truncated_normal_initializer(stddev=0.1), trainable=trainable)
 #     return bias
 
-def merge(sess, left, right, father):
+def merge(left, right, father):
 
     global total_num_node
     global current_node
     total_num_node = father.size()
 
-    left = merge_op(sess, left.left_child, left.right_child, left)
-    right = merge_op(sess, right.left_child, right.right_child, right)
+    left = merge_op(left.left_child, left.right_child, left)
+    right = merge_op(right.left_child, right.right_child, right)
 
     logging.info('calculate coordinates of root : ' + str(current_node) + '@' + str(total_num_node) + '.')
 
@@ -417,9 +419,9 @@ def merge(sess, left, right, father):
     logging.info('assign trainable variates for root : ' + str(current_node) + '@' + str(total_num_node) + '.')
     father.rec_obj['wirelen'] = calc_dist(father, util.Tree(config.source_point))
 
-    father.rec_obj['cdia'] = weight(sess, father, 'cdia')
+    father.rec_obj['cdia'] = weight(father, 'cdia')
     father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-    father.rec_obj['bdia'] = weight(sess, father, 'bdia')
+    father.rec_obj['bdia'] = weight(father, 'bdia')
     father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
     current_node = current_node + 1
@@ -428,24 +430,24 @@ def merge(sess, left, right, father):
 
 
 # 注意 trainable_variables 的分配
-def merge_op(sess, left, right, father):
+def merge_op(left, right, father):
     global total_num_node
     global current_node
 
     if right is not None:
 
-        left = merge_op(sess, left.left_child, left.right_child, left)
-        right = merge_op(sess, right.left_child, right.right_child, right)
+        left = merge_op(left.left_child, left.right_child, left)
+        right = merge_op(right.left_child, right.right_child, right)
 
         logging.info('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         dist = calc_dist(left, right)
         right.rec_obj['wirelen'] = dist - left.rec_obj['wirelen']
         assert ((left.father is right.father) and (right.father is father))
         if not father is father.father.right_child:
-            father.rec_obj['wirelen'] = weight(sess, father, 'wirelen')
-        father.rec_obj['cdia'] = weight(sess, father, 'cdia')
+            father.rec_obj['wirelen'] = weight(father, 'wirelen')
+        father.rec_obj['cdia'] = weight(father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(sess, father, 'bdia')
+        father.rec_obj['bdia'] = weight(father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
         # 使用参数w的传播计算法
@@ -466,14 +468,14 @@ def merge_op(sess, left, right, father):
     elif left is not None:
         assert (left.father.right_child is None)
         assert (left.father is father)
-        left = merge_op(sess, left.left_child, left.right_child, left)
+        left = merge_op(left.left_child, left.right_child, left)
 
         logging.info('assign trainable variates for ' + father.get_id() + ' : ' + str(current_node) + '@' + str(total_num_node) + '.')
         if not father is father.father.right_child:
-            father.rec_obj['wirelen'] = weight(sess, father, 'wirelen')
-        father.rec_obj['cdia'] = weight(sess, father, 'cdia')
+            father.rec_obj['wirelen'] = weight(father, 'wirelen')
+        father.rec_obj['cdia'] = weight(father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(sess, father, 'bdia')
+        father.rec_obj['bdia'] = weight(father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
 
         # father.rec_obj['wirelen'] = weight(sess)
@@ -497,10 +499,10 @@ def merge_op(sess, left, right, father):
         if father is not father.father.right_child:
             # 这时left和right的father是个sink
             # 将father.obj设置为trainable
-            father.rec_obj['wirelen'] = weight(sess, father, 'wirelen')
-        father.rec_obj['cdia'] = weight(sess, father, 'cdia')
+            father.rec_obj['wirelen'] = weight(father, 'wirelen')
+        father.rec_obj['cdia'] = weight(father, 'cdia')
         father.rec_obj['cdia'] = tf.clip_by_value(father.rec_obj['cdia'], config.cdia_min, config.cdia_max)
-        father.rec_obj['bdia'] = weight(sess, father, 'bdia')
+        father.rec_obj['bdia'] = weight(father, 'bdia')
         father.rec_obj['bdia'] = tf.clip_by_value(father.rec_obj['bdia'], config.bdia_min, config.bdia_max)
         # father.rec_obj[0] = tf.add((tf.matmul(fic_left[0], weight()) + bia()), (tf.matmul(fic_right[0], weight()) + bia()))
         # father.rec_obj[1] = tf.add((tf.matmul(fic_left[1], weight()) + bia()), (tf.matmul(fic_right[1], weight()) + bia()))
@@ -515,7 +517,7 @@ def merge_op(sess, left, right, father):
 
 # 给整个递归神经网络加载参数
 # 在optimizer中调用用来计算损失以及反向传播
-def load(sess):
+def load():
     logging.info('network loading...')
-    config.tree = merge(sess, config.tree.left_child, config.tree.right_child, config.tree)
+    config.tree = merge(config.tree.left_child, config.tree.right_child, config.tree)
     logging.info('network loaded.')
