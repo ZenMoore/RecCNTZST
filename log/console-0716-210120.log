@@ -1,0 +1,1079 @@
+2020-07-16 21:01:20,315 - INFO - optimizing...
+2020-07-16 21:01:20,315 - INFO - reading benchmark...
+2020-07-16 21:01:20,319 - INFO - benchmark read.
+2020-07-16 21:01:20,319 - INFO - parsing topology...
+2020-07-16 21:01:24,493 - INFO - topology parsed.
+2020-07-16 21:01:24,499 - INFO - drawing...
+2020-07-16 21:02:42,184 - INFO - waiting next figure...
+2020-07-16 21:02:43,109 - INFO - network loading...
+2020-07-16 21:02:43,110 - INFO - assign trainable variates for root_left_left_left : 0@253.
+2020-07-16 21:02:43,317 - WARNING - From /home/wangzekun/miniconda3/lib/python3.7/site-packages/tensorflow/python/ops/resource_variable_ops.py:1666: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+2020-07-16 21:02:43,317 - INFO - <tf.Variable 'root_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,330 - INFO - <tf.Variable 'root_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,346 - INFO - <tf.Variable 'root_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,350 - INFO - assign trainable variates for root_left_left_right_left_left : 1@253.
+2020-07-16 21:02:43,362 - INFO - <tf.Variable 'root_left_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,375 - INFO - <tf.Variable 'root_left_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,390 - INFO - <tf.Variable 'root_left_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,394 - INFO - assign trainable variates for root_left_left_right_left_right : 2@253.
+2020-07-16 21:02:43,406 - INFO - <tf.Variable 'root_left_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,422 - INFO - <tf.Variable 'root_left_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,426 - INFO - assign trainable variates for root_left_left_right_left : 3@253.
+2020-07-16 21:02:43,443 - INFO - <tf.Variable 'root_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,455 - INFO - <tf.Variable 'root_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,471 - INFO - <tf.Variable 'root_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:02:43,475 - INFO - calculate coordinate of root_left_left_right_left : 3@253.
+2020-07-16 21:03:23,339 - INFO - assign trainable variates for root_left_left_right_right_left : 4@253.
+2020-07-16 21:03:23,352 - INFO - <tf.Variable 'root_left_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,364 - INFO - <tf.Variable 'root_left_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,380 - INFO - <tf.Variable 'root_left_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,384 - INFO - assign trainable variates for root_left_left_right_right_right_left_left : 5@253.
+2020-07-16 21:03:23,396 - INFO - <tf.Variable 'root_left_left_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,408 - INFO - <tf.Variable 'root_left_left_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,424 - INFO - <tf.Variable 'root_left_left_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,428 - INFO - assign trainable variates for root_left_left_right_right_right_left_right_left : 6@253.
+2020-07-16 21:03:23,440 - INFO - <tf.Variable 'root_left_left_right_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,452 - INFO - <tf.Variable 'root_left_left_right_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,468 - INFO - <tf.Variable 'root_left_left_right_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,472 - INFO - assign trainable variates for root_left_left_right_right_right_left_right_right : 7@253.
+2020-07-16 21:03:23,484 - INFO - <tf.Variable 'root_left_left_right_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,500 - INFO - <tf.Variable 'root_left_left_right_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,504 - INFO - assign trainable variates for root_left_left_right_right_right_left_right : 8@253.
+2020-07-16 21:03:23,521 - INFO - <tf.Variable 'root_left_left_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,537 - INFO - <tf.Variable 'root_left_left_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:23,540 - INFO - calculate coordinate of root_left_left_right_right_right_left_right : 8@253.
+2020-07-16 21:03:56,973 - INFO - assign trainable variates for root_left_left_right_right_right_left : 9@253.
+2020-07-16 21:03:56,992 - INFO - <tf.Variable 'root_left_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:03:57,005 - INFO - <tf.Variable 'root_left_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:57,021 - INFO - <tf.Variable 'root_left_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:03:57,025 - INFO - calculate coordinate of root_left_left_right_right_right_left : 9@253.
+2020-07-16 21:04:37,300 - INFO - assign trainable variates for root_left_left_right_right_right_right_left : 10@253.
+2020-07-16 21:04:37,314 - INFO - <tf.Variable 'root_left_left_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,326 - INFO - <tf.Variable 'root_left_left_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,343 - INFO - <tf.Variable 'root_left_left_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,346 - INFO - assign trainable variates for root_left_left_right_right_right_right_right_left : 11@253.
+2020-07-16 21:04:37,359 - INFO - <tf.Variable 'root_left_left_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,371 - INFO - <tf.Variable 'root_left_left_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,387 - INFO - <tf.Variable 'root_left_left_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,391 - INFO - assign trainable variates for root_left_left_right_right_right_right_right_right : 12@253.
+2020-07-16 21:04:37,404 - INFO - <tf.Variable 'root_left_left_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,420 - INFO - <tf.Variable 'root_left_left_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,424 - INFO - assign trainable variates for root_left_left_right_right_right_right_right : 13@253.
+2020-07-16 21:04:37,441 - INFO - <tf.Variable 'root_left_left_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,457 - INFO - <tf.Variable 'root_left_left_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:04:37,461 - INFO - calculate coordinate of root_left_left_right_right_right_right_right : 13@253.
+2020-07-16 21:05:12,835 - INFO - assign trainable variates for root_left_left_right_right_right_right : 14@253.
+2020-07-16 21:05:12,856 - INFO - <tf.Variable 'root_left_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:05:12,873 - INFO - <tf.Variable 'root_left_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:05:12,877 - INFO - calculate coordinate of root_left_left_right_right_right_right : 14@253.
+2020-07-16 21:05:46,392 - INFO - assign trainable variates for root_left_left_right_right_right : 15@253.
+2020-07-16 21:05:46,409 - INFO - <tf.Variable 'root_left_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:05:46,425 - INFO - <tf.Variable 'root_left_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:05:46,429 - INFO - calculate coordinate of root_left_left_right_right_right : 15@253.
+2020-07-16 21:06:20,805 - INFO - assign trainable variates for root_left_left_right_right : 16@253.
+2020-07-16 21:06:20,824 - INFO - <tf.Variable 'root_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:06:20,840 - INFO - <tf.Variable 'root_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:06:20,844 - INFO - calculate coordinate of root_left_left_right_right : 16@253.
+2020-07-16 21:06:51,421 - INFO - assign trainable variates for root_left_left_right : 17@253.
+2020-07-16 21:06:51,439 - INFO - <tf.Variable 'root_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:06:51,456 - INFO - <tf.Variable 'root_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:06:51,459 - INFO - calculate coordinate of root_left_left_right : 17@253.
+2020-07-16 21:07:26,814 - INFO - assign trainable variates for root_left_left : 18@253.
+2020-07-16 21:07:26,833 - INFO - <tf.Variable 'root_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:07:26,845 - INFO - <tf.Variable 'root_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:07:26,861 - INFO - <tf.Variable 'root_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:07:26,864 - INFO - calculate coordinate of root_left_left : 18@253.
+2020-07-16 21:08:09,312 - INFO - assign trainable variates for root_left_right_left_left_left_left : 19@253.
+2020-07-16 21:08:09,326 - INFO - <tf.Variable 'root_left_right_left_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:08:09,338 - INFO - <tf.Variable 'root_left_right_left_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:09,354 - INFO - <tf.Variable 'root_left_right_left_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:09,358 - INFO - assign trainable variates for root_left_right_left_left_left_right : 20@253.
+2020-07-16 21:08:09,371 - INFO - <tf.Variable 'root_left_right_left_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:09,387 - INFO - <tf.Variable 'root_left_right_left_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:09,391 - INFO - assign trainable variates for root_left_right_left_left_left : 21@253.
+2020-07-16 21:08:09,408 - INFO - <tf.Variable 'root_left_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:08:09,421 - INFO - <tf.Variable 'root_left_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:09,437 - INFO - <tf.Variable 'root_left_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:09,441 - INFO - calculate coordinate of root_left_right_left_left_left : 21@253.
+2020-07-16 21:08:46,399 - INFO - assign trainable variates for root_left_right_left_left_right_left : 22@253.
+2020-07-16 21:08:46,414 - INFO - <tf.Variable 'root_left_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:08:46,426 - INFO - <tf.Variable 'root_left_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:46,442 - INFO - <tf.Variable 'root_left_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:46,446 - INFO - assign trainable variates for root_left_right_left_left_right_right : 23@253.
+2020-07-16 21:08:46,459 - INFO - <tf.Variable 'root_left_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:46,475 - INFO - <tf.Variable 'root_left_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:46,479 - INFO - assign trainable variates for root_left_right_left_left_right : 24@253.
+2020-07-16 21:08:46,496 - INFO - <tf.Variable 'root_left_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:46,512 - INFO - <tf.Variable 'root_left_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:08:46,516 - INFO - calculate coordinate of root_left_right_left_left_right : 24@253.
+2020-07-16 21:09:24,205 - INFO - assign trainable variates for root_left_right_left_left : 25@253.
+2020-07-16 21:09:24,223 - INFO - <tf.Variable 'root_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:09:24,235 - INFO - <tf.Variable 'root_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:09:24,251 - INFO - <tf.Variable 'root_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:09:24,255 - INFO - calculate coordinate of root_left_right_left_left : 25@253.
+2020-07-16 21:10:01,285 - INFO - assign trainable variates for root_left_right_left_right_left : 26@253.
+2020-07-16 21:10:01,300 - INFO - <tf.Variable 'root_left_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,313 - INFO - <tf.Variable 'root_left_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,330 - INFO - <tf.Variable 'root_left_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,334 - INFO - assign trainable variates for root_left_right_left_right_right_left : 27@253.
+2020-07-16 21:10:01,346 - INFO - <tf.Variable 'root_left_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,359 - INFO - <tf.Variable 'root_left_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,375 - INFO - <tf.Variable 'root_left_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,379 - INFO - assign trainable variates for root_left_right_left_right_right_right : 28@253.
+2020-07-16 21:10:01,391 - INFO - <tf.Variable 'root_left_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,408 - INFO - <tf.Variable 'root_left_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,411 - INFO - assign trainable variates for root_left_right_left_right_right : 29@253.
+2020-07-16 21:10:01,429 - INFO - <tf.Variable 'root_left_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,445 - INFO - <tf.Variable 'root_left_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:01,449 - INFO - calculate coordinate of root_left_right_left_right_right : 29@253.
+2020-07-16 21:10:40,559 - INFO - assign trainable variates for root_left_right_left_right : 30@253.
+2020-07-16 21:10:40,577 - INFO - <tf.Variable 'root_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:40,594 - INFO - <tf.Variable 'root_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:10:40,597 - INFO - calculate coordinate of root_left_right_left_right : 30@253.
+2020-07-16 21:11:11,313 - INFO - assign trainable variates for root_left_right_left : 31@253.
+2020-07-16 21:11:11,332 - INFO - <tf.Variable 'root_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:11:11,344 - INFO - <tf.Variable 'root_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:11,361 - INFO - <tf.Variable 'root_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:11,365 - INFO - calculate coordinate of root_left_right_left : 31@253.
+2020-07-16 21:11:59,592 - INFO - assign trainable variates for root_left_right_right_left : 32@253.
+2020-07-16 21:11:59,606 - INFO - <tf.Variable 'root_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,619 - INFO - <tf.Variable 'root_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,635 - INFO - <tf.Variable 'root_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,639 - INFO - assign trainable variates for root_left_right_right_right_left_left_left : 33@253.
+2020-07-16 21:11:59,651 - INFO - <tf.Variable 'root_left_right_right_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,663 - INFO - <tf.Variable 'root_left_right_right_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,679 - INFO - <tf.Variable 'root_left_right_right_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,683 - INFO - assign trainable variates for root_left_right_right_right_left_left_right : 34@253.
+2020-07-16 21:11:59,696 - INFO - <tf.Variable 'root_left_right_right_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,712 - INFO - <tf.Variable 'root_left_right_right_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,715 - INFO - assign trainable variates for root_left_right_right_right_left_left : 35@253.
+2020-07-16 21:11:59,733 - INFO - <tf.Variable 'root_left_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,745 - INFO - <tf.Variable 'root_left_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,761 - INFO - <tf.Variable 'root_left_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:11:59,765 - INFO - calculate coordinate of root_left_right_right_right_left_left : 35@253.
+2020-07-16 21:12:36,830 - INFO - assign trainable variates for root_left_right_right_right_left_right_left_left_left : 36@253.
+2020-07-16 21:12:36,843 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:12:36,855 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:12:36,872 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:12:36,875 - INFO - assign trainable variates for root_left_right_right_right_left_right_left_left_right : 37@253.
+2020-07-16 21:12:36,888 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:12:36,904 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:12:36,908 - INFO - assign trainable variates for root_left_right_right_right_left_right_left_left : 38@253.
+2020-07-16 21:12:36,925 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:12:36,938 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:12:36,954 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:12:36,958 - INFO - calculate coordinate of root_left_right_right_right_left_right_left_left : 38@253.
+2020-07-16 21:13:14,010 - INFO - assign trainable variates for root_left_right_right_right_left_right_left_right_left : 39@253.
+2020-07-16 21:13:14,025 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,037 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,054 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,058 - INFO - assign trainable variates for root_left_right_right_right_left_right_left_right_right_left : 40@253.
+2020-07-16 21:13:14,072 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,084 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,100 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,104 - INFO - assign trainable variates for root_left_right_right_right_left_right_left_right_right_right : 41@253.
+2020-07-16 21:13:14,117 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,133 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,137 - INFO - assign trainable variates for root_left_right_right_right_left_right_left_right_right : 42@253.
+2020-07-16 21:13:14,154 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,171 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:14,175 - INFO - calculate coordinate of root_left_right_right_right_left_right_left_right_right : 42@253.
+2020-07-16 21:13:57,329 - INFO - assign trainable variates for root_left_right_right_right_left_right_left_right : 43@253.
+2020-07-16 21:13:57,350 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:57,366 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:13:57,370 - INFO - calculate coordinate of root_left_right_right_right_left_right_left_right : 43@253.
+2020-07-16 21:14:28,237 - INFO - assign trainable variates for root_left_right_right_right_left_right_left : 44@253.
+2020-07-16 21:14:28,254 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:14:28,267 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:14:28,283 - INFO - <tf.Variable 'root_left_right_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:14:28,287 - INFO - calculate coordinate of root_left_right_right_right_left_right_left : 44@253.
+2020-07-16 21:15:05,373 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_left_left : 45@253.
+2020-07-16 21:15:05,389 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,401 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,418 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,421 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_left_right_left : 46@253.
+2020-07-16 21:15:05,434 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,446 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,462 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,466 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_left_right_right_left : 47@253.
+2020-07-16 21:15:05,479 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,491 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,507 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,511 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_left_right_right_right : 48@253.
+2020-07-16 21:15:05,524 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,540 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,544 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_left_right_right : 49@253.
+2020-07-16 21:15:05,561 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,578 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:05,581 - INFO - calculate coordinate of root_left_right_right_right_left_right_right_left_right_right : 49@253.
+2020-07-16 21:15:51,565 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_left_right : 50@253.
+2020-07-16 21:15:51,583 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:51,600 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:15:51,604 - INFO - calculate coordinate of root_left_right_right_right_left_right_right_left_right : 50@253.
+2020-07-16 21:16:22,431 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_left : 51@253.
+2020-07-16 21:16:22,452 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:16:22,464 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:16:22,481 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:16:22,485 - INFO - calculate coordinate of root_left_right_right_right_left_right_right_left : 51@253.
+2020-07-16 21:16:59,720 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_right_left_left : 52@253.
+2020-07-16 21:16:59,733 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:16:59,746 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:16:59,762 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:16:59,766 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_right_left_right : 53@253.
+2020-07-16 21:16:59,779 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:16:59,795 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:16:59,799 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_right_left : 54@253.
+2020-07-16 21:16:59,816 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:16:59,829 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:16:59,845 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:16:59,849 - INFO - calculate coordinate of root_left_right_right_right_left_right_right_right_left : 54@253.
+2020-07-16 21:17:37,030 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_right_right_left : 55@253.
+2020-07-16 21:17:37,045 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:17:37,058 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:17:37,074 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:17:37,078 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_right_right_right : 56@253.
+2020-07-16 21:17:37,091 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:17:37,107 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:17:37,111 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_right_right : 57@253.
+2020-07-16 21:17:37,129 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:17:37,146 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:17:37,150 - INFO - calculate coordinate of root_left_right_right_right_left_right_right_right_right : 57@253.
+2020-07-16 21:18:25,921 - INFO - assign trainable variates for root_left_right_right_right_left_right_right_right : 58@253.
+2020-07-16 21:18:25,938 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:18:25,955 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:18:25,959 - INFO - calculate coordinate of root_left_right_right_right_left_right_right_right : 58@253.
+2020-07-16 21:18:56,895 - INFO - assign trainable variates for root_left_right_right_right_left_right_right : 59@253.
+2020-07-16 21:18:56,912 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:18:56,929 - INFO - <tf.Variable 'root_left_right_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:18:56,933 - INFO - calculate coordinate of root_left_right_right_right_left_right_right : 59@253.
+2020-07-16 21:19:27,805 - INFO - assign trainable variates for root_left_right_right_right_left_right : 60@253.
+2020-07-16 21:19:27,825 - INFO - <tf.Variable 'root_left_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:19:27,841 - INFO - <tf.Variable 'root_left_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:19:27,845 - INFO - calculate coordinate of root_left_right_right_right_left_right : 60@253.
+2020-07-16 21:19:58,780 - INFO - assign trainable variates for root_left_right_right_right_left : 61@253.
+2020-07-16 21:19:58,797 - INFO - <tf.Variable 'root_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:19:58,810 - INFO - <tf.Variable 'root_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:19:58,826 - INFO - <tf.Variable 'root_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:19:58,830 - INFO - calculate coordinate of root_left_right_right_right_left : 61@253.
+2020-07-16 21:20:36,058 - INFO - assign trainable variates for root_left_right_right_right_right_left : 62@253.
+2020-07-16 21:20:36,073 - INFO - <tf.Variable 'root_left_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,085 - INFO - <tf.Variable 'root_left_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,103 - INFO - <tf.Variable 'root_left_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,107 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_left_left_left : 63@253.
+2020-07-16 21:20:36,119 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,132 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,148 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,152 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_left_left_right : 64@253.
+2020-07-16 21:20:36,165 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,181 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,185 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_left_left : 65@253.
+2020-07-16 21:20:36,203 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,215 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,232 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:20:36,235 - INFO - calculate coordinate of root_left_right_right_right_right_right_left_left_left : 65@253.
+2020-07-16 21:21:37,282 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_left_right_left : 66@253.
+2020-07-16 21:21:37,295 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:21:37,308 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:21:37,324 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:21:37,328 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_left_right_right : 67@253.
+2020-07-16 21:21:37,340 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:21:37,356 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:21:37,360 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_left_right : 68@253.
+2020-07-16 21:21:37,378 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:21:37,396 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:21:37,400 - INFO - calculate coordinate of root_left_right_right_right_right_right_left_left_right : 68@253.
+2020-07-16 21:22:08,219 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_left : 69@253.
+2020-07-16 21:22:08,236 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:22:08,249 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:22:08,265 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:22:08,269 - INFO - calculate coordinate of root_left_right_right_right_right_right_left_left : 69@253.
+2020-07-16 21:22:45,452 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_left_left : 70@253.
+2020-07-16 21:22:45,467 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:22:45,480 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:22:45,496 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:22:45,500 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_left_right : 71@253.
+2020-07-16 21:22:45,513 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:22:45,529 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:22:45,533 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_left : 72@253.
+2020-07-16 21:22:45,550 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:22:45,563 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:22:45,579 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:22:45,583 - INFO - calculate coordinate of root_left_right_right_right_right_right_left_right_left : 72@253.
+2020-07-16 21:23:22,774 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_right_left_left : 73@253.
+2020-07-16 21:23:22,789 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:23:22,802 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:23:22,818 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:23:22,822 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_right_left_right : 74@253.
+2020-07-16 21:23:22,835 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:23:22,851 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:23:22,855 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_right_left : 75@253.
+2020-07-16 21:23:22,872 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:23:22,885 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:23:22,901 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:23:22,905 - INFO - calculate coordinate of root_left_right_right_right_right_right_left_right_right_left : 75@253.
+2020-07-16 21:24:00,137 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_right_right_left : 76@253.
+2020-07-16 21:24:00,150 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:24:00,163 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:24:00,179 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:24:00,183 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_right_right_right : 77@253.
+2020-07-16 21:24:00,196 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:24:00,212 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:24:00,216 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_right_right : 78@253.
+2020-07-16 21:24:00,234 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:24:00,251 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:24:00,255 - INFO - calculate coordinate of root_left_right_right_right_right_right_left_right_right_right : 78@253.
+2020-07-16 21:24:31,073 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right_right : 79@253.
+2020-07-16 21:24:31,092 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:24:31,109 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:24:31,113 - INFO - calculate coordinate of root_left_right_right_right_right_right_left_right_right : 79@253.
+2020-07-16 21:25:27,868 - INFO - assign trainable variates for root_left_right_right_right_right_right_left_right : 80@253.
+2020-07-16 21:25:27,888 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:25:27,904 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:25:27,908 - INFO - calculate coordinate of root_left_right_right_right_right_right_left_right : 80@253.
+2020-07-16 21:25:58,758 - INFO - assign trainable variates for root_left_right_right_right_right_right_left : 81@253.
+2020-07-16 21:25:58,775 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:25:58,788 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:25:58,804 - INFO - <tf.Variable 'root_left_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:25:58,808 - INFO - calculate coordinate of root_left_right_right_right_right_right_left : 81@253.
+2020-07-16 21:26:36,344 - INFO - assign trainable variates for root_left_right_right_right_right_right_right_left : 82@253.
+2020-07-16 21:26:36,359 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,371 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,388 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,392 - INFO - assign trainable variates for root_left_right_right_right_right_right_right_right_left : 83@253.
+2020-07-16 21:26:36,405 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,418 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,434 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,438 - INFO - assign trainable variates for root_left_right_right_right_right_right_right_right_right : 84@253.
+2020-07-16 21:26:36,451 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,467 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,471 - INFO - assign trainable variates for root_left_right_right_right_right_right_right_right : 85@253.
+2020-07-16 21:26:36,488 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,504 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:26:36,508 - INFO - calculate coordinate of root_left_right_right_right_right_right_right_right : 85@253.
+2020-07-16 21:27:07,469 - INFO - assign trainable variates for root_left_right_right_right_right_right_right : 86@253.
+2020-07-16 21:27:07,489 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:27:07,506 - INFO - <tf.Variable 'root_left_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:27:07,509 - INFO - calculate coordinate of root_left_right_right_right_right_right_right : 86@253.
+2020-07-16 21:27:38,359 - INFO - assign trainable variates for root_left_right_right_right_right_right : 87@253.
+2020-07-16 21:27:38,378 - INFO - <tf.Variable 'root_left_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:27:38,394 - INFO - <tf.Variable 'root_left_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:27:38,398 - INFO - calculate coordinate of root_left_right_right_right_right_right : 87@253.
+2020-07-16 21:28:09,301 - INFO - assign trainable variates for root_left_right_right_right_right : 88@253.
+2020-07-16 21:28:09,320 - INFO - <tf.Variable 'root_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:28:09,336 - INFO - <tf.Variable 'root_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:28:09,340 - INFO - calculate coordinate of root_left_right_right_right_right : 88@253.
+2020-07-16 21:28:40,166 - INFO - assign trainable variates for root_left_right_right_right : 89@253.
+2020-07-16 21:28:40,185 - INFO - <tf.Variable 'root_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:28:40,201 - INFO - <tf.Variable 'root_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:28:40,205 - INFO - calculate coordinate of root_left_right_right_right : 89@253.
+2020-07-16 21:29:43,907 - INFO - assign trainable variates for root_left_right_right : 90@253.
+2020-07-16 21:29:43,928 - INFO - <tf.Variable 'root_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:29:43,944 - INFO - <tf.Variable 'root_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:29:43,948 - INFO - calculate coordinate of root_left_right_right : 90@253.
+2020-07-16 21:30:14,854 - INFO - assign trainable variates for root_left_right : 91@253.
+2020-07-16 21:30:14,871 - INFO - <tf.Variable 'root_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:30:14,888 - INFO - <tf.Variable 'root_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:30:14,892 - INFO - calculate coordinate of root_left_right : 91@253.
+2020-07-16 21:30:45,740 - INFO - assign trainable variates for root_left : 92@253.
+2020-07-16 21:30:45,759 - INFO - <tf.Variable 'root_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:30:45,772 - INFO - <tf.Variable 'root_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:30:45,788 - INFO - <tf.Variable 'root_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:30:45,792 - INFO - calculate coordinate of root_left : 92@253.
+2020-07-16 21:31:23,112 - INFO - assign trainable variates for root_right_left_left_left_left_left : 93@253.
+2020-07-16 21:31:23,127 - INFO - <tf.Variable 'root_right_left_left_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,140 - INFO - <tf.Variable 'root_right_left_left_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,156 - INFO - <tf.Variable 'root_right_left_left_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,160 - INFO - assign trainable variates for root_right_left_left_left_left_right_left_left : 94@253.
+2020-07-16 21:31:23,173 - INFO - <tf.Variable 'root_right_left_left_left_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,185 - INFO - <tf.Variable 'root_right_left_left_left_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,201 - INFO - <tf.Variable 'root_right_left_left_left_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,205 - INFO - assign trainable variates for root_right_left_left_left_left_right_left_right : 95@253.
+2020-07-16 21:31:23,218 - INFO - <tf.Variable 'root_right_left_left_left_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,234 - INFO - <tf.Variable 'root_right_left_left_left_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,238 - INFO - assign trainable variates for root_right_left_left_left_left_right_left : 96@253.
+2020-07-16 21:31:23,256 - INFO - <tf.Variable 'root_right_left_left_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,268 - INFO - <tf.Variable 'root_right_left_left_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,284 - INFO - <tf.Variable 'root_right_left_left_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:31:23,288 - INFO - calculate coordinate of root_right_left_left_left_left_right_left : 96@253.
+2020-07-16 21:32:00,586 - INFO - assign trainable variates for root_right_left_left_left_left_right_right_left : 97@253.
+2020-07-16 21:32:00,601 - INFO - <tf.Variable 'root_right_left_left_left_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:32:00,614 - INFO - <tf.Variable 'root_right_left_left_left_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:32:00,630 - INFO - <tf.Variable 'root_right_left_left_left_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:32:00,634 - INFO - assign trainable variates for root_right_left_left_left_left_right_right_right : 98@253.
+2020-07-16 21:32:00,647 - INFO - <tf.Variable 'root_right_left_left_left_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:32:00,663 - INFO - <tf.Variable 'root_right_left_left_left_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:32:00,667 - INFO - assign trainable variates for root_right_left_left_left_left_right_right : 99@253.
+2020-07-16 21:32:00,684 - INFO - <tf.Variable 'root_right_left_left_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:32:00,701 - INFO - <tf.Variable 'root_right_left_left_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:32:00,705 - INFO - calculate coordinate of root_right_left_left_left_left_right_right : 99@253.
+2020-07-16 21:32:31,660 - INFO - assign trainable variates for root_right_left_left_left_left_right : 100@253.
+2020-07-16 21:32:31,679 - INFO - <tf.Variable 'root_right_left_left_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:32:31,696 - INFO - <tf.Variable 'root_right_left_left_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:32:31,700 - INFO - calculate coordinate of root_right_left_left_left_left_right : 100@253.
+2020-07-16 21:33:02,603 - INFO - assign trainable variates for root_right_left_left_left_left : 101@253.
+2020-07-16 21:33:02,622 - INFO - <tf.Variable 'root_right_left_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:33:02,635 - INFO - <tf.Variable 'root_right_left_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:02,651 - INFO - <tf.Variable 'root_right_left_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:02,655 - INFO - calculate coordinate of root_right_left_left_left_left : 101@253.
+2020-07-16 21:33:39,977 - INFO - assign trainable variates for root_right_left_left_left_right_left : 102@253.
+2020-07-16 21:33:39,992 - INFO - <tf.Variable 'root_right_left_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,004 - INFO - <tf.Variable 'root_right_left_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,021 - INFO - <tf.Variable 'root_right_left_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,025 - INFO - assign trainable variates for root_right_left_left_left_right_right_left : 103@253.
+2020-07-16 21:33:40,037 - INFO - <tf.Variable 'root_right_left_left_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,050 - INFO - <tf.Variable 'root_right_left_left_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,066 - INFO - <tf.Variable 'root_right_left_left_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,070 - INFO - assign trainable variates for root_right_left_left_left_right_right_right : 104@253.
+2020-07-16 21:33:40,083 - INFO - <tf.Variable 'root_right_left_left_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,099 - INFO - <tf.Variable 'root_right_left_left_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,103 - INFO - assign trainable variates for root_right_left_left_left_right_right : 105@253.
+2020-07-16 21:33:40,121 - INFO - <tf.Variable 'root_right_left_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,137 - INFO - <tf.Variable 'root_right_left_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:33:40,141 - INFO - calculate coordinate of root_right_left_left_left_right_right : 105@253.
+2020-07-16 21:34:49,567 - INFO - assign trainable variates for root_right_left_left_left_right : 106@253.
+2020-07-16 21:34:49,586 - INFO - <tf.Variable 'root_right_left_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:34:49,603 - INFO - <tf.Variable 'root_right_left_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:34:49,607 - INFO - calculate coordinate of root_right_left_left_left_right : 106@253.
+2020-07-16 21:35:20,631 - INFO - assign trainable variates for root_right_left_left_left : 107@253.
+2020-07-16 21:35:20,648 - INFO - <tf.Variable 'root_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:35:20,661 - INFO - <tf.Variable 'root_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:35:20,677 - INFO - <tf.Variable 'root_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:35:20,681 - INFO - calculate coordinate of root_right_left_left_left : 107@253.
+2020-07-16 21:35:58,005 - INFO - assign trainable variates for root_right_left_left_right_left : 108@253.
+2020-07-16 21:35:58,020 - INFO - <tf.Variable 'root_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:35:58,033 - INFO - <tf.Variable 'root_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:35:58,050 - INFO - <tf.Variable 'root_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:35:58,054 - INFO - assign trainable variates for root_right_left_left_right_right : 109@253.
+2020-07-16 21:35:58,066 - INFO - <tf.Variable 'root_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:35:58,082 - INFO - <tf.Variable 'root_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:35:58,086 - INFO - assign trainable variates for root_right_left_left_right : 110@253.
+2020-07-16 21:35:58,104 - INFO - <tf.Variable 'root_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:35:58,120 - INFO - <tf.Variable 'root_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:35:58,124 - INFO - calculate coordinate of root_right_left_left_right : 110@253.
+2020-07-16 21:36:29,126 - INFO - assign trainable variates for root_right_left_left : 111@253.
+2020-07-16 21:36:29,145 - INFO - <tf.Variable 'root_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:36:29,158 - INFO - <tf.Variable 'root_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:36:29,178 - INFO - <tf.Variable 'root_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:36:29,182 - INFO - calculate coordinate of root_right_left_left : 111@253.
+2020-07-16 21:37:06,560 - INFO - assign trainable variates for root_right_left_right_left : 112@253.
+2020-07-16 21:37:06,574 - INFO - <tf.Variable 'root_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,586 - INFO - <tf.Variable 'root_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,603 - INFO - <tf.Variable 'root_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,607 - INFO - assign trainable variates for root_right_left_right_right_left : 113@253.
+2020-07-16 21:37:06,620 - INFO - <tf.Variable 'root_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,632 - INFO - <tf.Variable 'root_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,649 - INFO - <tf.Variable 'root_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,653 - INFO - assign trainable variates for root_right_left_right_right_right : 114@253.
+2020-07-16 21:37:06,667 - INFO - <tf.Variable 'root_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,683 - INFO - <tf.Variable 'root_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,687 - INFO - assign trainable variates for root_right_left_right_right : 115@253.
+2020-07-16 21:37:06,704 - INFO - <tf.Variable 'root_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,721 - INFO - <tf.Variable 'root_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:06,725 - INFO - calculate coordinate of root_right_left_right_right : 115@253.
+2020-07-16 21:37:37,692 - INFO - assign trainable variates for root_right_left_right : 116@253.
+2020-07-16 21:37:37,713 - INFO - <tf.Variable 'root_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:37,730 - INFO - <tf.Variable 'root_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:37:37,734 - INFO - calculate coordinate of root_right_left_right : 116@253.
+2020-07-16 21:38:08,755 - INFO - assign trainable variates for root_right_left : 117@253.
+2020-07-16 21:38:08,772 - INFO - <tf.Variable 'root_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:38:08,785 - INFO - <tf.Variable 'root_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:08,801 - INFO - <tf.Variable 'root_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:08,805 - INFO - calculate coordinate of root_right_left : 117@253.
+2020-07-16 21:38:46,135 - INFO - assign trainable variates for root_right_right_left_left_left_left : 118@253.
+2020-07-16 21:38:46,150 - INFO - <tf.Variable 'root_right_right_left_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,163 - INFO - <tf.Variable 'root_right_right_left_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,180 - INFO - <tf.Variable 'root_right_right_left_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,184 - INFO - assign trainable variates for root_right_right_left_left_left_right_left : 119@253.
+2020-07-16 21:38:46,197 - INFO - <tf.Variable 'root_right_right_left_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,209 - INFO - <tf.Variable 'root_right_right_left_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,226 - INFO - <tf.Variable 'root_right_right_left_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,230 - INFO - assign trainable variates for root_right_right_left_left_left_right_right : 120@253.
+2020-07-16 21:38:46,243 - INFO - <tf.Variable 'root_right_right_left_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,260 - INFO - <tf.Variable 'root_right_right_left_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,264 - INFO - assign trainable variates for root_right_right_left_left_left_right : 121@253.
+2020-07-16 21:38:46,282 - INFO - <tf.Variable 'root_right_right_left_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,298 - INFO - <tf.Variable 'root_right_right_left_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:38:46,302 - INFO - calculate coordinate of root_right_right_left_left_left_right : 121@253.
+2020-07-16 21:39:17,379 - INFO - assign trainable variates for root_right_right_left_left_left : 122@253.
+2020-07-16 21:39:17,398 - INFO - <tf.Variable 'root_right_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:39:17,411 - INFO - <tf.Variable 'root_right_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:17,427 - INFO - <tf.Variable 'root_right_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:17,431 - INFO - calculate coordinate of root_right_right_left_left_left : 122@253.
+2020-07-16 21:39:54,879 - INFO - assign trainable variates for root_right_right_left_left_right_left : 123@253.
+2020-07-16 21:39:54,894 - INFO - <tf.Variable 'root_right_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:39:54,907 - INFO - <tf.Variable 'root_right_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:54,924 - INFO - <tf.Variable 'root_right_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:54,928 - INFO - assign trainable variates for root_right_right_left_left_right_right_left : 124@253.
+2020-07-16 21:39:54,940 - INFO - <tf.Variable 'root_right_right_left_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:39:54,953 - INFO - <tf.Variable 'root_right_right_left_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:54,969 - INFO - <tf.Variable 'root_right_right_left_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:54,973 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_left_left : 125@253.
+2020-07-16 21:39:54,986 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:39:54,999 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,015 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,019 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_left_right_left : 126@253.
+2020-07-16 21:39:55,032 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,045 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,061 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,065 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_left_right_right : 127@253.
+2020-07-16 21:39:55,078 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,094 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,098 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_left_right : 128@253.
+2020-07-16 21:39:55,116 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,133 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:39:55,137 - INFO - calculate coordinate of root_right_right_left_left_right_right_right_left_right : 128@253.
+2020-07-16 21:41:16,886 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_left : 129@253.
+2020-07-16 21:41:16,905 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:41:16,917 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:16,933 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:16,937 - INFO - calculate coordinate of root_right_right_left_left_right_right_right_left : 129@253.
+2020-07-16 21:41:53,959 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right_left : 130@253.
+2020-07-16 21:41:53,974 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:41:53,986 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,003 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,007 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right_right_left : 131@253.
+2020-07-16 21:41:54,019 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,032 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,048 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,052 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right_right_right_left : 132@253.
+2020-07-16 21:41:54,064 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,077 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,093 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,097 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right_right_right_right_left : 133@253.
+2020-07-16 21:41:54,110 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,122 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,139 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,142 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right_right_right_right_right : 134@253.
+2020-07-16 21:41:54,155 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,171 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,175 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right_right_right_right : 135@253.
+2020-07-16 21:41:54,193 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,209 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:41:54,213 - INFO - calculate coordinate of root_right_right_left_left_right_right_right_right_right_right_right : 135@253.
+2020-07-16 21:42:25,358 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right_right_right : 136@253.
+2020-07-16 21:42:25,377 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:42:25,394 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:42:25,398 - INFO - calculate coordinate of root_right_right_left_left_right_right_right_right_right_right : 136@253.
+2020-07-16 21:42:56,404 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right_right : 137@253.
+2020-07-16 21:42:56,425 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:42:56,441 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:42:56,445 - INFO - calculate coordinate of root_right_right_left_left_right_right_right_right_right : 137@253.
+2020-07-16 21:43:27,557 - INFO - assign trainable variates for root_right_right_left_left_right_right_right_right : 138@253.
+2020-07-16 21:43:27,576 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:43:27,593 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:43:27,597 - INFO - calculate coordinate of root_right_right_left_left_right_right_right_right : 138@253.
+2020-07-16 21:43:58,604 - INFO - assign trainable variates for root_right_right_left_left_right_right_right : 139@253.
+2020-07-16 21:43:58,623 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:43:58,639 - INFO - <tf.Variable 'root_right_right_left_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:43:58,643 - INFO - calculate coordinate of root_right_right_left_left_right_right_right : 139@253.
+2020-07-16 21:44:29,765 - INFO - assign trainable variates for root_right_right_left_left_right_right : 140@253.
+2020-07-16 21:44:29,786 - INFO - <tf.Variable 'root_right_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:44:29,803 - INFO - <tf.Variable 'root_right_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:44:29,806 - INFO - calculate coordinate of root_right_right_left_left_right_right : 140@253.
+2020-07-16 21:45:00,807 - INFO - assign trainable variates for root_right_right_left_left_right : 141@253.
+2020-07-16 21:45:00,826 - INFO - <tf.Variable 'root_right_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:45:00,843 - INFO - <tf.Variable 'root_right_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:45:00,847 - INFO - calculate coordinate of root_right_right_left_left_right : 141@253.
+2020-07-16 21:45:31,901 - INFO - assign trainable variates for root_right_right_left_left : 142@253.
+2020-07-16 21:45:31,920 - INFO - <tf.Variable 'root_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:45:31,933 - INFO - <tf.Variable 'root_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:45:31,949 - INFO - <tf.Variable 'root_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:45:31,953 - INFO - calculate coordinate of root_right_right_left_left : 142@253.
+2020-07-16 21:46:09,488 - INFO - assign trainable variates for root_right_right_left_right_left_left : 143@253.
+2020-07-16 21:46:09,502 - INFO - <tf.Variable 'root_right_right_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:46:09,514 - INFO - <tf.Variable 'root_right_right_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:09,531 - INFO - <tf.Variable 'root_right_right_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:09,535 - INFO - assign trainable variates for root_right_right_left_right_left_right : 144@253.
+2020-07-16 21:46:09,547 - INFO - <tf.Variable 'root_right_right_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:09,565 - INFO - <tf.Variable 'root_right_right_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:09,569 - INFO - assign trainable variates for root_right_right_left_right_left : 145@253.
+2020-07-16 21:46:09,587 - INFO - <tf.Variable 'root_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:46:09,599 - INFO - <tf.Variable 'root_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:09,616 - INFO - <tf.Variable 'root_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:09,620 - INFO - calculate coordinate of root_right_right_left_right_left : 145@253.
+2020-07-16 21:46:47,057 - INFO - assign trainable variates for root_right_right_left_right_right_left : 146@253.
+2020-07-16 21:46:47,072 - INFO - <tf.Variable 'root_right_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:46:47,085 - INFO - <tf.Variable 'root_right_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:47,101 - INFO - <tf.Variable 'root_right_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:47,105 - INFO - assign trainable variates for root_right_right_left_right_right_right : 147@253.
+2020-07-16 21:46:47,118 - INFO - <tf.Variable 'root_right_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:47,134 - INFO - <tf.Variable 'root_right_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:47,138 - INFO - assign trainable variates for root_right_right_left_right_right : 148@253.
+2020-07-16 21:46:47,156 - INFO - <tf.Variable 'root_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:47,172 - INFO - <tf.Variable 'root_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:46:47,176 - INFO - calculate coordinate of root_right_right_left_right_right : 148@253.
+2020-07-16 21:47:18,315 - INFO - assign trainable variates for root_right_right_left_right : 149@253.
+2020-07-16 21:47:18,332 - INFO - <tf.Variable 'root_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:47:18,349 - INFO - <tf.Variable 'root_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:47:18,353 - INFO - calculate coordinate of root_right_right_left_right : 149@253.
+2020-07-16 21:48:48,624 - INFO - assign trainable variates for root_right_right_left : 150@253.
+2020-07-16 21:48:48,643 - INFO - <tf.Variable 'root_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:48:48,656 - INFO - <tf.Variable 'root_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:48:48,673 - INFO - <tf.Variable 'root_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:48:48,677 - INFO - calculate coordinate of root_right_right_left : 150@253.
+2020-07-16 21:49:26,307 - INFO - assign trainable variates for root_right_right_right_left_left_left_left : 151@253.
+2020-07-16 21:49:26,320 - INFO - <tf.Variable 'root_right_right_right_left_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:49:26,333 - INFO - <tf.Variable 'root_right_right_right_left_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:49:26,349 - INFO - <tf.Variable 'root_right_right_right_left_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:49:26,353 - INFO - assign trainable variates for root_right_right_right_left_left_left_right : 152@253.
+2020-07-16 21:49:26,366 - INFO - <tf.Variable 'root_right_right_right_left_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:49:26,382 - INFO - <tf.Variable 'root_right_right_right_left_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:49:26,386 - INFO - assign trainable variates for root_right_right_right_left_left_left : 153@253.
+2020-07-16 21:49:26,404 - INFO - <tf.Variable 'root_right_right_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:49:26,416 - INFO - <tf.Variable 'root_right_right_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:49:26,433 - INFO - <tf.Variable 'root_right_right_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:49:26,437 - INFO - calculate coordinate of root_right_right_right_left_left_left : 153@253.
+2020-07-16 21:50:03,963 - INFO - assign trainable variates for root_right_right_right_left_left_right_left_left : 154@253.
+2020-07-16 21:50:03,978 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:50:03,990 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,007 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,011 - INFO - assign trainable variates for root_right_right_right_left_left_right_left_right_left : 155@253.
+2020-07-16 21:50:04,024 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,036 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,053 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,056 - INFO - assign trainable variates for root_right_right_right_left_left_right_left_right_right : 156@253.
+2020-07-16 21:50:04,069 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,085 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,089 - INFO - assign trainable variates for root_right_right_right_left_left_right_left_right : 157@253.
+2020-07-16 21:50:04,107 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,123 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:04,127 - INFO - calculate coordinate of root_right_right_right_left_left_right_left_right : 157@253.
+2020-07-16 21:50:35,334 - INFO - assign trainable variates for root_right_right_right_left_left_right_left : 158@253.
+2020-07-16 21:50:35,355 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:50:35,368 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:35,385 - INFO - <tf.Variable 'root_right_right_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:50:35,389 - INFO - calculate coordinate of root_right_right_right_left_left_right_left : 158@253.
+2020-07-16 21:51:13,796 - INFO - assign trainable variates for root_right_right_right_left_left_right_right_left : 159@253.
+2020-07-16 21:51:13,809 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,822 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,838 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,842 - INFO - assign trainable variates for root_right_right_right_left_left_right_right_right_left : 160@253.
+2020-07-16 21:51:13,855 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,867 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,884 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,888 - INFO - assign trainable variates for root_right_right_right_left_left_right_right_right_right : 161@253.
+2020-07-16 21:51:13,902 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,918 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,922 - INFO - assign trainable variates for root_right_right_right_left_left_right_right_right : 162@253.
+2020-07-16 21:51:13,940 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,956 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:13,960 - INFO - calculate coordinate of root_right_right_right_left_left_right_right_right : 162@253.
+2020-07-16 21:51:45,091 - INFO - assign trainable variates for root_right_right_right_left_left_right_right : 163@253.
+2020-07-16 21:51:45,111 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:45,128 - INFO - <tf.Variable 'root_right_right_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:51:45,132 - INFO - calculate coordinate of root_right_right_right_left_left_right_right : 163@253.
+2020-07-16 21:52:16,377 - INFO - assign trainable variates for root_right_right_right_left_left_right : 164@253.
+2020-07-16 21:52:16,394 - INFO - <tf.Variable 'root_right_right_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:52:16,411 - INFO - <tf.Variable 'root_right_right_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:52:16,415 - INFO - calculate coordinate of root_right_right_right_left_left_right : 164@253.
+2020-07-16 21:52:47,564 - INFO - assign trainable variates for root_right_right_right_left_left : 165@253.
+2020-07-16 21:52:47,584 - INFO - <tf.Variable 'root_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:52:47,597 - INFO - <tf.Variable 'root_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:52:47,614 - INFO - <tf.Variable 'root_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:52:47,618 - INFO - calculate coordinate of root_right_right_right_left_left : 165@253.
+2020-07-16 21:53:25,266 - INFO - assign trainable variates for root_right_right_right_left_right_left_left_left_left : 166@253.
+2020-07-16 21:53:25,279 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:53:25,292 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:53:25,309 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:53:25,313 - INFO - assign trainable variates for root_right_right_right_left_right_left_left_left_right : 167@253.
+2020-07-16 21:53:25,325 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:53:25,343 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:53:25,347 - INFO - assign trainable variates for root_right_right_right_left_right_left_left_left : 168@253.
+2020-07-16 21:53:25,364 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:53:25,377 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:53:25,393 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:53:25,397 - INFO - calculate coordinate of root_right_right_right_left_right_left_left_left : 168@253.
+2020-07-16 21:54:03,049 - INFO - assign trainable variates for root_right_right_right_left_right_left_left_right_left : 169@253.
+2020-07-16 21:54:03,063 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:54:03,076 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:54:03,093 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:54:03,097 - INFO - assign trainable variates for root_right_right_right_left_right_left_left_right_right : 170@253.
+2020-07-16 21:54:03,109 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:54:03,126 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:54:03,130 - INFO - assign trainable variates for root_right_right_right_left_right_left_left_right : 171@253.
+2020-07-16 21:54:03,147 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:54:03,164 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:54:03,168 - INFO - calculate coordinate of root_right_right_right_left_right_left_left_right : 171@253.
+2020-07-16 21:54:34,380 - INFO - assign trainable variates for root_right_right_right_left_right_left_left : 172@253.
+2020-07-16 21:54:34,399 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:54:34,412 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:54:34,428 - INFO - <tf.Variable 'root_right_right_right_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:54:34,432 - INFO - calculate coordinate of root_right_right_right_left_right_left_left : 172@253.
+2020-07-16 21:55:12,171 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left_left_left : 173@253.
+2020-07-16 21:55:12,185 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,197 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,214 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,218 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left_left_right_left : 174@253.
+2020-07-16 21:55:12,231 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,243 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,260 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,264 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left_left_right_right : 175@253.
+2020-07-16 21:55:12,276 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,293 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,297 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left_left_right : 176@253.
+2020-07-16 21:55:12,314 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,331 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:12,335 - INFO - calculate coordinate of root_right_right_right_left_right_left_right_left_left_right : 176@253.
+2020-07-16 21:55:43,513 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left_left : 177@253.
+2020-07-16 21:55:43,534 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:55:43,547 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:43,566 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:55:43,570 - INFO - calculate coordinate of root_right_right_right_left_right_left_right_left_left : 177@253.
+2020-07-16 21:56:21,317 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left_right_left : 178@253.
+2020-07-16 21:56:21,330 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:56:21,343 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:56:21,361 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:56:21,365 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left_right_right : 179@253.
+2020-07-16 21:56:21,377 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:56:21,393 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:56:21,398 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left_right : 180@253.
+2020-07-16 21:56:21,415 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:56:21,432 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:56:21,436 - INFO - calculate coordinate of root_right_right_right_left_right_left_right_left_right : 180@253.
+2020-07-16 21:58:07,623 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_left : 181@253.
+2020-07-16 21:58:07,642 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:58:07,655 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:58:07,672 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:58:07,676 - INFO - calculate coordinate of root_right_right_right_left_right_left_right_left : 181@253.
+2020-07-16 21:58:45,416 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_right_left_left : 182@253.
+2020-07-16 21:58:45,431 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:58:45,444 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:58:45,462 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:58:45,466 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_right_left_right : 183@253.
+2020-07-16 21:58:45,478 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:58:45,495 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:58:45,499 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_right_left : 184@253.
+2020-07-16 21:58:45,517 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:58:45,529 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:58:45,546 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:58:45,550 - INFO - calculate coordinate of root_right_right_right_left_right_left_right_right_left : 184@253.
+2020-07-16 21:59:23,382 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_right_right_left : 185@253.
+2020-07-16 21:59:23,396 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 21:59:23,408 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:59:23,426 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:59:23,430 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_right_right_right : 186@253.
+2020-07-16 21:59:23,442 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:59:23,459 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:59:23,463 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_right_right : 187@253.
+2020-07-16 21:59:23,480 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:59:23,497 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:59:23,501 - INFO - calculate coordinate of root_right_right_right_left_right_left_right_right_right : 187@253.
+2020-07-16 21:59:54,762 - INFO - assign trainable variates for root_right_right_right_left_right_left_right_right : 188@253.
+2020-07-16 21:59:54,782 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 21:59:54,799 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 21:59:54,803 - INFO - calculate coordinate of root_right_right_right_left_right_left_right_right : 188@253.
+2020-07-16 22:00:26,145 - INFO - assign trainable variates for root_right_right_right_left_right_left_right : 189@253.
+2020-07-16 22:00:26,162 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:00:26,179 - INFO - <tf.Variable 'root_right_right_right_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:00:26,183 - INFO - calculate coordinate of root_right_right_right_left_right_left_right : 189@253.
+2020-07-16 22:00:57,393 - INFO - assign trainable variates for root_right_right_right_left_right_left : 190@253.
+2020-07-16 22:00:57,412 - INFO - <tf.Variable 'root_right_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:00:57,425 - INFO - <tf.Variable 'root_right_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:00:57,441 - INFO - <tf.Variable 'root_right_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:00:57,445 - INFO - calculate coordinate of root_right_right_right_left_right_left : 190@253.
+2020-07-16 22:01:35,249 - INFO - assign trainable variates for root_right_right_right_left_right_right_left : 191@253.
+2020-07-16 22:01:35,263 - INFO - <tf.Variable 'root_right_right_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,276 - INFO - <tf.Variable 'root_right_right_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,292 - INFO - <tf.Variable 'root_right_right_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,296 - INFO - assign trainable variates for root_right_right_right_left_right_right_right_left : 192@253.
+2020-07-16 22:01:35,309 - INFO - <tf.Variable 'root_right_right_right_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,321 - INFO - <tf.Variable 'root_right_right_right_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,338 - INFO - <tf.Variable 'root_right_right_right_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,342 - INFO - assign trainable variates for root_right_right_right_left_right_right_right_right : 193@253.
+2020-07-16 22:01:35,355 - INFO - <tf.Variable 'root_right_right_right_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,371 - INFO - <tf.Variable 'root_right_right_right_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,375 - INFO - assign trainable variates for root_right_right_right_left_right_right_right : 194@253.
+2020-07-16 22:01:35,394 - INFO - <tf.Variable 'root_right_right_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,410 - INFO - <tf.Variable 'root_right_right_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:01:35,414 - INFO - calculate coordinate of root_right_right_right_left_right_right_right : 194@253.
+2020-07-16 22:02:06,645 - INFO - assign trainable variates for root_right_right_right_left_right_right : 195@253.
+2020-07-16 22:02:06,665 - INFO - <tf.Variable 'root_right_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:02:06,682 - INFO - <tf.Variable 'root_right_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:02:06,686 - INFO - calculate coordinate of root_right_right_right_left_right_right : 195@253.
+2020-07-16 22:02:37,993 - INFO - assign trainable variates for root_right_right_right_left_right : 196@253.
+2020-07-16 22:02:38,012 - INFO - <tf.Variable 'root_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:02:38,029 - INFO - <tf.Variable 'root_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:02:38,033 - INFO - calculate coordinate of root_right_right_right_left_right : 196@253.
+2020-07-16 22:03:09,270 - INFO - assign trainable variates for root_right_right_right_left : 197@253.
+2020-07-16 22:03:09,288 - INFO - <tf.Variable 'root_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:03:09,301 - INFO - <tf.Variable 'root_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:09,317 - INFO - <tf.Variable 'root_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:09,321 - INFO - calculate coordinate of root_right_right_right_left : 197@253.
+2020-07-16 22:03:47,067 - INFO - assign trainable variates for root_right_right_right_right_left_left_left : 198@253.
+2020-07-16 22:03:47,082 - INFO - <tf.Variable 'root_right_right_right_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,095 - INFO - <tf.Variable 'root_right_right_right_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,112 - INFO - <tf.Variable 'root_right_right_right_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,116 - INFO - assign trainable variates for root_right_right_right_right_left_left_right_left : 199@253.
+2020-07-16 22:03:47,128 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,141 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,157 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,161 - INFO - assign trainable variates for root_right_right_right_right_left_left_right_right_left : 200@253.
+2020-07-16 22:03:47,174 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,187 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,203 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,207 - INFO - assign trainable variates for root_right_right_right_right_left_left_right_right_right : 201@253.
+2020-07-16 22:03:47,220 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,236 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,240 - INFO - assign trainable variates for root_right_right_right_right_left_left_right_right : 202@253.
+2020-07-16 22:03:47,258 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,274 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:03:47,278 - INFO - calculate coordinate of root_right_right_right_right_left_left_right_right : 202@253.
+2020-07-16 22:04:18,677 - INFO - assign trainable variates for root_right_right_right_right_left_left_right : 203@253.
+2020-07-16 22:04:18,696 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:04:18,715 - INFO - <tf.Variable 'root_right_right_right_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:04:18,719 - INFO - calculate coordinate of root_right_right_right_right_left_left_right : 203@253.
+2020-07-16 22:04:50,030 - INFO - assign trainable variates for root_right_right_right_right_left_left : 204@253.
+2020-07-16 22:04:50,051 - INFO - <tf.Variable 'root_right_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:04:50,064 - INFO - <tf.Variable 'root_right_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:04:50,080 - INFO - <tf.Variable 'root_right_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:04:50,084 - INFO - calculate coordinate of root_right_right_right_right_left_left : 204@253.
+2020-07-16 22:05:27,954 - INFO - assign trainable variates for root_right_right_right_right_left_right_left_left : 205@253.
+2020-07-16 22:05:27,969 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:05:27,982 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:27,998 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:28,002 - INFO - assign trainable variates for root_right_right_right_right_left_right_left_right_left : 206@253.
+2020-07-16 22:05:28,015 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:05:28,028 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:28,044 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:28,048 - INFO - assign trainable variates for root_right_right_right_right_left_right_left_right_right : 207@253.
+2020-07-16 22:05:28,061 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:28,078 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:28,082 - INFO - assign trainable variates for root_right_right_right_right_left_right_left_right : 208@253.
+2020-07-16 22:05:28,099 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:28,116 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:28,120 - INFO - calculate coordinate of root_right_right_right_right_left_right_left_right : 208@253.
+2020-07-16 22:05:59,395 - INFO - assign trainable variates for root_right_right_right_right_left_right_left : 209@253.
+2020-07-16 22:05:59,416 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:05:59,429 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:59,446 - INFO - <tf.Variable 'root_right_right_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:05:59,450 - INFO - calculate coordinate of root_right_right_right_right_left_right_left : 209@253.
+2020-07-16 22:06:37,399 - INFO - assign trainable variates for root_right_right_right_right_left_right_right_left : 210@253.
+2020-07-16 22:06:37,413 - INFO - <tf.Variable 'root_right_right_right_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:06:37,426 - INFO - <tf.Variable 'root_right_right_right_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:06:37,443 - INFO - <tf.Variable 'root_right_right_right_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:06:37,447 - INFO - assign trainable variates for root_right_right_right_right_left_right_right_right : 211@253.
+2020-07-16 22:06:37,459 - INFO - <tf.Variable 'root_right_right_right_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:06:37,476 - INFO - <tf.Variable 'root_right_right_right_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:06:37,480 - INFO - assign trainable variates for root_right_right_right_right_left_right_right : 212@253.
+2020-07-16 22:06:37,502 - INFO - <tf.Variable 'root_right_right_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:06:37,519 - INFO - <tf.Variable 'root_right_right_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:06:37,523 - INFO - calculate coordinate of root_right_right_right_right_left_right_right : 212@253.
+2020-07-16 22:08:44,591 - INFO - assign trainable variates for root_right_right_right_right_left_right : 213@253.
+2020-07-16 22:08:44,611 - INFO - <tf.Variable 'root_right_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:08:44,628 - INFO - <tf.Variable 'root_right_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:08:44,632 - INFO - calculate coordinate of root_right_right_right_right_left_right : 213@253.
+2020-07-16 22:09:15,969 - INFO - assign trainable variates for root_right_right_right_right_left : 214@253.
+2020-07-16 22:09:15,987 - INFO - <tf.Variable 'root_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:09:16,000 - INFO - <tf.Variable 'root_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:16,019 - INFO - <tf.Variable 'root_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:16,023 - INFO - calculate coordinate of root_right_right_right_right_left : 214@253.
+2020-07-16 22:09:53,869 - INFO - assign trainable variates for root_right_right_right_right_right_left_left_left : 215@253.
+2020-07-16 22:09:53,884 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:09:53,897 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:53,914 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:53,918 - INFO - assign trainable variates for root_right_right_right_right_right_left_left_right_left : 216@253.
+2020-07-16 22:09:53,931 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:09:53,943 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:53,960 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:53,964 - INFO - assign trainable variates for root_right_right_right_right_right_left_left_right_right : 217@253.
+2020-07-16 22:09:53,977 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:53,993 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:53,997 - INFO - assign trainable variates for root_right_right_right_right_right_left_left_right : 218@253.
+2020-07-16 22:09:54,015 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:54,032 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:09:54,036 - INFO - calculate coordinate of root_right_right_right_right_right_left_left_right : 218@253.
+2020-07-16 22:10:25,474 - INFO - assign trainable variates for root_right_right_right_right_right_left_left : 219@253.
+2020-07-16 22:10:25,493 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:10:25,506 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:10:25,523 - INFO - <tf.Variable 'root_right_right_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:10:25,527 - INFO - calculate coordinate of root_right_right_right_right_right_left_left : 219@253.
+2020-07-16 22:11:03,314 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_left_left : 220@253.
+2020-07-16 22:11:03,330 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:11:03,343 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:03,360 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:03,364 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_left_right : 221@253.
+2020-07-16 22:11:03,377 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:03,393 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:03,397 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_left : 222@253.
+2020-07-16 22:11:03,415 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:11:03,428 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:03,444 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:03,448 - INFO - calculate coordinate of root_right_right_right_right_right_left_right_left : 222@253.
+2020-07-16 22:11:41,435 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right_left : 223@253.
+2020-07-16 22:11:41,449 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,462 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,479 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,483 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right_right_left_left : 224@253.
+2020-07-16 22:11:41,495 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,508 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,524 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,528 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right_right_left_right : 225@253.
+2020-07-16 22:11:41,541 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,557 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,561 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right_right_left : 226@253.
+2020-07-16 22:11:41,579 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,592 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,608 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:11:41,612 - INFO - calculate coordinate of root_right_right_right_right_right_left_right_right_right_left : 226@253.
+2020-07-16 22:12:19,439 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right_right_right_left : 227@253.
+2020-07-16 22:12:19,454 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:12:19,467 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:12:19,484 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:12:19,488 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right_right_right_right : 228@253.
+2020-07-16 22:12:19,501 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:12:19,517 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:12:19,521 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right_right_right : 229@253.
+2020-07-16 22:12:19,539 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:12:19,555 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:12:19,559 - INFO - calculate coordinate of root_right_right_right_right_right_left_right_right_right_right : 229@253.
+2020-07-16 22:12:51,015 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right_right : 230@253.
+2020-07-16 22:12:51,035 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:12:51,052 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:12:51,056 - INFO - calculate coordinate of root_right_right_right_right_right_left_right_right_right : 230@253.
+2020-07-16 22:13:22,485 - INFO - assign trainable variates for root_right_right_right_right_right_left_right_right : 231@253.
+2020-07-16 22:13:22,504 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:13:22,521 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:13:22,525 - INFO - calculate coordinate of root_right_right_right_right_right_left_right_right : 231@253.
+2020-07-16 22:13:53,954 - INFO - assign trainable variates for root_right_right_right_right_right_left_right : 232@253.
+2020-07-16 22:13:53,974 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:13:53,991 - INFO - <tf.Variable 'root_right_right_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:13:53,995 - INFO - calculate coordinate of root_right_right_right_right_right_left_right : 232@253.
+2020-07-16 22:14:25,439 - INFO - assign trainable variates for root_right_right_right_right_right_left : 233@253.
+2020-07-16 22:14:25,457 - INFO - <tf.Variable 'root_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:14:25,470 - INFO - <tf.Variable 'root_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:14:25,486 - INFO - <tf.Variable 'root_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:14:25,490 - INFO - calculate coordinate of root_right_right_right_right_right_left : 233@253.
+2020-07-16 22:15:03,397 - INFO - assign trainable variates for root_right_right_right_right_right_right_left : 234@253.
+2020-07-16 22:15:03,412 - INFO - <tf.Variable 'root_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,425 - INFO - <tf.Variable 'root_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,442 - INFO - <tf.Variable 'root_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,446 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_left : 235@253.
+2020-07-16 22:15:03,458 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,471 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,488 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,492 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right_left : 236@253.
+2020-07-16 22:15:03,504 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,517 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,534 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,538 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right_right_left_left : 237@253.
+2020-07-16 22:15:03,550 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_left_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,563 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_left_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,580 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_left_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,584 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right_right_left_right : 238@253.
+2020-07-16 22:15:03,596 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_left_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,613 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_left_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,618 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right_right_left : 239@253.
+2020-07-16 22:15:03,636 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,649 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,666 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:03,670 - INFO - calculate coordinate of root_right_right_right_right_right_right_right_right_right_left : 239@253.
+2020-07-16 22:15:41,741 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right_right_right_left : 240@253.
+2020-07-16 22:15:41,755 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_right_left/wirelen:0' shape=() dtype=float32> created.
+2020-07-16 22:15:41,768 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_right_left/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:41,784 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_right_left/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:41,788 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right_right_right_right : 241@253.
+2020-07-16 22:15:41,801 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:41,817 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:41,821 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right_right_right : 242@253.
+2020-07-16 22:15:41,839 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:41,856 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:15:41,860 - INFO - calculate coordinate of root_right_right_right_right_right_right_right_right_right_right : 242@253.
+2020-07-16 22:16:13,257 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right_right : 243@253.
+2020-07-16 22:16:13,276 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:16:13,293 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:16:13,297 - INFO - calculate coordinate of root_right_right_right_right_right_right_right_right_right : 243@253.
+2020-07-16 22:16:44,812 - INFO - assign trainable variates for root_right_right_right_right_right_right_right_right : 244@253.
+2020-07-16 22:16:44,832 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:16:44,848 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:16:44,853 - INFO - calculate coordinate of root_right_right_right_right_right_right_right_right : 244@253.
+2020-07-16 22:17:16,278 - INFO - assign trainable variates for root_right_right_right_right_right_right_right : 245@253.
+2020-07-16 22:17:16,299 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:17:16,316 - INFO - <tf.Variable 'root_right_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:17:16,320 - INFO - calculate coordinate of root_right_right_right_right_right_right_right : 245@253.
+2020-07-16 22:17:47,853 - INFO - assign trainable variates for root_right_right_right_right_right_right : 246@253.
+2020-07-16 22:17:47,872 - INFO - <tf.Variable 'root_right_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:17:47,889 - INFO - <tf.Variable 'root_right_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:17:47,893 - INFO - calculate coordinate of root_right_right_right_right_right_right : 246@253.
+2020-07-16 22:18:19,348 - INFO - assign trainable variates for root_right_right_right_right_right : 247@253.
+2020-07-16 22:18:19,367 - INFO - <tf.Variable 'root_right_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:18:19,384 - INFO - <tf.Variable 'root_right_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:18:19,388 - INFO - calculate coordinate of root_right_right_right_right_right : 247@253.
+2020-07-16 22:18:51,055 - INFO - assign trainable variates for root_right_right_right_right : 248@253.
+2020-07-16 22:18:51,073 - INFO - <tf.Variable 'root_right_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:18:51,091 - INFO - <tf.Variable 'root_right_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:18:51,095 - INFO - calculate coordinate of root_right_right_right_right : 248@253.
+2020-07-16 22:19:22,402 - INFO - assign trainable variates for root_right_right_right : 249@253.
+2020-07-16 22:19:22,421 - INFO - <tf.Variable 'root_right_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:19:22,437 - INFO - <tf.Variable 'root_right_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:19:22,441 - INFO - calculate coordinate of root_right_right_right : 249@253.
+2020-07-16 22:22:00,444 - INFO - assign trainable variates for root_right_right : 250@253.
+2020-07-16 22:22:00,466 - INFO - <tf.Variable 'root_right_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:22:00,484 - INFO - <tf.Variable 'root_right_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:22:00,488 - INFO - calculate coordinate of root_right_right : 250@253.
+2020-07-16 22:22:46,784 - INFO - assign trainable variates for root_right : 251@253.
+2020-07-16 22:22:46,912 - INFO - <tf.Variable 'root_right/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:22:46,930 - INFO - <tf.Variable 'root_right/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:22:46,934 - INFO - calculate coordinate of root_right : 251@253.
+2020-07-16 22:23:21,165 - INFO - calculate coordinates of root : 252@253.
+2020-07-16 22:24:03,415 - INFO - calculate number of bendings of root : 252@253.
+2020-07-16 22:24:03,582 - INFO - assign trainable variates for root : 252@253.
+2020-07-16 22:24:03,874 - INFO - <tf.Variable 'root/cdia:0' shape=() dtype=float32> created.
+2020-07-16 22:24:03,908 - INFO - <tf.Variable 'root/bdia:0' shape=() dtype=float32> created.
+2020-07-16 22:24:03,912 - INFO - network loaded.
+2020-07-16 22:24:03,920 - INFO - delay calculating...
+2020-07-16 22:24:04,811 - INFO - calculating delay of sink0, there remain 127.
+2020-07-16 22:24:04,990 - WARNING - From /home/wangzekun/CNT-ZST/optimizer.py:54: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+2020-07-16 22:25:01,644 - INFO - calculating delay of sink1, there remain 126.
+2020-07-16 22:26:46,780 - INFO - calculating delay of sink2, there remain 125.
+2020-07-16 22:28:18,416 - INFO - calculating delay of sink3, there remain 124.
+2020-07-16 22:30:13,908 - INFO - calculating delay of sink4, there remain 123.
+2020-07-16 22:31:58,782 - INFO - calculating delay of sink5, there remain 122.
+2020-07-16 22:33:47,190 - INFO - calculating delay of sink6, there remain 121.
+2020-07-16 22:35:41,948 - INFO - calculating delay of sink7, there remain 120.
+2020-07-16 22:38:06,677 - INFO - calculating delay of sink8, there remain 119.
+2020-07-16 22:39:52,571 - INFO - calculating delay of sink9, there remain 118.
+2020-07-16 22:42:40,221 - INFO - calculating delay of sink10, there remain 117.
+2020-07-16 22:44:38,590 - INFO - calculating delay of sink11, there remain 116.
+2020-07-16 22:46:21,771 - INFO - calculating delay of sink12, there remain 115.
+2020-07-16 22:48:28,156 - INFO - calculating delay of sink13, there remain 114.
+2020-07-16 22:50:43,568 - INFO - calculating delay of sink14, there remain 113.
+2020-07-16 22:55:12,637 - INFO - calculating delay of sink15, there remain 112.
+2020-07-16 22:59:55,449 - INFO - calculating delay of sink16, there remain 111.
+2020-07-16 23:37:23,010 - INFO - calculating delay of sink17, there remain 110.
+2020-07-16 23:47:57,125 - INFO - calculating delay of sink18, there remain 109.
+2020-07-16 23:55:52,207 - INFO - calculating delay of sink19, there remain 108.
+2020-07-17 00:07:52,721 - INFO - calculating delay of sink20, there remain 107.
+2020-07-17 00:17:11,462 - INFO - calculating delay of sink21, there remain 106.
+2020-07-17 00:24:47,558 - INFO - calculating delay of sink22, there remain 105.
+2020-07-17 00:30:58,601 - INFO - calculating delay of sink23, there remain 104.
+2020-07-17 00:39:27,871 - INFO - calculating delay of sink24, there remain 103.
+2020-07-17 00:46:40,394 - INFO - calculating delay of sink25, there remain 102.
+2020-07-17 00:54:55,943 - INFO - calculating delay of sink26, there remain 101.
+2020-07-17 01:02:31,329 - INFO - calculating delay of sink27, there remain 100.
+2020-07-17 01:10:06,512 - INFO - calculating delay of sink28, there remain 99.
+2020-07-17 01:18:10,910 - INFO - calculating delay of sink29, there remain 98.
+2020-07-17 01:24:58,770 - INFO - calculating delay of sink30, there remain 97.
+2020-07-17 01:31:00,547 - INFO - calculating delay of sink31, there remain 96.
+2020-07-17 01:38:33,097 - INFO - calculating delay of sink32, there remain 95.
+2020-07-17 01:46:07,570 - INFO - calculating delay of sink33, there remain 94.
+2020-07-17 01:54:31,810 - INFO - calculating delay of sink34, there remain 93.
+2020-07-17 02:52:45,355 - INFO - calculating delay of sink35, there remain 92.
+2020-07-17 03:07:25,265 - INFO - calculating delay of sink36, there remain 91.
+2020-07-17 03:19:20,689 - INFO - calculating delay of sink37, there remain 90.
+2020-07-17 03:30:52,943 - INFO - calculating delay of sink38, there remain 89.
+2020-07-17 03:38:36,283 - INFO - calculating delay of sink39, there remain 88.
+2020-07-17 03:43:32,083 - INFO - calculating delay of sink40, there remain 87.
+2020-07-17 03:50:46,896 - INFO - calculating delay of sink41, there remain 86.
+2020-07-17 03:57:53,130 - INFO - calculating delay of sink42, there remain 85.
+2020-07-17 04:08:25,080 - INFO - calculating delay of sink43, there remain 84.
+2020-07-17 04:18:11,325 - INFO - calculating delay of sink44, there remain 83.
+2020-07-17 04:32:17,178 - INFO - calculating delay of sink45, there remain 82.
+2020-07-17 04:43:00,052 - INFO - calculating delay of sink46, there remain 81.
+2020-07-17 04:55:26,414 - INFO - calculating delay of sink47, there remain 80.
+2020-07-17 05:08:38,949 - INFO - calculating delay of sink48, there remain 79.
+2020-07-17 05:18:57,532 - INFO - calculating delay of sink49, there remain 78.
+2020-07-17 05:37:54,015 - INFO - calculating delay of sink50, there remain 77.

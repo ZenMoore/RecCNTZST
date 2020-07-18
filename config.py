@@ -28,8 +28,10 @@ gpu_options = tf.GPUOptions(allow_growth=True)
 train_config = tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False, allow_soft_placement=True)
 
 # net config
-learning_rate_base = 0.01
+learning_rate_base = 0.1
 learning_rate_decay = 0.8
+learning_rate_ending = 0.01
+learning_rate_power = 0.5
 num_steps = 1000  # 最大迭代轮数
 # initialized_weights = []
 

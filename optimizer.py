@@ -430,13 +430,14 @@ def calc_lagrange():
 def optimize():
 
     tf.reset_default_graph()
-    tf.compat.v1.experimental.output_all_intermediates(True)
+    # tf.compat.v1.experimental.output_all_intermediates(True)
     # config.trainable_variables = []
+    tf.executing_eagerly()
 
     with tf.Session(config=config.train_config) as sess:
     # with tf.Session() as sess:
         # 加载前向传播的树结构
-        loader.load(sess)
+        loader.load()
         config.scalar_tree = False
 
         # 计算损失=总延时+等式约束
@@ -447,9 +448,9 @@ def optimize():
         logging.info('all delay calculated.')
 
         logging.info('calculating skew and lagrangian multiplier...')
-        lagrange, skew = calc_lagrange(sess)
+        lagrange, skew = calc_lagrange()
         tf.add_to_collection('losses', lagrange)
-        tf.summary.scalar('lagrangian multiplier', lagrange)
+        tf.summary.scalar('lagrangian_multiplier', lagrange)
         tf.summary.scalar('skew', skew)
         logging.info('skew and lagrangian multiplier calculated.')
 
@@ -469,10 +470,10 @@ def optimize():
         logging.info('initialized.')
 
         logging.info('define learning rate.')
-        learning_rate = tf.train.exponential_decay(config.learning_rate_base, global_step, 1,
-                                                   config.learning_rate_decay)  # todo
+        learning_rate = tf.train.polynomial_decay(config.learning_rate_base, global_step, 1,
+                                                   config.learning_rate_ending, config.learning_rate_power, cycle = True)  # todo
         logging.info('defining optimizer...')
-        train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(goal, global_step=global_step)  # todo
+        train_step = tf.train.AdamOptimizer(learning_rate).minimize(goal, global_step=global_step)  # todo
         logging.info('optimizer defined.')
         # 暂时不使用滑动平均
         # variable_average = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
@@ -495,14 +496,15 @@ def optimize():
         logging.info('merging all figure...')
         painter = tf.summary.FileWriter(config.tensorboard_dir + '/topo-' + str(config.topo_step))
         logging.info('add operation graph.')
-        painter.add_graph(sess.graph)
-        all_fig = tf.summary.merge_all()
-        logging.info('all figure merged.')
+        # painter.add_graph(sess.graph)
+        # all_fig = tf.summary.merge_all()
+        # logging.info('all figure merged.')
+        logging.info('graph ignored.')
 
         for i in range(config.num_steps):
-            logging.info('step-' + str(i) + 'training...')
+            logging.info('step-' + str(i) + ' training...')
             _, goal_value, step = sess.run([train_step, goal, global_step])
-            logging.info('step-' + str(i) + 'trained.')
+            logging.info('step-' + str(i) + ' trained.')
 
             if i % 100 == 0:
                 logging.info("After %d steps of training, goal value is %g ." % (step, goal_value))
@@ -519,7 +521,7 @@ def optimize():
                 logging.info('model saved.')
 
                 # dynamic visualization
-                painter.add_summary(all_fig, i)
+                # painter.add_summary(all_fig, i)
 
                 outparser.point_list(sess, i)
                 outparser.draw(final_delay, lag_multiplier, i)

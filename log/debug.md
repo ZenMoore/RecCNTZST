@@ -33,7 +33,16 @@ Log of debugging
 > 3. Node 'gradients/case_132/cond_grad/StatelessIf' : Connecting to invalid output 1 of source node case_132/cond which has 1 outputs. Try using tf.compat.v1.experimental.output_all_intermediates(True).
 > tf.compat.v1.experimental.output_all_intermediates(True).
 > 4. tensorboard 调用不出来
-> 不知道为什么
+> 必须在远程服务器中调用 mapping
 
 7.16x2 换用 tensorflow-gpu，output_all_intermediates(True)
+> 运行太慢了
+
+7.17x1 删去 output_all_intermediates(True)
+
+7.18x1 使用动态图模式 tf.executing_eagerly()
+> tensorboard 无法调用，尽管建立了 tensorboard mapping, 原因是 protobuf 版本不匹配，但是降版本时遇到 permission denied.
+> 训练过程无法进行
+
+7.18x2 修改学习率衰减方式polynome_decay和优化器AdamOptimizer
 
