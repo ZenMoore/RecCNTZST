@@ -1,6 +1,16 @@
-RecCNTZST
+RecCNTZST_pytorch
 ---
 Carbon nanotube zero skew clock tree construction using structural recursive neural network.
+
+#### Overview
+Because tensorflow is difficult to debug, we use PyTorch to realize another version of 
+RecCNTZST. For previous version with Tensorflow 2.2, see [RecCNTZST](https://github.com/ZenMoore/RecCNTZST).
+
+The codes may be a little different, so pay attention to the release/commit time infomation of both two versions. 
+For detailed infomation, you can see /log/debug.md, which records the debug trace of both two versions.
+
+Right now(2020.7.19), we use RecCNTZST(TensorFlow) as the main version.  
+
 
 #### Structure
 - config: configuration for the network/etc.
