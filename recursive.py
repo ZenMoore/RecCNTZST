@@ -88,10 +88,10 @@ def calc_coordinate(left, right):
                 return left.obj['x'], left.obj['y'] - left.rec_obj['wirelen'], tf.convert_to_tensor(1), tf.convert_to_tensor(2)
 
             return tf.case({
-                tf.less(left.obj['x'], right.obj['x']) : state_1,
-                tf.less(right.obj['x'], left.obj['x']) : state_2,
-                tf.less(left.obj['y'], right.obj['y']) : state_3,
-                tf.less(right.obj['y'], left.obj['y']) : state_4
+                tf.less(left.obj['x'], right.obj['x']): state_1,
+                tf.less(right.obj['x'], left.obj['x']): state_2,
+                tf.less(left.obj['y'], right.obj['y']): state_3,
+                tf.less(right.obj['y'], left.obj['y']): state_4
             }, default=state_1, exclusive=True)
 
         def branch_2():

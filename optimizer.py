@@ -432,7 +432,8 @@ def optimize():
     tf.reset_default_graph()
     # tf.compat.v1.experimental.output_all_intermediates(True)
     # config.trainable_variables = []
-    tf.executing_eagerly()
+    # tensorflow.executing_eagerly()
+    tf.disable_eager_execution()
 
     with tf.Session(config=config.train_config) as sess:
     # with tf.Session() as sess:
@@ -474,6 +475,7 @@ def optimize():
                                                    config.learning_rate_ending, config.learning_rate_power, cycle = True)  # todo
         logging.info('defining optimizer...')
         train_step = tf.train.AdamOptimizer(learning_rate).minimize(goal, global_step=global_step)  # todo
+        print(train_step)
         logging.info('optimizer defined.')
         # 暂时不使用滑动平均
         # variable_average = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
@@ -549,5 +551,4 @@ def main(argv=None):
 # 总流程控制
 if __name__ == '__main__':
     tf.app.run()
-    # todo topoparser.update()
     # todo drawer with cdia&bdia
