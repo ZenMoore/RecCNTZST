@@ -11,12 +11,14 @@ source_dir = "./benchmark/source.txt"
 # node config
 meta_ini = {'r':None,
             'c':None,
-            'x':0,
-            'y':0}  # (r, c, x, y)
-rec_ini = {'wirelen':0,
-           'cdia':2,
-           'bdia':40}  # (wirelen, diameter_cnt, diameter_bundle) # 可以尝试DME算法生成序列进行初始化
-shadow_ini = int(0)  # buffer_type
+            'x':0.0,
+            'y':0.0}  # (r, c, x, y)
+rec_ini = {'wirelen':20.0,
+           'cdia':2.0,
+           'bdia':40.0}  # (wirelen, diameter_cnt, diameter_bundle) # 可以尝试DME算法生成序列进行初始化
+wirelen_std = 10.0
+cdia_std = 0.5
+bdia_std = 10.0
 
 
 # topo config
@@ -40,10 +42,10 @@ num_steps = 1000  # 最大迭代轮数
 
 # technique limitation
 # unit=nm
-cdia_max = 10
-cdia_min = 1
-bdia_max = 60
-bdia_min = 20
+cdia_max = 10.0
+cdia_min = 1.0
+bdia_max = 60.0
+bdia_min = 20.0
 
 # constants
 unit_capacitance = 0.16e-3
