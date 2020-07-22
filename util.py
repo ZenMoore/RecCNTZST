@@ -10,7 +10,6 @@
 # #    二叉树的节点表示cnt type和buffer type
 # # ----for future----
 import config
-import tensorflow.compat.v1 as tf
 
 # todo 为防止optimizer在读取值的时候误更新，可以加一层保护机制，比如，新加只读或者读写的控制参数
 # todo 新增数据域 name_scope, 方便修正 variable/tensor 的名称体系，从而方便可视化等等
@@ -19,12 +18,12 @@ class Tree:
     # obj = {'r', 'c', 'x', 'y'}
     # rec_obj = {'wirelen','cdia','ddia'}
     # shadow_obj = {'buffer_type'}
-    def __init__(self, root_obj=config.meta_ini, father=None):
+    def __init__(self, root_obj=config.meta_ini.copy(), father=None):
         self.father = father
         self.obj = root_obj
         if type(self.obj['c']) is str:
             self.obj['c'] = float(self.obj['c'])
-        self.rec_obj = config.rec_ini
+        self.rec_obj = config.rec_ini.copy()
         self.shadow_obj = config.shadow_ini
         self.left_child = None
         self.right_child = None  # todo 感觉这里设置成 Tree(root_obj=None, father=self)更好，对子树是否为空的判断通过判断root_obj
@@ -157,24 +156,14 @@ class Tree:
 
     '''树扩展功能函数群'''
 
-    def scalarize(self, sess=None):
-        if sess is None:
-            with tf.Session() as sess:
-                if self.left_child is not None:
-                    self.left_child.scalarize(sess)
-                if self.right_child is not None:
-                    self.right_child.scalarize(sess)
-                self.obj['x'] = sess.run(self.obj['x'])
-                self.obj['y'] = sess.run(self.obj['y'])
-                self.rec_obj = config.rec_ini
-        else:
-            if self.left_child is not None:
-                self.left_child.scalarize(sess)
-            if self.right_child is not None:
-                self.right_child.scalarize(sess)
-            self.obj['x'] = sess.run(self.obj['x'])
-            self.obj['y'] = sess.run(self.obj['y'])
-            self.rec_obj = config.rec_ini
+    def scalarize(self):
+        if self.left_child is not None:
+            self.left_child.scalarize()
+        if self.right_child is not None:
+            self.right_child.scalarize()
+        self.obj['x'] = self.obj['x'].item()
+        self.obj['y'] = self.obj['y'].item()
+        self.rec_obj = config.rec_ini.copy()
 
 
     def load_node_set(self):
