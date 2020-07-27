@@ -132,6 +132,7 @@ def draw(loss=None, delay=None, lag=None, skew=None, step=None):
 
     global ptlst
     ptlst = []
+    name = ''
 
     logging.info('drawing...')
     with open(config.model_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'r') as file:
@@ -161,16 +162,18 @@ def draw(loss=None, delay=None, lag=None, skew=None, step=None):
         plt.plot([right[0], mid[0]], [right[1], right[1]], color='k', alpha=l_op(right[2]), linewidth=l_width(right[3]))
         plt.plot([mid[0], mid[0]], [right[1], mid[1]], color='k', alpha=l_op(right[2]), linewidth=l_width(right[3]))
 
-        # sink points or merging points # todo 分开画
-        plt.scatter(left[0], left[1], s=config.p_area, c=config.p_color)
-        plt.scatter(right[0], right[1], s=config.p_area, c=config.p_color)
-        plt.scatter(mid[0], mid[1], s=config.p_area, c=config.p_color)
+        # sink points and merging points # sink points 之后会被 p_color_s 覆盖，因此两者实际分开
+        plt.scatter(left[0], left[1], s=config.p_area, c=config.p_color_m)
+        plt.scatter(right[0], right[1], s=config.p_area, c=config.p_color_m)
+        plt.scatter(mid[0], mid[1], s=config.p_area, c=config.p_color_m)
 
         # bending points
-        plt.scatter(mid[0], left[1], s=config.p_area, c=config.p_color)
-        plt.scatter(mid[0], right[1], s=config.p_area, c=config.p_color)
+        plt.scatter(mid[0], left[1], s=config.p_area, c=config.p_color_b)
+        plt.scatter(mid[0], right[1], s=config.p_area, c=config.p_color_b)
 
-
+        # sink points
+    for point in config.sink_set:
+        plt.scatter(point['x'], point['y'], s=config.p_area, c=config.p_color_s)
 
         # todo 引入随 training_step 动态更新图像的机制
 

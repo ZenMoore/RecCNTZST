@@ -28,6 +28,7 @@ tree = None
 scalar_tree = True
 loaded = True
 lagranger = 0.0
+sink_delay = []
 
 # net config
 learning_rate_base = 0.1
@@ -41,7 +42,7 @@ num_steps = 1000  # 最大迭代轮数
 # initialized_weights = []
 
 # forprop variables
-trainables = []
+trainables = {}
 
 # technique limitation
 # unit=nm
@@ -76,7 +77,9 @@ logging.basicConfig(filename='./log/console-' + datetime.datetime.now().strftime
 
 # visualization config
 p_area = 20.0
-p_color = 'r'
+p_color_s = 'b'
+p_color_m = 'g'
+p_color_b = 'r'
 l_width_max = 5.0
 l_width_min = 1.0
 l_op_max = 1.0

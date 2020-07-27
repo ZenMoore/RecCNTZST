@@ -10,8 +10,6 @@ import parse_out as outparser
 
 '''相当于后向传播算法'''
 
-sink_delay = []
-
 # todo no_grad?
 def get_tensors_max_min(tensors):
     recur_set = []
@@ -97,7 +95,6 @@ def contact_wire_sink(wirelen, cdia, bdia, cap):
 
 # 计算总延时
 def calc_delay():
-    global sink_delay
 
     sink_node_set = config.tree.get_sinks()
 
@@ -107,13 +104,13 @@ def calc_delay():
         # delay = tf.Variable(0, dtype=tf.float32)
         delay = torch.tensor(0.0)
         while node.father is not None:
-            delay = torch.add(delay, calc_node_delay(node))
+            delay = delay + calc_node_delay(node)
             node = node.father
         delay = torch.add(delay, calc_root_delay(node))
-        sink_delay.append(delay)
+        config.sink_delay.append(delay)
 
-    assert (len(sink_delay) == len(config.sink_set))
-    result, _ = get_tensors_max_min(sink_delay)
+    assert (len(config.sink_delay) == len(config.sink_set))
+    result, _ = get_tensors_max_min(config.sink_delay)
 
     return result  # 必须是tensor数组里面的最大值
 
@@ -414,7 +411,7 @@ def calc_lagrange():
         config.lagranger = torch.empty([], requires_grad=True)
         torch.nn.init.normal_(config.lagranger, mean=config.lagrangian_ini, std=config.lagrangian_std)
         # sess.run(lagrangian.initializer)
-        config.trainables.append(config.lagranger)
+        config.trainables.update({'lag_multiplier':config.lagranger})
         logging.info('lagrangian multiplier created and initialized(normal).')
     max_delay, min_delay = get_tensors_max_min(sink_delay)
 
@@ -426,8 +423,8 @@ def visualize(loss, delay, lag, skew, step):
 
 
 def forprop():
-    global sink_delay
-    sink_delay = []
+
+    config.sink_delay = []
     network.coordinate_calc()
     # 计算损失=总延时+等式约束
     logging.info('delay calculating...')
@@ -455,7 +452,7 @@ def forprop():
 def optimize():
 
     # tf.reset_default_graph()
-    config.trainables = []
+    config.trainables = {}
     config.scalar_tree = False
     goal, delay, skew = forprop()
     # todo 清空之前的计算图，这里默认新的计算图与旧的计算图之间没有连接相互独立而不影响训练
@@ -510,7 +507,6 @@ def optimize():
     # # all_fig = tf.summary.merge_all()
     # # logging.info('all figure merged.')
     logging.info('graph ignored.')
-
 
     for i in range(config.num_steps):
         logging.info('step-' + str(i) + ' backproping...')
