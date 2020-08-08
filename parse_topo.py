@@ -141,21 +141,31 @@ def generate(initial=True):
     logging.info('topology parsed.')
 
     # 画出拓扑
-    outparser.point_list_without_sess()
-    outparser.draw(-1, -1, 'topo')  # 仅画出拓扑结构，不是绕线结果
+    outparser.point_list_no_tensor()
+    outparser.draw(step='topo')  # 仅画出拓扑结构，不是绕线结果
 
     return True  # always
 
 
 # 返回是否解析成功
 def parse():
+    config.loaded = False
     if reader.read():
-        return generate()
+        success = generate()
+        if success:
+            logging.info('copy topo tree.')
+            config.topo_tree = config.tree.copy()
+        return success
     else:
         raise Exception("reading failed: ", config.source_dir)
 
 def update():
-    return generate(initial=False)
+    config.loaded = False
+    success = generate(initial=False)
+    if success:
+        logging.info('copy topo tree.')
+        config.topo_tree = config.tree.copy()
+    return success
 
 
 if __name__ == '__main__':
