@@ -33,8 +33,14 @@ sink_delay = []
 # net config
 learning_rate_base = 0.1
 # learning_rate_decay = 0.8
-learning_rate_ending = 0.01
-learning_rate_T = 10
+# learning_rate_ending = {
+#     'wirelen':10,
+#     'cdia':0.01,
+#     'bdia':0.1
+# }
+# learning_rate_base = 1
+learning_rate_ending = 0.1
+learning_rate_T = 50
 # learning_rate_power = 0.5
 lagrangian_ini = 10.0
 lagrangian_std = 1.0
@@ -42,7 +48,10 @@ num_steps = 1000  # 最大迭代轮数
 # initialized_weights = []
 
 # forprop variables
-trainables = {}
+trainable_wirelens = {}
+trainable_cdias = {}
+trainable_bdias = {}
+trainable_helpers = {}
 
 # technique limitation
 # unit=nm
@@ -85,3 +94,36 @@ l_width_min = 1.0
 l_op_max = 1.0
 l_op_min = 0.1
 l_color = 'k'
+
+
+# hyperparams search
+hyper_search = False
+increase = False
+former = None
+topo_tree = None
+max_hyper_step = 21
+judgements = []
+judge_step = 50
+hyper_step = 0
+hyper_path = './models/hyperparams'
+
+def print_hyperparams(step):
+    logging.info(
+        '\n--------------hyperparams system %d--------------\n' % step +
+        '* initialization=normal: \n' +
+        'means:cdia=%g, bdia=%g, lag=%g\n' % (rec_ini['cdia'], rec_ini['bdia'], lagrangian_ini) +
+        'stds: wirelen=%g, cdia=%g, bdia=%g, lag=%g\n' % (wirelen_std, cdia_std, bdia_std, lagrangian_std) +
+        '* value bounds: \n' +
+        'cdia=%g~%g, bdia=%g~%g\n' % (cdia_min, cdia_max, bdia_min, bdia_max) +
+        '* training\n' +
+        'learning_rate_schedule=CosineAnnealing\n' +
+        'learning_rate_base: wirelen=%g, cdia=%g, bdia=%g, lag=%g\n' % (
+        learning_rate_base['wirelen'], learning_rate_base['cdia'], learning_rate_base['bdia'],
+        learning_rate_base['lag']) +
+        'learning_rate_ending=%g\n' % (learning_rate_ending) +
+        'learning_rate_T=%g\n' % (learning_rate_T) +
+        '* steps\n' +
+        'max_topo_step=%d\n' % (max_topo_step) +
+        'training_step=%d\n' % (num_steps) +
+        '--------------hyperparams system %d--------------' % step
+    )

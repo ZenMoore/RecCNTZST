@@ -411,7 +411,7 @@ def calc_lagrange():
         config.lagranger = torch.empty([], requires_grad=True)
         torch.nn.init.normal_(config.lagranger, mean=config.lagrangian_ini, std=config.lagrangian_std)
         # sess.run(lagrangian.initializer)
-        config.trainables.update({'lag_multiplier':config.lagranger})
+        config.trainable_helpers.update({'lag_multiplier':config.lagranger})
         logging.info('lagrangian multiplier created and initialized(normal).')
     max_delay, min_delay = get_tensors_max_min(sink_delay)
 
@@ -452,7 +452,10 @@ def forprop():
 def optimize():
 
     # tf.reset_default_graph()
-    config.trainables = {}
+    config.trainable_helpers = {}
+    config.trainable_wirelens = {}
+    config.trainable_bdias = {}
+    config.trainable_cdias = {}
     config.scalar_tree = False
     goal, delay, skew = forprop()
     # todo 清空之前的计算图，这里默认新的计算图与旧的计算图之间没有连接相互独立而不影响训练

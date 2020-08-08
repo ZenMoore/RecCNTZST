@@ -151,13 +151,21 @@ def generate(initial=True):
 def parse():
     config.loaded = False
     if reader.read():
-        return generate()
+        success = generate()
+        if success:
+            logging.info('copy topo tree.')
+            config.topo_tree = config.tree.copy()
+        return success
     else:
         raise Exception("reading failed: ", config.source_dir)
 
 def update():
     config.loaded = False
-    return generate(initial=False)
+    success = generate(initial=False)
+    if success:
+        logging.info('copy topo tree.')
+        config.topo_tree = config.tree.copy()
+    return success
 
 
 if __name__ == '__main__':

@@ -154,14 +154,12 @@ def draw(loss=None, delay=None, lag=None, skew=None, step=None):
         if loss is None:
             plt.title('topo=%d, step=topo' % config.topo_step)
         else:
-            plt.title('loss=%g, delay=%g, lagrange multiplier=%g, skew=%g, topo=%d, step=%d' % (loss, delay, lag, skew, config.topo_step, step))
-
+            plt.title('loss=%g, delay=%g\nlagrange multiplier=%g, skew=%g\ntopo=%d, step=%d' % (loss, delay, lag, skew, config.topo_step, step))
         plt.plot([left[0], mid[0]], [left[1], left[1]], color='k', alpha=l_op(left[2]), linewidth=l_width(left[3]))
         plt.plot([mid[0], mid[0]], [left[1], mid[1]], color='k', alpha=l_op(left[2]), linewidth=l_width(left[3]))
 
         plt.plot([right[0], mid[0]], [right[1], right[1]], color='k', alpha=l_op(right[2]), linewidth=l_width(right[3]))
         plt.plot([mid[0], mid[0]], [right[1], mid[1]], color='k', alpha=l_op(right[2]), linewidth=l_width(right[3]))
-
         # sink points and merging points # sink points 之后会被 p_color_s 覆盖，因此两者实际分开
         plt.scatter(left[0], left[1], s=config.p_area, c=config.p_color_m)
         plt.scatter(right[0], right[1], s=config.p_area, c=config.p_color_m)
@@ -175,7 +173,8 @@ def draw(loss=None, delay=None, lag=None, skew=None, step=None):
     for point in config.sink_set:
         plt.scatter(point['x'], point['y'], s=config.p_area, c=config.p_color_s)
 
-        # todo 引入随 training_step 动态更新图像的机制
-
+    if not os.path.exists(config.img_path):
+        os.makedirs(config.img_path)
+    plt.savefig(config.img_path + '/%d@%d=L%gT%glag%gE%g.jpg'%(step, config.topo_step, loss, delay, lag, skew))
     plt.show()
     logging.info('waiting next figure...')

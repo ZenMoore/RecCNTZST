@@ -376,7 +376,8 @@ def calc_coordinate(left, right):
 def weight(node, variate, trainable=True):
     name = node.get_id() + '_' + variate
     if variate == 'wirelen':
-        mean = config.rec_ini['wirelen']
+        # mean = config.rec_ini['wirelen']
+        mean = calc_dist(node, node.father).item()
         stddev = config.wirelen_std
     elif variate == 'cdia':
         mean = config.rec_ini['cdia']

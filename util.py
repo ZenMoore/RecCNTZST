@@ -156,6 +156,33 @@ class Tree:
 
     '''树扩展功能函数群'''
 
+    def copy(self):
+        root = Tree(self.obj.copy())
+        root.rec_obj = self.rec_obj.copy()
+        root.isleaf = self.isleaf
+        root.num_bend = self.num_bend
+        root.overlapped = self.overlapped
+        if self.left_child is not None:
+            root.left_child = self.left_child.copy_op(root)
+        if self.right_child is not None:
+            root.right_child = self.right_child.copy_op(root)
+        return root
+
+    def copy_op(self, father):
+        root = Tree(self.obj.copy())
+        root.father = father
+        root.rec_obj = self.rec_obj.copy()
+        root.num_bend = self.num_bend
+        root.overlapped = self.overlapped
+        root.isleaf = self.isleaf
+        if root.isleaf:
+            return root
+        if self.left_child is not None:
+            root.left_child = self.left_child.copy_op(root)
+        if self.right_child is not None:
+            root.right_child = self.right_child.copy_op(root)
+        return root
+
     def scalarize(self):
         if self.left_child is not None:
             self.left_child.scalarize()
@@ -164,7 +191,6 @@ class Tree:
         self.obj['x'] = self.obj['x'].item()
         self.obj['y'] = self.obj['y'].item()
         self.rec_obj = config.rec_ini.copy()
-
 
     def load_node_set(self):
         config.node_set = []
