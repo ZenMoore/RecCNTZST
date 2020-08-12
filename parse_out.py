@@ -124,6 +124,7 @@ def point_list(step):
             file.write('\n')
     logging.info('ptlst generated.')
 
+
 def point_list_no_tensor_detail(topo_step):
     global ptlst
 
@@ -140,7 +141,8 @@ def point_list_no_tensor_detail(topo_step):
             file.write(str(data[3]))
             file.write('\n')
 
-def point_list_detail(loss, delay, lag, skew, step, topo_step):
+
+def point_list_detail(loss, sum_delay, sum_skew, delay, lag, skew, step, topo_step):
     global ptlst
     logging.info('generating ptlst...')
 
@@ -149,7 +151,7 @@ def point_list_detail(loss, delay, lag, skew, step, topo_step):
 
     with open(config.model_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'w') as file:
         generate_ptlst()
-        file.write('loss=%g, delay=%g, lag=%g, skew=%g, step=%d, topo=%d\n'%(loss, delay, lag, skew, step, topo_step))
+        file.write('loss=%g, sum_delay=%g, sum_skew=%g, max_delay=%g, lag=%g, max_min_skew=%g, step=%d, topo=%d\n'%(loss, sum_delay, sum_skew, delay, lag, skew, step, topo_step))
         while len(ptlst) != 0:
             data = ptlst.pop()
             file.write(str(data[0])), file.write(', ')  # x
@@ -159,6 +161,7 @@ def point_list_detail(loss, delay, lag, skew, step, topo_step):
             file.write('\n')
     logging.info('ptlst generated.')
 
+
 def l_width(bdia):
     return config.l_width_min + (config.l_width_max - config.l_width_min) / (config.bdia_max - config.bdia_min) * (bdia - config.bdia_min)
 
@@ -167,7 +170,7 @@ def l_op(cdia):
     return config.l_op_min + (config.l_op_max - config.l_op_min) / (config.cdia_max - config.cdia_min) * (cdia - config.cdia_min)
 
 
-def draw(loss=None, delay=None, lag=None, skew=None, step=None):
+def draw(loss=None, sum_delay=None, sum_skew=None, delay=None, lag=None, skew=None, step=None):
 
     global ptlst
     ptlst = []
@@ -217,7 +220,7 @@ def draw(loss=None, delay=None, lag=None, skew=None, step=None):
         if loss is None:
             plt.title('topo=%d, step=topo' % config.topo_step)
         else:
-            plt.title('loss=%g, delay=%g\nlagrange multiplier=%g, skew=%g\ntopo=%d, step=%d' % (loss, delay, lag, skew, config.topo_step, step))
+            plt.title('loss=%g, lagrange_multiplier=%g\nsum_delay=%g, max_delay=%g\nsum_skew=%g, max_min_skew=%g\ntopo=%d, step=%d' % (loss, lag, sum_delay, delay, sum_skew, skew, config.topo_step, step))
         plt.plot([left[0], mid[0]], [left[1], left[1]], color='k', alpha=l_op(left[2]), linewidth=l_width(left[3]))
         plt.plot([mid[0], mid[0]], [left[1], mid[1]], color='k', alpha=l_op(left[2]), linewidth=l_width(left[3]))
 
@@ -241,7 +244,7 @@ def draw(loss=None, delay=None, lag=None, skew=None, step=None):
     if loss is None:
         plt.savefig(config.img_path + '/topo@%d.jpg' % (config.topo_step))
     else:
-        plt.savefig(config.img_path + '/%d@%d=L%gT%glag%gE%g.jpg'%(step, config.topo_step, loss, delay, lag, skew))
+        plt.savefig(config.img_path + '/%d@%d=L%gST%gSE%gT%glag%gE%g.jpg'%(step, config.topo_step, loss, sum_delay, sum_skew, delay, lag, skew))
     plt.close(fig)
     # plt.show()
     logging.info('waiting next figure...')

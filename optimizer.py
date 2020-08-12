@@ -10,7 +10,7 @@ import parse_out as outparser
 
 '''相当于后向传播算法'''
 
-# todo no_grad?
+
 def get_tensors_max_min(tensors):
     recur_set = []
 
@@ -123,6 +123,7 @@ def calc_sink_delay(node):
     delay = torch.add(delay, calc_root_delay(node))
     return delay
 
+
 def calc_root_delay(node):
 
     def with_bending():
@@ -144,89 +145,6 @@ def calc_root_delay(node):
         return with_bending()
     else:
         raise Exception('bending number of node ' + node.get_id() + ' is abnormal.')
-
-    # return tf.case({
-    #     tf.equal(node.num_bend, torch.tensor(0)): lambda: torch.tensor(0.0),
-    #     tf.equal(node.num_bend, torch.tensor(1)): lambda: tf.add(
-    #         0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(
-    #             tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-    #             2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
-    #         tf.add(
-    #             0.38e-6 * tf.div(
-    #                 torch.mul(node.rec_obj['wirelen'],
-    #                             r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
-    #                 N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul(config.unit_capacitance,
-    #                                                                                  node.rec_obj['wirelen']),
-    #             0.69 * config.source_point['c'] * tf.add(tf.div(1e-6 * torch.mul(node.rec_obj['wirelen'],
-    #                                                                                r_s(node.rec_obj['cdia'],
-    #                                                                                    node.rec_obj[
-    #                                                                                        'wirelen'])),
-    #                                                             N_cnt(node.rec_obj['bdia'],
-    #                                                                   node.rec_obj['cdia'])),
-    #                                                      tf.div(tf.add(config.R_Q,
-    #                                                                    R_c(node.rec_obj['cdia'])),
-    #                                                             N_cnt(node.rec_obj['bdia'],
-    #                                                                   node.rec_obj['cdia'])))
-    #         )),
-    #     tf.equal(node.num_bend, torch.tensor(2)): with_bending
-    # }, default=lambda: torch.tensor(0.0), exclusive=True)
-    # if node.num_bend == 0:
-    #     return torch.tensor(0.0)
-    #
-    # elif node.num_bend == 1:
-    #     return tf.add(0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(
-    #         tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-    #         2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
-    #                   tf.add(
-    #                       0.38e-6 * tf.div(
-    #                           torch.mul()(node.rec_obj['wirelen'],
-    #                                       r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
-    #                           N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(config.unit_capacitance,
-    #                                                                                            node.rec_obj['wirelen']),
-    #                       0.69 * config.source_point['c'] * tf.add(tf.div(1e-6 * torch.mul()(node.rec_obj['wirelen'],
-    #                                                                                          r_s(node.rec_obj['cdia'],
-    #                                                                                              node.rec_obj[
-    #                                                                                                  'wirelen'])),
-    #                                                                       N_cnt(node.rec_obj['bdia'],
-    #                                                                             node.rec_obj['cdia'])),
-    #                                                                tf.div(tf.add(config.R_Q,
-    #                                                                              R_c(node.rec_obj['cdia'])),
-    #                                                                       N_cnt(node.rec_obj['bdia'],
-    #                                                                             node.rec_obj['cdia'])))
-    #                   )
-    #                   )
-    # else:
-    #     horizontal_bia = tf.abs(config.source_point['x'] - node.obj['x'])
-    #     vertical_bia = tf.abs(config.source_point['y'] - node.obj['y'])
-    #
-    #     t_horizontal = tf.add(
-    #         0.69 * config.unit_capacitance * horizontal_bia * tf.div(
-    #             tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-    #             2 * N_cnt(node.rec_obj['bdia'],
-    #                       node.rec_obj['cdia'])),
-    #         tf.add(
-    #             0.38e-6 * tf.div(torch.mul()(horizontal_bia, r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
-    #                              N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(
-    #                 config.unit_capacitance, horizontal_bia),
-    #             0.69 * config.source_point['c'] * tf.add(
-    #                 tf.div(1e-6 * torch.mul()(horizontal_bia, r_s(node.rec_obj['cdia'], horizontal_bia)),
-    #                        N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
-    #                 tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-    #                        N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])))
-    #         )
-    #     )
-    #
-    #     t_vertical = tf.add(
-    #         2 * 0.69 * config.unit_capacitance * vertical_bia * tf.div(
-    #             tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-    #             2 * N_cnt(node.rec_obj['bdia'],
-    #                       node.rec_obj['cdia'])),
-    #         0.38e-6 * tf.div(torch.mul()(vertical_bia, r_s(node.rec_obj['cdia'], vertical_bia)),
-    #                          N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(config.unit_capacitance,
-    #                                                                                           vertical_bia),
-    #     )
-    #
-    #     return tf.add(t_horizontal, t_vertical)
 
 
 def calc_node_delay(node):
@@ -275,16 +193,31 @@ def calc_node_delay(node):
             raise Exception('bending number of node ' + node.get_id() + ' is abnormal.')
 
 
-def weight(name):
-    weight = torch.empty([], requires_grad=True)
-    torch.nn.init.normal_(weight, mean=config.lagrangian_ini, std=config.lagrangian_std)
-    config.trainable_helpers.update({name: weight})
-    logging.info('lagrangian multiplier ' + name + ' created and initialized(normal).')
+def lag(name):
+    weight = torch.empty([])
+    # torch.nn.init.normal_(weight, mean=config.lagrangian_ini, std=config.lagrangian_std)
+    torch.nn.init.constant_(weight, config.lagrangian_ini)
+    logging.info('lagrangian multiplier ' + name + ' created and initialized(constant).')
     return weight
 
 
+def calc_between_skew():
+    i = 0
+    former = None
+    for delay in config.sink_delay:
+        if i == 0:
+            former = delay
+        else:
+            logging.info('calculate between skew %d' % i)
+            skew = torch.abs(delay - former)
+            config.between_skew.append(skew)
+            logging.info('calculate between skew %d' % i)
+            former = delay
+        i += 1
+
+
 # 计算引入拉格朗日乘子后的等式约束
-def calc_lagrange():
+def calc_constraint(total_skew):
 
     # 将拉格朗日乘子作为训练参数，梯度下降时候，向对拉格朗日乘子偏导等于零的方向下降
     # lagrangian = tf.get_variable("lagrangian_multiplier", shape=(), initializer=tf.truncated_normal_initializer(stddev=0.1),
@@ -297,92 +230,77 @@ def calc_lagrange():
         logging.info('lagrangian multiplier created and initialized(normal).')
     max_delay, min_delay = get_tensors_max_min(sink_delay)
 
-    return config.lagranger * (max_delay - min_delay), max_delay - min_delay
+    return config.lagranger * total_skew
 
 def visualize(loss, delay, lag, skew, step):
     outparser.draw(loss, delay, lag, skew, step)
     return None
 
-def calc_between_skew():
-    i = 0
-    former = None
-    for delay in config.sink_delay:
-        if i == 0:
-            former = delay
-        else:
-            logging.info('calculate between skew %d' % i)
-            skew = torch.abs(delay - former)
-            config.between_skew.append(skew)
-            name = "lag_%d" % i
-            if not config.loaded:
-                weight(name)
-            logging.info('calculate between skew %d' % i)
-            config.constraints.append(config.trainable_helpers[name] * skew)
-            former = delay
-        i += 1
+
+def set_nodes_to_show():
+    config.nodes_to_show = ['root_left_left']
+    logging.info('It will show nodes: ' + str(config.nodes_to_show)[1:-1])
+    return None
 
 
-def calc_between_goal():
-    i = 1
-    for skew in config.between_skew:
-        delay = config.sink_delay[i]
-        name = 'lag_%d' % i
-        logging.info('calculate goal with ' + name)
-        config.between_goal.append(
-            (delay + config.trainable_helpers[name] * skew,
-             delay,
-             config.trainable_helpers[name],
-             skew))
-        i += 1
+def sum(tensors):
+    sum = torch.tensor(0.0)
+    for tensor in tensors:
+        sum += tensor
+    return sum
 
 
 def forprop():
 
     config.sink_delay = []
     config.between_skew = []
-    config.constraints = []
-    config.between_goal = []
     network.coordinate_calc()
     # 计算损失=总延时+等式约束
     logging.info('delay calculating...')
     delay = calc_delay()
-    if config.local_optimize:
-        calc_between_skew()
-        calc_between_goal()
-    # tf.add_to_collection('losses', delay)
-    # tf.summary.scalar('delay', delay)
+    total_delay = sum(config.sink_delay)
     logging.info('all delay calculated.')
 
     logging.info('calculating skew and lagrangian multiplier...')
-    lag_constraint, skew = calc_lagrange()
-    # tf.add_to_collection('losses', lagrange)
-    # tf.summary.scalar('lagrangian_multiplier', lagrange)
-    # tf.summary.scalar('skew', skew)
+    calc_between_skew()
+    total_skew = sum(config.between_skew)
+    lag_constraint = calc_constraint(total_skew)
+
+    max_delay, min_delay = get_tensors_max_min(config.sink_delay)
+    max_min_skew = max_delay - min_delay
     logging.info('skew and lagrangian multiplier calculated.')
 
     logging.info('calculating goal...')
-    # goal = tf.add_n(tf.get_collection('losses'))
-    goal = torch.add(delay, lag_constraint)
+    goal = torch.add(total_delay, lag_constraint)
     logging.info('goal calculated.')
     config.loaded = True
-    return goal, delay, skew
 
+    return goal, total_delay, total_skew, delay, max_min_skew
+
+
+# dynamic update algorithm for lag
+# return \Delta\lambda
+def dua(delta_L, delta_E):
+    return torch.tensor(float(-delta_L)/float(delta_E))
+
+
+# when \Delta\L == 0, it should relax/oscillate \lambda
+# return \delta\lambda
+def relax(lag):
+    if random.randint(0, 1) == 0:
+        return -lag/2.0
+    else:
+        return lag/2.0
 
 # 优化算法也就是反向传播算法
 def optimize():
 
-    # tf.reset_default_graph()
-    config.trainable_helpers = {}
+    # config.trainable_helpers = {}
     config.trainable_wirelens = {}
     config.trainable_bdias = {}
     config.trainable_cdias = {}
     config.scalar_tree = False
-    goal, delay, skew = forprop()
-    # todo 清空之前的计算图，这里默认新的计算图与旧的计算图之间没有连接相互独立而不影响训练
-    # tf.compat.v1.experimental.output_all_intermediates(True)
-    # config.trainable_variables = []
-    # tensorflow.executing_eagerly()
-    # tf.disable_eager_execution()
+    goal, total_delay, total_skew, delay, skew = forprop()
 
     # 定义训练算法
     # global_step = torch.tensor(0, name='global_step', requires_grad=False)

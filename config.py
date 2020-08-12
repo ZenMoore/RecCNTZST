@@ -27,7 +27,7 @@ tree = None
 # state config
 scalar_tree = True
 loaded = True
-lagranger = 0.0
+lagranger = 1.0
 sink_delay = []
 between_skew = []
 between_goal = []
@@ -116,14 +116,14 @@ local_optimize = True
 def print_hyperparams(step):
     logging.info(
         '\n--------------hyperparams system %d--------------\n' % step +
-        '* initialization=normal: \n' +
+        '* initialization=normal(except lag=constant=mean): \n' +
         'means:cdia=%g, bdia=%g, lag=%g\n' % (rec_ini['cdia'], rec_ini['bdia'], lagrangian_ini) +
         'stds: wirelen=%g, cdia=%g, bdia=%g, lag=%g\n' % (wirelen_std, cdia_std, bdia_std, lagrangian_std) +
         '* value bounds: \n' +
         'cdia=%g~%g, bdia=%g~%g\n' % (cdia_min, cdia_max, bdia_min, bdia_max) +
         '* training\n' +
         'learning_rate_schedule=CosineAnnealing\n' +
-        'learning_rate_base: wirelen=%g, cdia=%g, bdia=%g, lag=%g\n' % (
+        'learning_rate_base(except lag=not trainable): wirelen=%g, cdia=%g, bdia=%g, lag=%g\n' % (
         learning_rate_base['wirelen'], learning_rate_base['cdia'], learning_rate_base['bdia'],
         learning_rate_base['lag']) +
         'learning_rate_ending=%g\n' % (learning_rate_ending) +
