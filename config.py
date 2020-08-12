@@ -5,7 +5,7 @@ import datetime
 source_point = None
 sink_set = []
 headers = []
-source_dir = "./benchmark/source.txt"
+source_dir = "./benchmark/r1"
 
 # node config
 meta_ini = {'r':None,
@@ -29,6 +29,9 @@ scalar_tree = True
 loaded = True
 lagranger = 0.0
 sink_delay = []
+between_skew = []
+between_goal = []
+constraints = []
 
 # net config
 learning_rate_base = 0.1
@@ -77,7 +80,7 @@ topo_step = 0
 max_topo_step = 0
 
 # output config
-model_path = './models'
+model_path = './models/pointlist'
 visual_path = './models/visualization'
 
 # log config
@@ -105,7 +108,10 @@ max_hyper_step = 21
 judgements = []
 judge_step = 50
 hyper_step = 0
-hyper_path = './models/hyperparams'
+
+# launch configuration
+post_embed = True
+local_optimize = True
 
 def print_hyperparams(step):
     logging.info(

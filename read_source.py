@@ -15,10 +15,10 @@ def read():
     sinks = []
 
     regex_num = "(-*\d+.*\d*e*-*\d*)\s*"
-    regex_sink = "Sink : (\d+)\n"
+    regex_sink = "Sink : (\d+) \n"
     # regex_coordinate = "\s*Coordinate : (\d+) (\d+) (\d+)\s*" #(x,y,z)
     regex_coordinate = "\s*Coordinate : (\d+) (\d+) \s*" # (x, y)
-    regex_capacitive_load = '\s*Capacitive Load : ' + regex_num
+    regex_capacitive_load = '\s*Capacitive Load :  ' + regex_num
     for line in lines:
         if line[0] == '#' or line == '\n':
             continue

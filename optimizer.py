@@ -80,7 +80,7 @@ def contact_wire_contact(wirelen, cdia, bdia):
     Ncnt = N_cnt(bdia, cdia)
     # div = torch.div(wirelen * r_s(cdia, wirelen), N_cnt(bdia, cdia))
     return 2 * 0.69 * config.unit_capacitance * wirelen * torch.div(config.R_Q + Rc, 2 * Ncnt) \
-           + 0.38e-6 * torch.div(wirelen * rs, Ncnt) * config.unit_capacitance * wirelen
+           + 0.38e+3 * torch.div(wirelen * rs, Ncnt) * config.unit_capacitance * wirelen
 
 
 def contact_wire_sink(wirelen, cdia, bdia, cap):
@@ -88,9 +88,8 @@ def contact_wire_sink(wirelen, cdia, bdia, cap):
     Ncnt = N_cnt(bdia, cdia)
     rs = r_s(cdia, wirelen)
     return 0.69 * config.unit_capacitance * wirelen * torch.div(config.R_Q + Rc, 2 * Ncnt) \
-            + 0.38e-6 * torch.div(wirelen * rs, Ncnt) * config.unit_capacitance * wirelen \
-            + 0.69 * cap * torch.div(1e-6 * wirelen * rs, Ncnt) \
-            + torch.div(config.R_Q + Rc, Ncnt)
+            + 0.38e+3 * torch.div(wirelen * rs, Ncnt) * config.unit_capacitance * wirelen \
+            + 0.69e+12 * cap * (torch.div(1e3 * wirelen * rs, Ncnt) + torch.div(config.R_Q + Rc, Ncnt))
 
 
 # 计算总延时
@@ -115,6 +114,15 @@ def calc_delay():
     return result  # 必须是tensor数组里面的最大值
 
 
+def calc_sink_delay(node):
+    # delay = tf.Variable(0, dtype=tf.float32)
+    delay = torch.tensor(0.0)
+    while node.father is not None:
+        delay = delay + calc_node_delay(node)
+        node = node.father
+    delay = torch.add(delay, calc_root_delay(node))
+    return delay
+
 def calc_root_delay(node):
 
     def with_bending():
@@ -131,7 +139,7 @@ def calc_root_delay(node):
     if node.num_bend == torch.tensor(0):
         return torch.tenor(0.0)
     elif node.num_bend == torch.tensor(1):
-        return  contact_wire_sink(node.rec_obj['wirelen'], node.rec_obj['cdia'], node.rec_obj['bdia'])
+        return contact_wire_sink(node.rec_obj['wirelen'], node.rec_obj['cdia'], node.rec_obj['bdia'], config.source_point['c'])
     elif node.num_bend == torch.tensor(2):
         return with_bending()
     else:
@@ -235,7 +243,7 @@ def calc_node_delay(node):
             return torch.add(t_horizontal, t_vertical)
 
         if node.num_bend == torch.tensor(0):
-            return 0.69 * node.obj['c'] * torch.div(torch.add(config.R_Q, R_c(node.rec_obj['cdia'])),
+            return 0.69e+12 * node.obj['c'] * torch.div(torch.add(config.R_Q, R_c(node.rec_obj['cdia'])),
                                                  N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia']))
 
         elif node.num_bend == torch.tensor(1):
@@ -246,83 +254,6 @@ def calc_node_delay(node):
         else:
             raise Exception('bending number of node ' + node.get_id() + ' is abnormal.')
 
-        # return tf.case({
-        #     tf.equal(node.num_bend, torch.tensor(0)):lambda :0.69 * node.obj['c'] * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #                                          N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])),
-        #     tf.equal(node.num_bend, torch.tensor(1)):lambda :tf.add(0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(
-        #         tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #         2 * N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])),
-        #                   tf.add(0.38e-6 * tf.div(torch.mul(node.rec_obj['wirelen'],
-        #                                                       r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
-        #                                           N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul(
-        #                       config.unit_capacitance, node.rec_obj['wirelen']),
-        #                          0.69 * node.obj['c'] * tf.add(tf.div(1e-6 * torch.mul(node.rec_obj['wirelen'],
-        #                                                                                  r_s(node.rec_obj['cdia'],
-        #                                                                                      node.rec_obj['wirelen'])),
-        #                                                               N_cnt(node.rec_obj['bdia'],
-        #                                                                     node.rec_obj['cdia'])),
-        #                                                        tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #                                                               N_cnt(node.rec_obj['bdia'],
-        #                                                                     node.rec_obj['cdia'])))
-        #                          )
-        #                   ),
-        #     tf.equal(node.num_bend, torch.tensor(2)): with_bending_sink
-        # }, default=lambda :0.69 * node.obj['c'] * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #                                          N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])), exclusive=True)
-        # if node.num_bend == 0:
-        #     return 0.69 * node.obj['c'] * tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #                                          N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia']))
-        # elif node.num_bend == 1:
-        #     return tf.add(0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * tf.div(
-        #         tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #         2 * N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])),
-        #                   tf.add(0.38e-6 * tf.div(torch.mul()(node.rec_obj['wirelen'],
-        #                                                       r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
-        #                                           N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(
-        #                       config.unit_capacitance, node.rec_obj['wirelen']),
-        #                          0.69 * node.obj['c'] * tf.add(tf.div(1e-6 * torch.mul()(node.rec_obj['wirelen'],
-        #                                                                                  r_s(node.rec_obj['cdia'],
-        #                                                                                      node.rec_obj['wirelen'])),
-        #                                                               N_cnt(node.rec_obj['bdia'],
-        #                                                                     node.rec_obj['cdia'])),
-        #                                                        tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #                                                               N_cnt(node.rec_obj['bdia'],
-        #                                                                     node.rec_obj['cdia'])))
-        #                          )
-        #                   )
-        # else:
-        #     horizontal_bia = tf.abs(node.father.obj['x'] - node.obj['x'])
-        #     vertical_bia = tf.abs(node.father.obj['y'] - node.obj['y'])
-        #
-        #     t_horizontal = tf.add(0.69 * config.unit_capacitance * horizontal_bia * tf.div(
-        #         tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #         2 * N_cnt(node.father.rec_obj['bdia'], node.father.rec_obj['cdia'])),
-        #                           tf.add(
-        #                               0.38e-6 * tf.div(torch.mul()(horizontal_bia, r_s(node.rec_obj['cdia'],
-        #                                                                                node.rec_obj['wirelen'])),
-        #                                                N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(
-        #                                   config.unit_capacitance, horizontal_bia),
-        #                               0.69 * node.obj['c'] * tf.add(
-        #                                   tf.div(1e-6 * torch.mul()(horizontal_bia, r_s(node.rec_obj[
-        #                                                                                     'cdia'],
-        #                                                                                 horizontal_bia)),
-        #                                          N_cnt(node.rec_obj['bdia'],
-        #                                                node.rec_obj['cdia'])), tf.div(
-        #                                       tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #                                       N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])))
-        #                           )
-        #                           )
-        #
-        #     t_vertical = tf.add(2 * 0.69 * config.unit_capacitance * vertical_bia * tf.div(
-        #         tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #         2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
-        #                         0.38e-6 * tf.div(
-        #                             torch.mul()(vertical_bia, r_s(node.rec_obj['cdia'], vertical_bia)),
-        #                             N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(
-        #                             config.unit_capacitance, vertical_bia),
-        #                         )
-        #
-        #     return tf.add(t_horizontal, t_vertical)
     else:
         def with_bending_mp():
             horizontal_bia = torch.abs(node.father.obj['x'] - node.obj['x'])
@@ -343,68 +274,19 @@ def calc_node_delay(node):
         else:
             raise Exception('bending number of node ' + node.get_id() + ' is abnormal.')
 
-        # return torch.case({
-        #     torch.equal(node.num_bend, torch.tensor(0)): lambda :torch.tensor(0.0),
-        #     torch.equal(node.num_bend, torch.tensor(1)): lambda : torch.add(2 * 0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * torch.div(
-        #         torch.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #         2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
-        #                   0.38e-6 * torch.div(torch.mul(node.rec_obj['wirelen'],
-        #                                                r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
-        #                                    N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul(
-        #                       config.unit_capacitance, node.rec_obj['wirelen']),
-        #                   ),
-        #     torch.equal(node.num_bend, torch.tensor(2)): with_bending_mp
-        # }, default=lambda: torch.tensor(0.0), exclusive=True)
-        # if node.num_bend == 0:
-        #     return torch.tensor(0)
-        # elif node.num_bend == 1:
-        #     return torch.add(2 * 0.69 * config.unit_capacitance * node.rec_obj['wirelen'] * torch.div(
-        #         torch.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #         2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
-        #                   0.38e-6 * torch.div(torch.mul()(node.rec_obj['wirelen'],
-        #                                                r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
-        #                                    N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(
-        #                       config.unit_capacitance, node.rec_obj['wirelen']),
-        #                   )
-        # else:
-        #     horizontal_bia = torch.abs(node.father.obj['x'] - node.obj['x'])
-        #     vertical_bia = torch.abs(node.father.obj['y'] - node.obj['y'])
-        #
-        #     t_horizontal = tf.add(
-        #         0.69 * config.unit_capacitance * horizontal_bia * tf.div(
-        #             tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #             2 * N_cnt(node.rec_obj['bdia'],
-        #                       node.rec_obj['cdia'])),
-        #         tf.add(
-        #             0.38e-6 * tf.div(
-        #                 torch.mul()(horizontal_bia, r_s(node.rec_obj['cdia'], node.rec_obj['wirelen'])),
-        #                 N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(
-        #                 config.unit_capacitance, horizontal_bia),
-        #             0.69 * config.unit_capacitance * tf.add(
-        #                 tf.div(1e-6 * torch.mul()(horizontal_bia, r_s(node.rec_obj['cdia'], horizontal_bia)),
-        #                        N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
-        #                 tf.div(tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #                        N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])))
-        #         )
-        #     )
-        #
-        #     t_vertical = tf.add(2 * 0.69 * config.unit_capacitance * vertical_bia * tf.div(
-        #         tf.add(config.R_Q, R_c(node.rec_obj['cdia'])),
-        #         2 * N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])),
-        #                         0.38e-6 * tf.div(
-        #                             torch.mul()(vertical_bia, r_s(node.rec_obj['cdia'], vertical_bia)),
-        #                             N_cnt(node.rec_obj['bdia'], node.rec_obj['cdia'])) * torch.mul()(
-        #                             config.unit_capacitance, vertical_bia),
-        #                         )
-        #
-        #     return tf.add(t_horizontal, t_vertical)
+
+def weight(name):
+    weight = torch.empty([], requires_grad=True)
+    torch.nn.init.normal_(weight, mean=config.lagrangian_ini, std=config.lagrangian_std)
+    config.trainable_helpers.update({name: weight})
+    logging.info('lagrangian multiplier ' + name + ' created and initialized(normal).')
+    return weight
 
 
 # 计算引入拉格朗日乘子后的等式约束
 def calc_lagrange():
 
     # 将拉格朗日乘子作为训练参数，梯度下降时候，向对拉格朗日乘子偏导等于零的方向下降
-    # todo 如何保证偏导下降到等于零，这是一种 trade-off 吗？trade-off 比例参数在哪里设置？
     # lagrangian = tf.get_variable("lagrangian_multiplier", shape=(), initializer=tf.truncated_normal_initializer(stddev=0.1),
     #                              trainable=True)
     if not config.loaded:
@@ -421,14 +303,52 @@ def visualize(loss, delay, lag, skew, step):
     outparser.draw(loss, delay, lag, skew, step)
     return None
 
+def calc_between_skew():
+    i = 0
+    former = None
+    for delay in config.sink_delay:
+        if i == 0:
+            former = delay
+        else:
+            logging.info('calculate between skew %d' % i)
+            skew = torch.abs(delay - former)
+            config.between_skew.append(skew)
+            name = "lag_%d" % i
+            if not config.loaded:
+                weight(name)
+            logging.info('calculate between skew %d' % i)
+            config.constraints.append(config.trainable_helpers[name] * skew)
+            former = delay
+        i += 1
+
+
+def calc_between_goal():
+    i = 1
+    for skew in config.between_skew:
+        delay = config.sink_delay[i]
+        name = 'lag_%d' % i
+        logging.info('calculate goal with ' + name)
+        config.between_goal.append(
+            (delay + config.trainable_helpers[name] * skew,
+             delay,
+             config.trainable_helpers[name],
+             skew))
+        i += 1
+
 
 def forprop():
 
     config.sink_delay = []
+    config.between_skew = []
+    config.constraints = []
+    config.between_goal = []
     network.coordinate_calc()
     # 计算损失=总延时+等式约束
     logging.info('delay calculating...')
     delay = calc_delay()
+    if config.local_optimize:
+        calc_between_skew()
+        calc_between_goal()
     # tf.add_to_collection('losses', delay)
     # tf.summary.scalar('delay', delay)
     logging.info('all delay calculated.')

@@ -141,8 +141,11 @@ def generate(initial=True):
     logging.info('topology parsed.')
 
     # 画出拓扑
-    outparser.point_list_no_tensor()
-    outparser.draw(step='topo')  # 仅画出拓扑结构，不是绕线结果
+    if config.post_embed:
+        outparser.point_list_no_tensor_detail(config.topo_step)
+    else:
+        outparser.point_list_no_tensor()
+        outparser.draw(step='topo')  # 仅画出拓扑结构，不是绕线结果
 
     return True  # always
 

@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import torch
 import os.path
 import logging
+import time
+import read_source as reader
 
 ptlst = []  # point list
 
@@ -106,11 +108,14 @@ def generate_op(node):
 def point_list(step):
     global ptlst
     logging.info('generating ptlst...')
+
     if not os.path.exists(config.model_path + '/topo-' + str(config.topo_step)):
         os.makedirs(config.model_path + '/topo-' + str(config.topo_step))
+
     with open(config.model_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'w') as file:
         generate_ptlst()
         while len(ptlst) != 0:
+            
             data = ptlst.pop()
             file.write(str(data[0])), file.write(', ') # x
             file.write(str(data[1])), file.write(', ') # y
@@ -119,6 +124,40 @@ def point_list(step):
             file.write('\n')
     logging.info('ptlst generated.')
 
+def point_list_no_tensor_detail(topo_step):
+    global ptlst
+
+    if not os.path.exists(config.model_path + '/topo-' + str(config.topo_step)):
+        os.makedirs(config.model_path + '/topo-' + str(config.topo_step))
+    with open(config.model_path + '/topo-' + str(config.topo_step) + '/result-' + 'topo' + '.ptlst', 'w') as file:
+        generate_no_tensor()
+        file.write('topo=%d\n' % topo_step)
+        while len(ptlst) != 0:
+            data = ptlst.pop()
+            file.write(str(data[0])), file.write(', ')
+            file.write(str(data[1])), file.write(', ')
+            file.write(str(data[2])), file.write(', ')
+            file.write(str(data[3]))
+            file.write('\n')
+
+def point_list_detail(loss, delay, lag, skew, step, topo_step):
+    global ptlst
+    logging.info('generating ptlst...')
+
+    if not os.path.exists(config.model_path + '/topo-' + str(config.topo_step)):
+        os.makedirs(config.model_path + '/topo-' + str(config.topo_step))
+
+    with open(config.model_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'w') as file:
+        generate_ptlst()
+        file.write('loss=%g, delay=%g, lag=%g, skew=%g, step=%d, topo=%d\n'%(loss, delay, lag, skew, step, topo_step))
+        while len(ptlst) != 0:
+            data = ptlst.pop()
+            file.write(str(data[0])), file.write(', ')  # x
+            file.write(str(data[1])), file.write(', ')  # y
+            file.write(str(data[2])), file.write(', ')  # cdia
+            file.write(str(data[3]))  # bdia
+            file.write('\n')
+    logging.info('ptlst generated.')
 
 def l_width(bdia):
     return config.l_width_min + (config.l_width_max - config.l_width_min) / (config.bdia_max - config.bdia_min) * (bdia - config.bdia_min)
@@ -133,18 +172,42 @@ def draw(loss=None, delay=None, lag=None, skew=None, step=None):
     global ptlst
     ptlst = []
     name = ''
+    first_line = True
 
     logging.info('drawing...')
+
     with open(config.model_path + '/topo-' + str(config.topo_step) + '/result-' + str(step) + '.ptlst', 'r') as file:
         for line in file:
-            ptlst.append((float(line.split(', ')[0]), float(line.split(', ')[1]), float(line.split(', ')[2]),
-                          float(line.split(', ')[3])))  # (x, y, cdia, bdia)
+            if first_line and config.post_embed:
+                if loss is None:
+                    assert (float(line.split('=')[1]) == config.topo_step)
+                else:
+                    for phrase in line.split(', '):
+                        if phrase.split('=')[0] == 'loss':
+                            loss = float(phrase.split('=')[1])
+                        elif phrase.split('=')[0] == 'delay':
+                            delay = float(phrase.split('=')[1])
+                        elif phrase.split('=')[0] == 'lag':
+                            lag = float(phrase.split('=')[1])
+                        elif phrase.split('=')[0] == 'skew':
+                            skew = float(phrase.split('=')[1])
+                        elif phrase.split('=')[0] == 'step':
+                            assert (step == float(phrase.split('=')[1]))
+                        elif phrase.split('=')[0] == 'topo':
+                            assert (config.topo_step == float(phrase.split('=')[1]))
+                        else:
+                            raise Exception('unknown point list head data item.')
+                first_line = False
+            else:
+                ptlst.append((float(line.split(', ')[0]), float(line.split(', ')[1]), float(line.split(', ')[2]),
+                              float(line.split(', ')[3])))  # (x, y, cdia, bdia)
 
     assert (len(ptlst) % 3 == 0)
 
     root = ptlst[1]  # root 与 source point 单独处理
     num = 0
 
+    fig = plt.figure(1)
 
     while len(ptlst) != 0:
         left = ptlst.pop()
@@ -175,6 +238,39 @@ def draw(loss=None, delay=None, lag=None, skew=None, step=None):
 
     if not os.path.exists(config.img_path):
         os.makedirs(config.img_path)
-    plt.savefig(config.img_path + '/%d@%d=L%gT%glag%gE%g.jpg'%(step, config.topo_step, loss, delay, lag, skew))
-    plt.show()
+    if loss is None:
+        plt.savefig(config.img_path + '/topo@%d.jpg' % (config.topo_step))
+    else:
+        plt.savefig(config.img_path + '/%d@%d=L%gT%glag%gE%g.jpg'%(step, config.topo_step, loss, delay, lag, skew))
+    plt.close(fig)
+    # plt.show()
     logging.info('waiting next figure...')
+
+
+def post_embed():
+    if reader.read():
+        logging.info('read source.')
+    else:
+        try:
+            raise Exception('read failed.')
+        except Exception as e:
+            logging.exception(e)
+
+    logging.info('post embedding...')
+    for dirname in os.listdir(config.model_path):
+        logging.info('embedding ' + dirname + '...')
+        config.topo_step = int(dirname.split('-')[1])
+        for filename in os.listdir(config.model_path + '/' + dirname):
+            logging.info('embedding ' + filename + '...')
+            step = filename.split('-')[1].split('.')[0]
+            try:
+                if step == 'topo':
+                    draw(step=step)
+                else:
+                    step = int(step)
+                    draw(loss=-1, step=step)
+            except Exception as e:
+                logging.exception(e)
+
+if __name__ == '__main__':
+    post_embed()
