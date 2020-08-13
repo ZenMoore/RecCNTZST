@@ -101,27 +101,17 @@ def calc_delay():
         logging.info('calculating delay of sink%d, there remain %d.' % (
             sink_node_set.index(node), len(sink_node_set) - sink_node_set.index(node)))
         # delay = tf.Variable(0, dtype=tf.float32)
-        delay = torch.tensor(0.0)
+        delays = []
         while node.father is not None:
-            delay = delay + calc_node_delay(node)
+            delays.append(calc_node_delay(node))
             node = node.father
-        delay = torch.add(delay, calc_root_delay(node))
-        config.sink_delay.append(delay)
+        delays.append(calc_root_delay(node))
+        config.sink_delay.append(sum(delays))
 
     assert (len(config.sink_delay) == len(config.sink_set))
     result, _ = get_tensors_max_min(config.sink_delay)
 
     return result  # 必须是tensor数组里面的最大值
-
-
-def calc_sink_delay(node):
-    # delay = tf.Variable(0, dtype=tf.float32)
-    delay = torch.tensor(0.0)
-    while node.father is not None:
-        delay = delay + calc_node_delay(node)
-        node = node.father
-    delay = torch.add(delay, calc_root_delay(node))
-    return delay
 
 
 def calc_root_delay(node):
@@ -194,10 +184,10 @@ def calc_node_delay(node):
 
 
 def lag(name):
-    weight = torch.empty([])
-    # torch.nn.init.normal_(weight, mean=config.lagrangian_ini, std=config.lagrangian_std)
+    weight = torch.empty([], dtype=torch.float)
+    # # torch.nn.init.normal_(weight, mean=config.lagrangian_ini, std=config.lagrangian_std)
     torch.nn.init.constant_(weight, config.lagrangian_ini)
-    logging.info('lagrangian multiplier ' + name + ' created and initialized(constant).')
+    logging.info(name + ' created and initialized(constant).')
     return weight
 
 
@@ -206,13 +196,14 @@ def calc_between_skew():
     former = None
     for delay in config.sink_delay:
         if i == 0:
-            former = delay
+            pass
+            former = delay.clone()
         else:
             logging.info('calculate between skew %d' % i)
             skew = torch.abs(delay - former)
             config.between_skew.append(skew)
             logging.info('calculate between skew %d' % i)
-            former = delay
+            former = delay.clone()
         i += 1
 
 
@@ -246,7 +237,7 @@ def set_nodes_to_show():
 def sum(tensors):
     sum = torch.tensor(0.0)
     for tensor in tensors:
-        sum += tensor
+        sum = sum + tensor
     return sum
 
 
