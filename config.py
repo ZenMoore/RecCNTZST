@@ -30,8 +30,9 @@ loaded = True
 lagranger = 1.0
 sink_delay = []
 between_skew = []
-between_goal = []
-constraints = []
+# between_goal = []
+# constraints = []
+delays = {}
 
 # net config
 learning_rate_base = 0.1
@@ -111,7 +112,7 @@ hyper_step = 0
 
 # launch configuration
 post_embed = True
-local_optimize = True
+# local_optimize = False
 
 def print_hyperparams(step):
     logging.info(
