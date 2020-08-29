@@ -74,13 +74,57 @@ def same_father(left, right):
     if not config.scalar_tree:
         config.tree.scalarize()
         config.scalar_tree = True
-    left_node = config.tree.find(left)
-    right_node = config.tree.find(right)
-    if left_node.father is right_node.father:
-        return left_node.father
+    if type(left) is dict:
+        left_node = config.tree.find(left)
     else:
+        left_node = config.tree.find(left.obj)
+    if type(right) is dict:
+        right_node = config.tree.find(right)
+    else:
+        right_node = config.tree.find(right.obj)
+    if left_node is None or right_node is None:
         return None
+    if left_node.father is None or right_node.father is None:
+        return None
+    else:
+        if left_node.father is right_node.father:
+            return left_node.father
+        else:
+            return None
 
+
+def get_pointer(vertex, recur_set):
+    result = None
+    dist = 99999999999.9
+    for v in recur_set:
+        if v is not vertex:
+            if calc_dist(v, vertex) < dist:
+                dist = calc_dist(v, vertex)
+                result = v
+    return v, dist
+
+
+
+# NNG 保存为一个 list, element = (v1, v2, weight), 表示从 v1 到 v2 的距离为 weight 的边
+def NNG(recur_set):
+    nng = []
+    for vertex in recur_set:
+        pointer, dist = get_pointer(vertex, recur_set)
+        nng.append((vertex, pointer, dist))
+
+    assert (len(nng) == len(recur_set))
+    return nng
+
+
+def s(a, b, c):
+    if a >= b:
+        return a
+    elif a < b and b < c:
+        return b
+    elif b >= c:
+        return c
+    else:
+        raise Exception('impossible case in function s.')
 
 # 返回是否生成成功
 # using nearest neighbor selection
@@ -99,38 +143,72 @@ def generate(initial=True):
     merging_point = None
 
     while len(recur_set) > 1:
-        # nearest neighbor
-        _, left, right = get_nearest(recur_set)
 
-        # logging.info(str(left['x']) +', ' + str(left['y']))
-        # logging.info(str(right['x']) + ', ' + str(right['y']))
-        # update recur_set
-        recur_set.remove(left)
+        if config.use_nng:
+            nng = NNG(recur_set)
+            nng.sort(key=lambda nng: nng[2])
 
-        recur_set.remove(right)
-        if initial:
-            merging_point = merge_point(left, right)
+            for i in range(s(1, int(len(recur_set)/config.k), len(recur_set) - 1)):
+                # nearest neighbor
+                edge = nng[0]
+                left = edge[0]
+                right = edge[1]
+                nng.remove(edge)
+                if left in recur_set and right in recur_set:
+                    if initial:
+                        merging_point = merge_point(left, right)
+                    else:
+                        father = same_father(left, right)
+                        if father is not None:
+                            merging_point = father.obj
+                        else:
+                            merging_point = merge_point(left, right)
+
+
+                    recur_set.remove(left)
+
+                    recur_set.remove(right)
+
+                    recur_set.append(merging_point)
+
+                    if isinstance(left, util.Tree):
+                        left = left.obj
+                    if isinstance(right, util.Tree):
+                        right = right.obj
+                    construct_path.append((left, right, merging_point))
         else:
-            father = same_father(left, right)
-            if father is not None:
-                merging_point = father
-            else:
+            # nearest neighbor
+            _, left, right = get_nearest(recur_set)
+
+            # logging.info(str(left['x']) +', ' + str(left['y']))
+            # logging.info(str(right['x']) + ', ' + str(right['y']))
+            # update recur_set
+            recur_set.remove(left)
+
+            recur_set.remove(right)
+            if initial:
                 merging_point = merge_point(left, right)
-        recur_set.append(merging_point)
+            else:
+                father = same_father(left, right)
+                if father is not None:
+                    merging_point = father.obj
+                else:
+                    merging_point = merge_point(left, right)
+            recur_set.append(merging_point)
 
-        # merge tree topo
-        # merge_points.append((merge_point['x'], merge_point['y']))
-        # if ((left['x'], left['y']) not in merge_points) and ((right['x'], right['y']) not in merge_points):
-        #     root = Tree.merge(left, right, merge_point)
-        #     merge_points.append(root)
-        # elif ((left['x'], left['y']) in merge_points) and ((right['x'], right['y']) not in merge_points):
-        #     pass
-        # elif ((left['x'], left['y']) not in merge_points) and ((right['x'], right['y']) in merge_points):
-        #     pass
-        # else:
-        #     pass
+            # merge tree topo
+            # merge_points.append((merge_point['x'], merge_point['y']))
+            # if ((left['x'], left['y']) not in merge_points) and ((right['x'], right['y']) not in merge_points):
+            #     root = Tree.merge(left, right, merge_point)
+            #     merge_points.append(root)
+            # elif ((left['x'], left['y']) in merge_points) and ((right['x'], right['y']) not in merge_points):
+            #     pass
+            # elif ((left['x'], left['y']) not in merge_points) and ((right['x'], right['y']) in merge_points):
+            #     pass
+            # else:
+            #     pass
 
-        construct_path.append((left, right, merging_point))
+            construct_path.append((left, right, merging_point))
 
     # logging.info_path(construct_path)
     root = construct(construct_path)

@@ -24,6 +24,7 @@ class Tree:
         if type(self.obj['c']) is str:
             self.obj['c'] = float(self.obj['c'])
         self.rec_obj = config.rec_ini.copy()
+        self.more_cont = 0
         self.shadow_obj = config.shadow_ini
         self.left_child = None
         self.right_child = None  # todo 感觉这里设置成 Tree(root_obj=None, father=self)更好，对子树是否为空的判断通过判断root_obj

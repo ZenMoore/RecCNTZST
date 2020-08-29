@@ -9,6 +9,7 @@ import os
 import parse_out as outparser
 import tensorboardX as board
 import random
+from collections import deque
 from torchviz import make_dot
 import warnings
 import hyperparams_searcher as hyperparam
@@ -68,13 +69,19 @@ def r_s(cdia, wirelen):
         return torch.tensor(0.0)
 
 
-def contact_wire_contact(wirelen, cdia, bdia):
+def contact_wire_contact(wirelen, cdia, bdia, node, ad=True):
+
     Rc = R_c(cdia)
     rs = r_s(cdia, wirelen)
     Ncnt = N_cnt(bdia, cdia)
     # div = torch.div(wirelen * r_s(cdia, wirelen), N_cnt(bdia, cdia))
-    return 2 * 0.69 * config.unit_capacitance * wirelen * torch.div(config.R_Q + Rc, 2 * Ncnt) \
-           + 0.38e+3 * torch.div(wirelen * rs, Ncnt) * config.unit_capacitance * wirelen
+    if node.more_cont == 0 or not ad:
+        return 2 * 0.69 * config.unit_capacitance * wirelen * torch.div(config.R_Q + Rc, 2 * Ncnt) \
+               + 0.38e+3 * torch.div(wirelen * rs, Ncnt) * config.unit_capacitance * wirelen
+    else:
+        num_ad_cont = node.more_cont
+        return 2 * 0.69 * config.unit_capacitance * wirelen * torch.div(config.R_Q + Rc, 2 * Ncnt) \
+               + 0.38e+3 * torch.div(wirelen * rs, Ncnt) * config.unit_capacitance * wirelen * (1.0/(num_ad_cont+1.0))
 
 
 def contact_wire_sink(wirelen, cdia, bdia, cap):
@@ -94,34 +101,36 @@ def sum(tensors):
 
 
 # 计算总延时
-def calc_delays():
+def calc_delays(record_path):
 
     sink_node_set = config.tree.get_sinks()
 
     for node in sink_node_set:
+        path = []
         logging.info('calculating delay of sink%d, there remain %d.' % (
             sink_node_set.index(node), len(sink_node_set) - sink_node_set.index(node)))
         # delay = tf.Variable(0, dtype=tf.float32)
         delay = torch.tensor(0.0)
+        path.append(node)
         while node.father is not None:
             delay = delay + calc_node_delay(node)
             node = node.father
+            path.append(node)
         delay = torch.add(delay, calc_root_delay(node))
         config.sink_delay.append(delay)
+        config.paths.append(path.copy())
 
     assert (len(config.sink_delay) == len(config.sink_set))
 
 
 def calc_root_delay(node):
-
     def with_bending():
 
         horizontal_bia = torch.abs(config.source_point['x'] - node.obj['x'])
         vertical_bia = torch.abs(config.source_point['y'] - node.obj['y'])
 
         t_horizontal = contact_wire_sink(horizontal_bia, node.rec_obj['cdia'], node.rec_obj['bdia'], config.source_point['c'])
-
-        t_vertical = contact_wire_contact(vertical_bia, node.rec_obj['cdia'], node.rec_obj['bdia'])
+        t_vertical = contact_wire_contact(vertical_bia, node.rec_obj['cdia'], node.rec_obj['bdia'], node)
 
         return torch.add(t_horizontal, t_vertical)
 
@@ -143,8 +152,7 @@ def calc_node_delay(node):
             vertical_bia = torch.abs(node.father.obj['y'] - node.obj['y'])
 
             t_horizontal = contact_wire_sink(horizontal_bia, node.rec_obj['cdia'], node.rec_obj['bdia'], node.obj['c'])
-
-            t_vertical = contact_wire_contact(vertical_bia, node.rec_obj['cdia'], node.rec_obj['bdia'])
+            t_vertical = contact_wire_contact(vertical_bia, node.rec_obj['cdia'], node.rec_obj['bdia'], node)
 
             return torch.add(t_horizontal, t_vertical)
 
@@ -165,16 +173,15 @@ def calc_node_delay(node):
             horizontal_bia = torch.abs(node.father.obj['x'] - node.obj['x'])
             vertical_bia = torch.abs(node.father.obj['y'] - node.obj['y'])
 
-            t_horizontal = contact_wire_contact(horizontal_bia, node.rec_obj['cdia'], node.rec_obj['bdia'])
-
-            t_vertical = contact_wire_contact(vertical_bia, node.rec_obj['cdia'], node.rec_obj['bdia'])
+            t_horizontal = contact_wire_contact(horizontal_bia, node.rec_obj['cdia'], node.rec_obj['bdia'], node, False)
+            t_vertical = contact_wire_contact(vertical_bia, node.rec_obj['cdia'], node.rec_obj['bdia'], node)
 
             return torch.add(t_horizontal, t_vertical)
 
         if node.num_bend == torch.tensor(0):
             return torch.tensor(0.0)
         elif node.num_bend == torch.tensor(1):
-            return contact_wire_contact(node.rec_obj['wirelen'],node.rec_obj['cdia'], node.rec_obj['bdia'])
+            return contact_wire_contact(node.rec_obj['wirelen'], node.rec_obj['cdia'], node.rec_obj['bdia'], node)
         elif node.num_bend == torch.tensor(2):
             return with_bending_mp()
         else:
@@ -182,7 +189,13 @@ def calc_node_delay(node):
 
 
 def lag(name):
-    weight = torch.empty([], dtype=torch.float)
+    if config.lag_adagrad:
+        weight = torch.empty([], dtype=torch.float, requires_grad=True)
+    else:
+        weight = torch.empty([], dtype=torch.float)
+
+    config.trainable_helpers.update({'lag':weight})
+
     # # torch.nn.init.normal_(weight, mean=config.lagrangian_ini, std=config.lagrangian_std)
     torch.nn.init.constant_(weight, config.lagrangian_ini)
     # logging.info(name + ' created and initialized(constant).')
@@ -190,7 +203,7 @@ def lag(name):
 
 
 # 计算引入拉格朗日乘子后的等式约束
-def calc_constraint(tensor):
+def calc_constraint(tensor, assistant=None):
 
     # 将拉格朗日乘子作为训练参数，梯度下降时候，向对拉格朗日乘子偏导等于零的方向下降
     # lagrangian = tf.get_variable("lagrangian_multiplier", shape=(), initializer=tf.truncated_normal_initializer(stddev=0.1),
@@ -198,7 +211,14 @@ def calc_constraint(tensor):
     if not config.loaded:
         config.lagranger = lag('lag_multiplier')
 
-    return config.lagranger * tensor
+    if assistant is None:
+        # return config.lagranger * torch.relu(tensor**3)
+        return config.lagranger * (tensor)
+    else:
+        # control_item = tensor - 0.05 * assistant
+        # return config.lagranger * torch.relu(tensor)
+        control_item = tensor/assistant
+        return config.lagranger * torch.relu(control_item**3)
 
 
 def embed(loss, sigma_delay, sigma_skew, max_delay, lag, max_min_skew, step):
@@ -221,32 +241,64 @@ def calc_between_skews():
         else:
             logging.info('calculate between skew %d' % i)
             skew = torch.abs(delay - former)
+            # skew = torch.square(delay - former)
             config.between_skew.append(skew)
             logging.info('calculate between skew %d' % i)
             former = delay
         i += 1
 
 
-def forprop():
+def add_contact(path, skew, delay):
+    for node in path:
+        node.more_cont = 1 # todo more than one additional contact, in consideration of shared nodes in different sink path
+    # todo num_of_additional_contact ~ max-min skew/delay
+
+
+def is_conver(queue):
+    return np.std(queue) <= 0.5e5
+
+
+def forprop(neg_min_delay=None, record_path=False):
+
+    index = 0
+    if neg_min_delay is not None:
+        maxdl, _ = get_tensors_max_min(config.sink_delay)
+        index = config.sink_delay.index(maxdl)
 
     config.sink_delay = []
     config.between_skew = []
+    config.paths = []
+
+    if neg_min_delay is not None:
+        if len(config.mindelays) == config.conver_judge_step:
+            if is_conver(config.mindelays):
+        # if True: # debugging
+        #     if True:
+                if neg_min_delay + config.maxdelays[-1]/config.maxdelays[-1] > 0.05:
+                    add_contact(config.paths[index], neg_min_delay + config.maxdelays[-1], config.maxdelays[-1])
+                    config.maxdelays.clear()
+                else:
+                    pass
+
     network.coordinate_calc()
     # 计算损失=总延时+等式约束
     logging.info('delay and skew calculating...')
 
-    calc_delays()
-    calc_between_skews()
+    calc_delays(record_path)
+    # calc_between_skews()
 
-    assert(len(config.sink_delay) == len(config.between_skew)+1)
-    sum_delay = sum(config.sink_delay)
-    sum_skew = sum(config.between_skew)
+    # assert(len(config.sink_delay) == len(config.between_skew)+1)
+    # sum_delay = sum(config.sink_delay)
+    sum_delay, min_delay = get_tensors_max_min(config.sink_delay)
+    # sum_skew = sum(config.between_skew)
+    sum_skew = sum_delay - min_delay
 
     logging.info('delay and skew calculated.')
 
 
     logging.info('calculating constraint...')
 
+    # lag_constraint = calc_constraint(sum_skew, sum_delay)
     lag_constraint = calc_constraint(sum_skew)
 
     logging.info('constraint calculated.')
@@ -259,7 +311,7 @@ def forprop():
     logging.info('goal calculated.')
 
     config.loaded = True
-    return goal, sum_delay, sum_skew
+    return goal, sum_delay, sum_skew, -min_delay
 
 
 # dynamic update algorithm for lag
@@ -284,16 +336,24 @@ def optimize():
     config.trainable_wirelens = {}
     config.trainable_bdias = {}
     config.trainable_cdias = {}
+    config.trainable_helpers = {}
     config.scalar_tree = False
-    goal, sum_delay, sum_skew = forprop()
+    goal, sum_delay, sum_skew, skew_delay = forprop()
 
     # 定义训练算法
     logging.info('defining optimizer...')
 
-    train = torch.optim.Adagrad(
-        [{'params': list(config.trainable_wirelens.values()), 'lr': config.learning_rate_base['wirelen']},
-         {'params': list(config.trainable_cdias.values()), 'lr': config.learning_rate_base['cdia']},
-         {'params': list(config.trainable_bdias.values()), 'lr': config.learning_rate_base['bdia']},])
+    if config.lag_adagrad:
+        train = torch.optim.Adagrad(
+            [{'params': list(config.trainable_wirelens.values()), 'lr': config.learning_rate_base['wirelen']},
+             {'params': list(config.trainable_cdias.values()), 'lr': config.learning_rate_base['cdia']},
+             {'params': list(config.trainable_bdias.values()), 'lr': config.learning_rate_base['bdia']},
+             {'params':list(config.trainable_helpers.values()), 'lr':config.learning_rate_base['lag']}])
+    else:
+        train = torch.optim.Adagrad(
+            [{'params': list(config.trainable_wirelens.values()), 'lr': config.learning_rate_base['wirelen']},
+             {'params': list(config.trainable_cdias.values()), 'lr': config.learning_rate_base['cdia']},
+             {'params': list(config.trainable_bdias.values()), 'lr': config.learning_rate_base['bdia']}])
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(train, T_max=config.learning_rate_T, eta_min=config.learning_rate_ending) # todo 如何设置不同的 learning_rate_ending
     # scheduler = torch.optim.lr_scheduler.StepLR(train, step_size=1, gamma=1.0)  # todo 如何设置不同的 learning_rate_ending
     logging.info('optimizer defined.')
@@ -323,7 +383,7 @@ def optimize():
         scheduler.step()
         logging.info('step-%d@topo-%d backproped...' % (i+1, config.topo_step))
 
-        goal, sum_delay, sum_skew = forprop()
+        goal, sum_delay, sum_skew, skew_delay = forprop()
 
         loss = goal.item()
         logging.info("After %d steps of training, loss value@topo-%d is: %g;" % (i+1, config.topo_step, loss))
@@ -340,8 +400,11 @@ def optimize():
         max_delay, min_delay = get_tensors_max_min(config.sink_delay)
         clock_delay = max_delay.item()
         max_min_skew = (max_delay - min_delay).item()
+        neg_mind = skew_delay.item()
+
         logging.info("and the max delay is: %g;" % clock_delay)
-        logging.info("and the max-min skew is: %g." % max_min_skew)
+        logging.info("and the max-min skew is: %g;" % max_min_skew)
+        logging.info("and the -min_delay is: %g." % neg_mind)
 
         writer.add_scalar('loss', loss, i+1)
         writer.add_scalar('sum_delay', sigma_delay, i+1)
@@ -349,30 +412,37 @@ def optimize():
         writer.add_scalar('sum_skew', sigma_skew, i+1)
         writer.add_scalar('max_delay', clock_delay, i + 1)
         writer.add_scalar('max_min_skew', max_min_skew, i + 1)
+        writer.add_scalar('-min_delay', neg_mind, i + 1)
+
 
         # dynamic update algorithm of lagrangian multiplier
-        if i==0:
-            former_L = loss
-            former_T = sigma_delay
-            former_E = sigma_skew
-        else:
-            # dua lag
-            delta_T = sigma_delay - former_T
-            delta_E = sigma_skew - former_E
-            delta_L = loss - former_L
-            if delta_T < 0 and delta_E > 0:
-                config.lagranger = config.lagranger + dua(delta_L, delta_E)
-            elif delta_T > 0 and delta_E < 0:
-                config.lagranger = config.lagranger + dua(delta_L, delta_E)
-            elif delta_L == 0 and i != 0:
-                config.lagranger = config.lagranger + relax(config.lagranger)
-            else:
-                config.lagranger = config.lagranger
-            config.lagranger = torch.clamp(config.lagranger, min=0.0)
-            logging.info('update lagrange multiplier to %g.' % config.lagranger.item())
-            former_L = loss
-            former_T = sigma_delay
-            former_E = sigma_skew
+        # if i==0:
+        #     former_L = loss
+        #     former_T = sigma_delay
+        #     former_E = sigma_skew
+        # else:
+        #     # dua lag
+        #     delta_T = sigma_delay - former_T
+        #     delta_E = sigma_skew - former_E
+        #     delta_L = loss - former_L
+        #     if delta_T < 0 and delta_E > 0:
+        #         config.lagranger = config.lagranger + dua(delta_L, delta_E)
+        #     elif delta_T > 0 and delta_E < 0:
+        #         config.lagranger = config.lagranger + dua(delta_L, delta_E)
+        #     elif delta_L == 0 and i != 0:
+        #         config.lagranger = config.lagranger + relax(config.lagranger)
+        #     else:
+        #         config.lagranger = config.lagranger
+        #     # config.lagranger = torch.clamp(config.lagranger, min=0.0)
+
+        #     if config.lagranger < 0:
+        #         config.lagranger = torch.clamp(config.lagranger, min=0.0)
+        #     else:
+        #         config.lagranger = 5 * torch.tanh(config.lagranger)
+        #     logging.info('update lagrange multiplier to %g.' % config.lagranger.item())
+        #     former_L = loss
+        #     former_T = sigma_delay
+        #     former_E = sigma_skew
 
         # todo 这段不知道为什么不能运行，不过影响不大，可以不处理
         # for node in [temp + '_cdia' for temp in config.nodes_to_show]:
@@ -408,6 +478,131 @@ def optimize():
             # logging.info('operation graph dot made, waiting pdf file...')
             # g.view(filename='graph%d@%d'%(), directory=config.visual_path + '/topo-' + str(config.topo_step))
             # logging.info('operation graph of step-%d@topo-%d is shown as pdf.' % (i+1, config.topo_step))
+    if config.delay_separate:
+        for i in range(config.delay_separate_step):
+            logging.info('delay_separate_step-%d@topo-%d backproping...' % (i + config.num_steps + 1, config.topo_step))
+
+            config.maxdelays.append(sum_delay.item())
+
+            train.zero_grad()
+            # _, goal_value, step = sess.run([train_step, goal, global_step])
+            sum_delay.backward(retain_graph=True)
+            # delay.backward(retain_graph=True)
+            # skew.backward(retain_graph=True)
+
+            train.step()
+            scheduler.step()
+            logging.info('delay_separate_step-%d@topo-%d backproped...' % (i + config.num_steps + 1, config.topo_step))
+
+            goal, sum_delay, sum_skew, skew_delay = forprop(skew_delay.item(), True)
+
+
+            loss = goal.item()
+            logging.info("After %d steps of training, loss value@topo-%d is: %g;" % (i + config.num_steps + 1, config.topo_step, loss))
+
+            sigma_delay = sum_delay.item()
+            logging.info("and the sum delay of the whole tree is: %g;" % sigma_delay)
+
+            lag_multiplier = config.lagranger.item()
+            logging.info("and the lagrangian multiplier value is: %g;" % lag_multiplier)
+
+            sigma_skew = sum_skew.item()
+            logging.info("and the sum skew is: %g;" % sigma_skew)
+
+            max_delay, min_delay = get_tensors_max_min(config.sink_delay)
+            clock_delay = max_delay.item()
+            max_min_skew = (max_delay - min_delay).item()
+            neg_mind = skew_delay.item()
+
+            logging.info("and the max delay is: %g;" % clock_delay)
+            logging.info("and the max-min skew is: %g;" % max_min_skew)
+            logging.info("and -min_delay is: %g." % neg_mind)
+
+            writer.add_scalar('loss', loss, i + config.num_steps + 1)
+            writer.add_scalar('sum_delay', sigma_delay, i + config.num_steps + 1)
+            writer.add_scalar('lag', lag_multiplier, i + config.num_steps + 1)
+            writer.add_scalar('sum_skew', sigma_skew, i + config.num_steps + 1)
+            writer.add_scalar('max_delay', clock_delay, i + config.num_steps + 1)
+            writer.add_scalar('max_min_skew', max_min_skew, i + config.num_steps + 1)
+            writer.add_scalar('-min_delay', neg_mind, i + config.num_steps + 1)
+
+            if i % 10 == 0:
+                logging.info('saving model(step-%d@topo-%d)...' % (i + config.num_steps + 1, config.topo_step))
+
+                if config.post_embed:
+                    outparser.point_list_detail(loss, sigma_delay, sigma_skew, clock_delay, lag_multiplier,
+                                                max_min_skew,
+                                                i + config.num_steps + 1, config.topo_step)
+                    logging.info('model(step-%d@topo-%d) saved.' % (i + config.num_steps + 1, config.topo_step))
+                else:
+                    outparser.point_list(i + config.num_steps + 1)
+                    logging.info('model(step-%d@topo-%d) saved.' % (i + config.num_steps + 1, config.topo_step))
+                    # embed(loss,sum_delay, sum_skew, final_delay, lag_multiplier, skew_constraint, i + 1)
+                    embed(loss, sigma_delay, sigma_skew, clock_delay, lag_multiplier, max_min_skew,
+                          i + config.num_steps + 1, config.topo_step)
+
+    if config.skew_separate:
+        for i in range(config.skew_separate_step):
+            logging.info('skew_separate_step-%d@topo-%d backproping...' % (i + config.num_steps + config.delay_separate_step+ 1, config.topo_step))
+
+            config.mindelays.append(skew_delay.item())
+
+            train.zero_grad()
+            # _, goal_value, step = sess.run([train_step, goal, global_step])
+            skew_delay.backward(retain_graph=True)
+            # delay.backward(retain_graph=True)
+            # skew.backward(retain_graph=True)
+
+            train.step()
+            scheduler.step()
+            logging.info('skew_separate_step-%d@topo-%d backproped...' % (i + config.num_steps + config.delay_separate_step + 1, config.topo_step))
+
+            goal, sum_delay, sum_skew, skew_delay = forprop(sum_delay.item(), True)
+
+
+            loss = goal.item()
+            logging.info("After %d steps of training, loss value@topo-%d is: %g;" % (i + config.num_steps + config.delay_separate_step + 1, config.topo_step, loss))
+
+            sigma_delay = sum_delay.item()
+            logging.info("and the sum delay of the whole tree is: %g;" % sigma_delay)
+
+            lag_multiplier = config.lagranger.item()
+            logging.info("and the lagrangian multiplier value is: %g;" % lag_multiplier)
+
+            sigma_skew = sum_skew.item()
+            logging.info("and the sum skew is: %g;" % sigma_skew)
+
+            max_delay, min_delay = get_tensors_max_min(config.sink_delay)
+            clock_delay = max_delay.item()
+            max_min_skew = (max_delay - min_delay).item()
+            neg_mind = skew_delay.item()
+
+            logging.info("and the max delay is: %g;" % clock_delay)
+            logging.info("and the max-min skew is: %g;" % max_min_skew)
+            logging.info("and -min_delay is: %g." % neg_mind)
+
+            writer.add_scalar('loss', loss, i + config.num_steps + config.delay_separate_step + 1)
+            writer.add_scalar('sum_delay', sigma_delay, i + config.num_steps + config.delay_separate_step + 1)
+            writer.add_scalar('lag', lag_multiplier, i + config.num_steps + config.delay_separate_step + 1)
+            writer.add_scalar('sum_skew', sigma_skew, i + config.num_steps + config.delay_separate_step + 1)
+            writer.add_scalar('max_delay', clock_delay, i + config.num_steps  + config.delay_separate_step+ 1)
+            writer.add_scalar('max_min_skew', max_min_skew, i + config.num_steps + config.delay_separate_step + 1)
+            writer.add_scalar('-min_delay', neg_mind, i + config.num_steps + config.delay_separate_step + 1)
+
+            if i % 10 == 0:
+                logging.info('saving model(step-%d@topo-%d)...' % (i + config.num_steps + config.delay_separate_step + 1, config.topo_step))
+
+                if config.post_embed:
+                    outparser.point_list_detail(loss, sigma_delay, sigma_skew, clock_delay, lag_multiplier,
+                                                max_min_skew,
+                                                i + config.num_steps + config.delay_separate_step + 1, config.topo_step)
+                    logging.info('model(step-%d@topo-%d) saved.' % (i + config.num_steps + config.delay_separate_step + 1, config.topo_step))
+                else:
+                    outparser.point_list(i + config.num_steps + config.delay_separate_step + 1)
+                    logging.info('model(step-%d@topo-%d) saved.' % (i + config.num_steps + config.delay_separate_step + 1, config.topo_step))
+                    # embed(loss,sum_delay, sum_skew, final_delay, lag_multiplier, skew_constraint, i + 1)
+                    embed(loss, sigma_delay, sigma_skew, clock_delay, lag_multiplier, max_min_skew,
+                          i + config.num_steps + config.delay_separate_step + 1, config.topo_step)
 
     return True
 

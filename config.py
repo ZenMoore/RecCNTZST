@@ -1,5 +1,9 @@
 import logging
 import datetime
+import time
+import os
+from collections import deque
+import warnings
 
 # input config
 source_point = None
@@ -24,6 +28,14 @@ bdia_std = 10.0
 # topo config
 tree = None
 
+# steps
+num_steps = 600  # 最大迭代轮数
+max_topo_step = 30
+local_step = 100
+skew_separate_step = 1000
+delay_separate_step = 1000
+conver_judge_step = 100
+
 # state config
 scalar_tree = True
 loaded = True
@@ -33,9 +45,18 @@ between_skew = []
 # between_goal = []
 # constraints = []
 delays = {}
+mindelays = deque(maxlen=conver_judge_step)
+maxdelays = deque(maxlen=conver_judge_step)
+paths = []
+ad_cont = [] # todo visualization of additional contact
 
 # net config
-learning_rate_base = 0.1
+learning_rate_base = {
+    'wirelen': 100.0,
+    'cdia': 0.1, #0.1
+    'bdia': 1.0, #1.0`
+    'lag': 0.00001
+}
 # learning_rate_decay = 0.8
 # learning_rate_ending = {
 #     'wirelen':10,
@@ -46,9 +67,8 @@ learning_rate_base = 0.1
 learning_rate_ending = 0.1
 learning_rate_T = 50
 # learning_rate_power = 0.5
-lagrangian_ini = 10.0
-lagrangian_std = 1.0
-num_steps = 1000  # 最大迭代轮数
+lagrangian_ini = 0.0
+lagrangian_std = 0.01
 # initialized_weights = []
 
 # forprop variables
@@ -72,23 +92,40 @@ R_cnom = 20000.0
 delta = 0.32
 pi = 3.1415926
 mfp = 1.0
+epsilon = 100
 
 # check config
 node_set = None # element = (x, y) # 另外这个变量有时候可能只是子树的 node set
 
 # topo-update
 topo_step = 0
-max_topo_step = 0
+k = 3
 
 # output config
 model_path = './models/pointlist'
 visual_path = './models/visualization'
+img_path = time.strftime('./models/embedding/%m%d%H%M%S', time.localtime())
 
 # log config
+# warnings.filterwarnings('error')
+if not os.path.exists(time.strftime('./log/%m%d', time.localtime())):
+    os.makedirs(time.strftime('./log/%m%d', time.localtime()))
+logger = logging.getLogger()
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-logging.basicConfig(filename='./log/console-' + datetime.datetime.now().strftime('%m%d-%H%M%S.log'), level=logging.INFO, format=LOG_FORMAT)
+logging.basicConfig(filename=time.strftime('./log/%m%d', time.localtime()) + '/' + datetime.datetime.now().strftime('%H%M%S.log'), level=logging.INFO, format=LOG_FORMAT)
+console = logging.StreamHandler()
+logger.addHandler(console)
+
 
 # visualization config
+nodes_to_show = []
+between_goal_to_show = []
+# cdia_histos = [temp + '_cdia' for temp in nodes_to_show]
+# bdia_histos = [temp + '_bdia' for temp in nodes_to_show]
+# wirelen_histos = [temp + '_wirelen' for temp in nodes_to_show]
+
+
+# plot config
 p_area = 20.0
 p_color_s = 'b'
 p_color_m = 'g'
@@ -112,6 +149,10 @@ hyper_step = 0
 
 # launch configuration
 post_embed = True
+lag_adagrad = True
+use_nng = False
+skew_separate = False
+delay_separate = True
 # local_optimize = False
 
 def print_hyperparams(step):
@@ -132,5 +173,7 @@ def print_hyperparams(step):
         '* steps\n' +
         'max_topo_step=%d\n' % (max_topo_step) +
         'training_step=%d\n' % (num_steps) +
+        '* other info\n' +
+        '|x|	adagrad	L1	maxT+λΦ(Ε)	exact=0	skew_separate\n' +
         '--------------hyperparams system %d--------------' % step
     )

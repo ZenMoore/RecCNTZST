@@ -188,12 +188,16 @@ def draw(loss=None, sum_delay=None, sum_skew=None, delay=None, lag=None, skew=No
                     for phrase in line.split(', '):
                         if phrase.split('=')[0] == 'loss':
                             loss = float(phrase.split('=')[1])
-                        elif phrase.split('=')[0] == 'delay':
+                        elif phrase.split('=')[0] == 'max_delay':
                             delay = float(phrase.split('=')[1])
                         elif phrase.split('=')[0] == 'lag':
                             lag = float(phrase.split('=')[1])
-                        elif phrase.split('=')[0] == 'skew':
+                        elif phrase.split('=')[0] == 'max_min_skew':
                             skew = float(phrase.split('=')[1])
+                        elif phrase.split('=')[0] == 'sum_delay':
+                            sum_delay = float(phrase.split('=')[1])
+                        elif phrase.split('=')[0] == 'sum_skew':
+                            sum_skew = float(phrase.split('=')[1])
                         elif phrase.split('=')[0] == 'step':
                             assert (step == float(phrase.split('=')[1]))
                         elif phrase.split('=')[0] == 'topo':
